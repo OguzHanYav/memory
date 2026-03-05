@@ -1,19 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory</title>
 </head>
+
 <body>
-<section id="field">
-    <button class="card">
-        <div class="card__inner">
-            <div class="card__face"></div>
-            <div class="card__face card__face--back"></div>
+  <main class="app">
+
+    <!-- ================= HOME ================= -->
+    <section id="screen-home" class="screen screen--active" aria-label="Home screen">
+      <div class="panel panel--home">
+        <p class="muted">It’s play time</p>
+        <h1 class="title">Ready to play?</h1>
+        <button id="btn-go-settings" class="btn btn--primary" type="button">
+          Play
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= SETTINGS ================= -->
+    <section id="screen-settings" class="screen" aria-label="Settings screen">
+      <div class="settings-page">
+
+        <header class="settings-page__header">
+          <h2 class="settings-page__title">Settings</h2>
+        </header>
+
+        <div class="settings-layout">
+
+          <!-- LEFT SIDE -->
+          <div class="settings-form">
+
+            <!-- ===== THEMES ===== -->
+            <div class="settings-block">
+              <div class="settings-block__headline">
+                <span class="settings-icon settings-icon--themes">🎨</span>
+                <h3 class="settings-block__title">Game themes</h3>
+              </div>
+
+              <div class="radio-list">
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="theme" value="code" checked />
+                  <span class="radio-dot"></span>
+                  <span>Code vibes theme</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="theme" value="games" />
+                  <span class="radio-dot"></span>
+                  <span>Gaming theme</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="theme" value="da" />
+                  <span class="radio-dot"></span>
+                  <span>DA Projects theme</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="theme" value="food" />
+                  <span class="radio-dot"></span>
+                  <span>Foods theme</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ===== CHOOSE PLAYER ===== -->
+            <div class="settings-block">
+              <div class="settings-block__headline">
+                <span class="settings-icon settings-icon--player">👤</span>
+                <h3 class="settings-block__title">Choose player</h3>
+              </div>
+
+              <div class="radio-list">
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked />
+                  <span class="radio-dot"></span>
+                  <span>Blue</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="startingPlayer" value="orange" />
+                  <span class="radio-dot"></span>
+                  <span>Orange</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ===== BOARD SIZE ===== -->
+            <div class="settings-block">
+              <div class="settings-block__headline">
+                <span class="settings-icon settings-icon--board">🧩</span>
+                <h3 class="settings-block__title">Board size</h3>
+              </div>
+
+              <div class="radio-list">
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="grid" value="16" checked />
+                  <span class="radio-dot"></span>
+                  <span>16 cards</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="grid" value="24" />
+                  <span class="radio-dot"></span>
+                  <span>24 cards</span>
+                </label>
+
+                <label class="radio-item">
+                  <input class="radio-input" type="radio" name="grid" value="36" />
+                  <span class="radio-dot"></span>
+                  <span>36 cards</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="settings-actions">
+              <div class="settings-actions__tabs">
+                <span>Game theme</span>
+                <span class="sep">/</span>
+                <span>Player</span>
+                <span class="sep">/</span>
+                <span>Board size</span>
+              </div>
+
+              <div class="settings-actions__buttons">
+                <button id="btn-start-game" class="btn btn--primary" type="button">
+                  Start
+                </button>
+                <button id="btn-back-home" class="btn" type="button">
+                  Back
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT SIDE PREVIEW -->
+          <aside class="settings-preview">
+            <div id="theme-preview" class="preview preview--code">
+
+              <div class="preview__topbar">
+                <div class="preview__scores">
+                  <span class="preview-chip preview-chip--blue">Blue</span>
+                  <span class="preview-chip preview-chip--orange">Orange</span>
+                </div>
+
+                <div class="preview__current">
+                  Current player:
+                  <span class="preview-dot"></span>
+                </div>
+
+                <button class="preview-exit" type="button" disabled>
+                  Exit game
+                </button>
+              </div>
+
+              <div class="preview__stage">
+                <!-- Diese SRC kannst du später anpassen -->
+                <img
+                  id="preview-img-main"
+                  class="preview__img preview__img--main"
+                  src="/assets/preview/code_main.png"
+                  alt="Theme preview main"
+                />
+                <img
+                  id="preview-img-sub"
+                  class="preview__img preview__img--sub"
+                  src="/assets/preview/code_sub.png"
+                  alt="Theme preview secondary"
+                />
+              </div>
+
+            </div>
+          </aside>
+
         </div>
-    </button>
-</section>
-    <script type="module" src="/src/main.ts"></script>
+      </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="screen-game" class="screen" aria-label="Game screen">
+      <header class="topbar">
+
+        <div class="topbar__left">
+          <div class="topbar__stat">
+            <span class="topbar__label">Moves</span>
+            <span id="moves" class="topbar__value">0</span>
+          </div>
+
+          <div id="playersbar" class="playersbar">
+            <div id="blueChip" class="playerchip playerchip--blue">
+              <span class="playerchip__name">Blue</span>
+              <span id="blueScore" class="playerchip__score">0</span>
+            </div>
+
+            <div id="orangeChip" class="playerchip playerchip--orange">
+              <span class="playerchip__name">Orange</span>
+              <span id="orangeScore" class="playerchip__score">0</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="restart" class="btn" type="button">
+          Restart
+        </button>
+
+      </header>
+
+      <section id="field" class="board" aria-label="Memory board"></section>
+
+      <div class="game__actions">
+        <button id="btn-to-settings" class="btn" type="button">
+          Settings
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= MODAL ================= -->
+    <div id="modal-gameover" class="modal" role="dialog" aria-modal="true">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h2 class="modal__title">Game Over</h2>
+
+        <div id="modal-icon" class="modal__icon">🎉</div>
+
+        <p class="modal__text">
+          You finished in <strong id="modal-moves">0</strong> moves
+        </p>
+
+        <p id="modal-winner" class="modal__subtext"></p>
+
+        <div class="modal__actions">
+          <button id="modal-play-again" class="btn btn--primary" type="button">
+            Play Again
+          </button>
+          <button id="modal-settings" class="btn" type="button">
+            Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
