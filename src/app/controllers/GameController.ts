@@ -12,30 +12,20 @@ type WinPayload = {
   winner: 'blue' | 'orange' | 'tie';
 };
 
-/**
- * AUTO IMPORT (Vite):
- * SVGs MUST be inside /src (not /public), otherwise import.meta.glob won't work.
- *
- * Expected structure:
- * /src/assets/cards/<theme>/back.svg
- * /src/assets/cards/<theme>/front-01.svg ... front-18.svg
- *
- * Themes (folders):
- * code | games | da | food
- */
-
+//Auto Import
 const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
 
 // 1) Import all fronts as URLs (ONLY *.svg, so "front-01..18" junk files won't match)
 const FRONT_URLS = import.meta.glob('/src/assets/cards/*/front-*.svg', {
   eager: true,
-  as: 'url',
+  query: '?url',
+  import: 'default',
 }) as Record<string, string>;
 
-// 2) Import all backs as URLs
 const BACK_URLS = import.meta.glob('/src/assets/cards/*/back.svg', {
   eager: true,
-  as: 'url',
+  query: '?url',
+  import: 'default',
 }) as Record<string, string>;
 
 function themeFromPath(path: string): ThemeId {
@@ -127,6 +117,7 @@ export class GameController {
   private config: GameConfig;
   private renderer: Renderer;
   private winCallback?: (payload: WinPayload) => void;
+  private stateChangeCallback?: () => void;
 
   constructor(renderer: Renderer, config: Partial<GameConfig> = {}) {
     this.renderer = renderer;
@@ -140,7 +131,13 @@ export class GameController {
   onWin(cb: (payload: WinPayload) => void) {
     this.winCallback = cb;
   }
+  onStateChange(cb: () => void) {
+    this.stateChangeCallback = cb;
+  }
 
+  private emitStateChange() {
+    this.stateChangeCallback?.();
+  }
   startNewGame() {
     this.state.status = 'running';
     this.state.lockInput = false;
@@ -154,6 +151,7 @@ export class GameController {
     this.state.cards = cards;
 
     this.renderer.renderBoard(this.state.cards);
+    this.emitStateChange();
   }
 
   handleCardClick(cardId: string) {
@@ -207,6 +205,8 @@ export class GameController {
 
       this.state.resetPicks();
       this.state.lockInput = false;
+      this.emitStateChange();
+
 
       if (this.state.blueMatches + this.state.orangeMatches === this.config.pairs) {
         this.state.status = 'won';
@@ -225,6 +225,7 @@ export class GameController {
 
       this.state.resetPicks();
       this.state.switchPlayer();
+      this.emitStateChange();
       this.state.lockInput = false;
     }, this.config.flipBackDelayMs);
   }
@@ -234,7 +235,7 @@ export class GameController {
 
     if (this.state.blueMatches > this.state.orangeMatches) winner = 'blue';
     if (this.state.orangeMatches > this.state.blueMatches) winner = 'orange';
-
+    this.emitStateChange();
     this.winCallback?.({
       moves: this.state.moves,
       blueMatches: this.state.blueMatches,

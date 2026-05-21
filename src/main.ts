@@ -9,222 +9,242 @@ function pairsFromGrid(grid: GridSize): number {
   return grid / 2;
 }
 
-function showScreen(id: 'home' | 'settings' | 'game') {
+function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
   const home = assertEl(document.getElementById('screen-home'), 'Missing #screen-home');
   const settings = assertEl(document.getElementById('screen-settings'), 'Missing #screen-settings');
   const game = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
+  const result = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
 
   home.classList.toggle('screen--active', id === 'home');
   settings.classList.toggle('screen--active', id === 'settings');
   game.classList.toggle('screen--active', id === 'game');
-}
-
-function getCheckedValue(name: string): string {
-  const el = document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
-  if (!el) throw new Error(`Missing checked radio for "${name}"`);
-  return el.value;
+  result.classList.toggle('screen--active', id === 'result');
 }
 
 function init() {
-  // Navigation buttons
+  // Screens
   const btnGoSettings = assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings');
   const btnStartGame = assertEl(document.getElementById('btn-start-game'), 'Missing #btn-start-game');
-  const btnBackHome = assertEl(document.getElementById('btn-back-home'), 'Missing #btn-back-home');
-  const btnToSettings = assertEl(document.getElementById('btn-to-settings'), 'Missing #btn-to-settings');
 
   // Game UI
   const field = assertEl(document.getElementById('field'), 'Missing #field');
   const movesEl = assertEl(document.getElementById('moves'), 'Missing #moves');
-  const restartBtn = assertEl(document.getElementById('restart'), 'Missing #restart');
+  const blueScoreEl = assertEl(document.getElementById('blueScore'), 'Missing #blueScore');
+  const orangeScoreEl = assertEl(document.getElementById('orangeScore'), 'Missing #orangeScore');
+  const currentPlayerDot = assertEl(document.getElementById('currentPlayerDot'), 'Missing #currentPlayerDot');
 
-  // Topbar Players UI (Blue/Orange)
-  const blueChip = assertEl(document.getElementById('blueChip'), 'Missing #blueChip');
-  const orangeChip = assertEl(document.getElementById('orangeChip'), 'Missing #orangeChip');
-  const blueScore = assertEl(document.getElementById('blueScore'), 'Missing #blueScore');
-  const orangeScore = assertEl(document.getElementById('orangeScore'), 'Missing #orangeScore');
+  // Exit Modal Elements
+  const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
+  const btnBackToGame = assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game');
+  const btnConfirmExit = assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit');
+  const btnExitGame = assertEl(document.getElementById('btn-exit-game'), 'Missing #btn-exit-game');
 
-  // Modal
-  const modal = assertEl(document.getElementById('modal-gameover'), 'Missing #modal-gameover');
-  const modalMoves = assertEl(document.getElementById('modal-moves'), 'Missing #modal-moves');
-  const modalWinner = assertEl(document.getElementById('modal-winner'), 'Missing #modal-winner');
-  const modalPlayAgain = assertEl(document.getElementById('modal-play-again'), 'Missing #modal-play-again');
-  const modalSettings = assertEl(document.getElementById('modal-settings'), 'Missing #modal-settings');
+  // Result Screen Elements
+  const resultScreen = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
+  const resultGameover = assertEl(document.getElementById('result-gameover'), 'Missing #result-gameover');
+  const resultWinner = assertEl(document.getElementById('result-winner'), 'Missing #result-winner');
+  const resultDraw = assertEl(document.getElementById('result-draw'), 'Missing #result-draw');
+  const resultBlueScore = assertEl(document.getElementById('result-blue-score'), 'Missing #result-blue-score');
+  const resultOrangeScore = assertEl(document.getElementById('result-orange-score'), 'Missing #result-orange-score');
+  const resultWinnerTitle = assertEl(document.getElementById('result-winner-title'), 'Missing #result-winner-title');
+  const btnResultBack = assertEl(document.getElementById('btn-result-back'), 'Missing #btn-result-back');
+  const btnDrawBack = assertEl(document.getElementById('btn-draw-back'), 'Missing #btn-draw-back');
 
-  // SETTINGS: Theme Preview (RIGHT SIDE)
-  const preview = assertEl(document.getElementById('theme-preview'), 'Missing #theme-preview');
-  const previewImgMain = assertEl(document.getElementById('preview-img-main') as HTMLImageElement | null, 'Missing #preview-img-main');
-  const previewImgSub = assertEl(document.getElementById('preview-img-sub') as HTMLImageElement | null, 'Missing #preview-img-sub');
+  // Theme preview (right side)
+  const previewRoot = assertEl(document.getElementById('theme-preview'), 'Missing #theme-preview');
+  const previewImgMain = assertEl(
+    document.getElementById('preview-img-main') as HTMLImageElement | null,
+    'Missing #preview-img-main'
+  );
+  const previewImgSub = assertEl(
+    document.getElementById('preview-img-sub') as HTMLImageElement | null,
+    'Missing #preview-img-sub'
+  );
 
   const renderer = new Renderer(field);
 
-  // Read initial settings from radios
-  let selectedTheme = getCheckedValue('theme') as ThemeId;
-  let selectedGrid = Number(getCheckedValue('grid')) as GridSize;
-  let selectedStartingPlayer = getCheckedValue('startingPlayer') as PlayerColor;
+  // Defaults
+  let selectedTheme: ThemeId = 'code';
+  let selectedGrid: GridSize = 16;
+  let selectedPlayer: PlayerColor = 'blue';
 
-  function updateThemePreview() {
-    // right preview container theme class
-    preview.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
-    preview.classList.add(`preview--${selectedTheme}`);
+  const renderGameUi = (game: GameController) => {
+    movesEl.textContent = String(game.state.moves);
+    blueScoreEl.textContent = String(game.state.blueMatches);
+    orangeScoreEl.textContent = String(game.state.orangeMatches);
 
-    // preview images (placeholder paths - you will replace)
-    switch (selectedTheme) {
-      case 'code':
-        previewImgMain.src = 'public/assets/Settings/Cards 5/Cards 5_2.svg';
-        previewImgSub.src = 'public/assets/Settings/Cards 5/Cards 5.svg';
-        break;
-      case 'games':
-        previewImgMain.src = 'public/assets/Settings/Cards 5/Rectangle 40.svg';
-        previewImgSub.src = 'public/assets/Settings/Cards 5/Front.svg';
-        break;
-      case 'da':
-        previewImgMain.src = 'public/assets/Settings/Cards 5/Frame 727.svg';
-        previewImgSub.src = 'public/assets/Settings/Cards 5/Frame 728.svg';
-        break;
-      case 'food':
-        previewImgMain.src = 'public/assets/Settings/Cards 5/frond.svg';
-        previewImgSub.src = 'public/assets/Settings/Cards 5/frond_2.svg';
-        break;
+    if (currentPlayerDot) {
+      currentPlayerDot.classList.remove('current-player__dot--blue', 'current-player__dot--orange');
+      currentPlayerDot.classList.add(game.state.currentPlayer === 'blue' ? 'current-player__dot--blue' : 'current-player__dot--orange');
     }
-  }
+  };
 
-  // Apply initial preview + theme (optional: body theme changes while in settings)
+ const updateThemePreview = () => {
+  // Entferne alte Theme-Klassen
+  previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+
+  // Füge neue Theme-Klasse hinzu
+  previewRoot.classList.add(`preview--${selectedTheme}`);
+
+  // Setze die Kartenbilder
+  switch (selectedTheme) {
+    case 'code':
+      previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
+      previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
+      break;
+    case 'games':
+      previewImgMain.src = './assets/Settings/Cards 5/Rectangle 40.svg';
+      previewImgSub.src = './assets/Settings/Cards 5/Front.svg';
+      break;
+    case 'da':
+      previewImgMain.src = './assets/Settings/Cards 5/Frame 727.svg';
+      previewImgSub.src = './assets/Settings/Cards 5/Frame 728.svg';
+      break;
+    case 'food':
+      previewImgMain.src = './assets/Settings/Cards 5/frond.svg';
+      previewImgSub.src = './assets/Settings/Cards 5/frond_foods.svg';
+      break;
+  }
+};
+
+  // Apply defaults
   renderer.setTheme(selectedTheme);
   renderer.setGrid(selectedGrid);
   updateThemePreview();
 
-  const game = new GameController(renderer, {
-    startingPlayer: selectedStartingPlayer,
-    pairs: pairsFromGrid(selectedGrid),
-    flipBackDelayMs: 700,
-  });
-
-  function renderMoves() {
-    movesEl.textContent = String(game.state.moves);
-  }
-
-  function renderPlayers() {
-    blueScore.textContent = String(game.state.blueMatches);
-    orangeScore.textContent = String(game.state.orangeMatches);
-
-    blueChip.classList.toggle('is-active', game.state.currentPlayer === 'blue');
-    orangeChip.classList.toggle('is-active', game.state.currentPlayer === 'orange');
-  }
-
-  function openModal(payload: {
-    moves: number;
-    blueMatches: number;
-    orangeMatches: number;
-    winner: 'blue' | 'orange' | 'tie';
-  }) {
-    modalMoves.textContent = String(payload.moves);
-
-    if (payload.winner === 'tie') {
-      modalWinner.textContent = 'It’s a tie!';
-    } else {
-      modalWinner.textContent = payload.winner === 'blue' ? 'Blue wins!' : 'Orange wins!';
-    }
-
-    modal.classList.add('is-open');
-    document.body.classList.add('modal-open');
-  }
-
-  function closeModal() {
-    modal.classList.remove('is-open');
-    document.body.classList.remove('modal-open');
-  }
-
-  function startGameFromSettings() {
-    // re-read (user might have changed radios)
-    selectedTheme = getCheckedValue('theme') as ThemeId;
-    selectedGrid = Number(getCheckedValue('grid')) as GridSize;
-    selectedStartingPlayer = getCheckedValue('startingPlayer') as PlayerColor;
-
-    // update preview + body theme
+  const startGameFromSettings = () => {
     renderer.setTheme(selectedTheme);
     renderer.setGrid(selectedGrid);
-    updateThemePreview();
 
     game.updateConfig({
-      startingPlayer: selectedStartingPlayer,
+      theme: selectedTheme,
+      gridSize: selectedGrid,
+      startingPlayer: selectedPlayer,
       pairs: pairsFromGrid(selectedGrid),
       flipBackDelayMs: 700,
     });
 
-    closeModal();
     game.startNewGame();
-    renderMoves();
-    renderPlayers();
+    renderGameUi(game);
     showScreen('game');
-  }
+  };
 
-  // WIN event
-  game.onWin((payload) => openModal(payload));
+  const game = new GameController(renderer, {
+    theme: selectedTheme,
+    gridSize: selectedGrid,
+    startingPlayer: selectedPlayer,
+    pairs: pairsFromGrid(selectedGrid),
+    flipBackDelayMs: 700,
+  });
 
-  // Live preview when changing THEME radios
-  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((input) => {
-    input.addEventListener('change', () => {
-      selectedTheme = getCheckedValue('theme') as ThemeId;
-      renderer.setTheme(selectedTheme); // optional live theme change
+  // State change callback für UI-Updates
+  game.onStateChange(() => {
+    renderGameUi(game);
+  });
+
+  game.onWin(({ moves, blueMatches, orangeMatches, winner }) => {
+    // Set scores
+    resultBlueScore.textContent = String(blueMatches);
+    resultOrangeScore.textContent = String(orangeMatches);
+    
+    // Reset all blocks
+    resultGameover.style.display = 'block';
+    resultWinner.style.display = 'none';
+    resultDraw.style.display = 'none';
+    
+    // Remove old classes
+    resultScreen.classList.remove('result-screen--winner-blue', 'result-screen--winner-orange', 'result-screen--draw');
+    
+    if (winner === 'blue') {
+      resultScreen.classList.add('result-screen--winner-blue');
+      resultWinnerTitle.textContent = 'BLUE PLAYER';
+      resultWinner.style.display = 'block';
+    } else if (winner === 'orange') {
+      resultScreen.classList.add('result-screen--winner-orange');
+      resultWinnerTitle.textContent = 'ORANGE PLAYER';
+      resultWinner.style.display = 'block';
+    } else if (winner === 'tie') {
+      resultScreen.classList.add('result-screen--draw');
+      resultDraw.style.display = 'block';
+    }
+    
+    showScreen('result');
+  });
+
+  // Result Screen Back Buttons
+  btnResultBack.addEventListener('click', () => {
+    showScreen('home');
+  });
+
+  btnDrawBack.addEventListener('click', () => {
+    showScreen('home');
+  });
+
+  // Exit Game - zeigt Popup an
+  btnExitGame.addEventListener('click', () => {
+    exitModal.style.display = 'flex';
+  });
+
+  // Popup Buttons
+  btnBackToGame.addEventListener('click', () => {
+    exitModal.style.display = 'none';
+  });
+
+  btnConfirmExit.addEventListener('click', () => {
+    exitModal.style.display = 'none';
+    showScreen('settings');
+    document.body.classList.remove('modal-open');
+  });
+
+  // Navigation
+  btnGoSettings.addEventListener('click', () => showScreen('settings'));
+  btnStartGame.addEventListener('click', startGameFromSettings);
+
+  // Theme radios
+  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const t = radio.value as ThemeId;
+      if (!['code', 'games', 'da', 'food'].includes(t)) return;
+
+      selectedTheme = t;
+      renderer.setTheme(selectedTheme);
       updateThemePreview();
     });
   });
 
-  // Live grid preview (optional)
-  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((input) => {
-    input.addEventListener('change', () => {
-      selectedGrid = Number(getCheckedValue('grid')) as GridSize;
+  // Player radios
+  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const p = radio.value as PlayerColor;
+      if (!['blue', 'orange'].includes(p)) return;
+      selectedPlayer = p;
+    });
+  });
+
+  // Grid radios
+  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const g = Number(radio.value) as GridSize;
+      if (![16, 24, 36].includes(g)) return;
+      selectedGrid = g;
       renderer.setGrid(selectedGrid);
     });
   });
 
-  // Starting player radios
-  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((input) => {
-    input.addEventListener('change', () => {
-      selectedStartingPlayer = getCheckedValue('startingPlayer') as PlayerColor;
-    });
-  });
-
-  // Board click
-  field.addEventListener('click', (e) => {
+  // Board click delegation
+  field.addEventListener('click', (e: MouseEvent) => {
     const cardEl = (e.target as HTMLElement).closest<HTMLButtonElement>('.card');
     if (!cardEl) return;
 
     const id = cardEl.dataset.id;
     if (!id) return;
 
-    const beforeMoves = game.state.moves;
-    const beforeBlue = game.state.blueMatches;
-    const beforeOrange = game.state.orangeMatches;
-    const beforePlayer = game.state.currentPlayer;
-
     game.handleCardClick(id);
-
-    if (game.state.moves !== beforeMoves) renderMoves();
-    if (
-      game.state.blueMatches !== beforeBlue ||
-      game.state.orangeMatches !== beforeOrange ||
-      game.state.currentPlayer !== beforePlayer
-    ) {
-      renderPlayers();
-    }
+    // UI wird automatisch durch onStateChange aktualisiert
   });
-
-  // Buttons
-  restartBtn.addEventListener('click', startGameFromSettings);
-
-  modalPlayAgain.addEventListener('click', startGameFromSettings);
-  modalSettings.addEventListener('click', () => {
-    closeModal();
-    showScreen('settings');
-  });
-
-  btnGoSettings.addEventListener('click', () => showScreen('settings'));
-  btnBackHome.addEventListener('click', () => showScreen('home'));
-  btnStartGame.addEventListener('click', startGameFromSettings);
-  btnToSettings.addEventListener('click', () => showScreen('settings'));
 
   showScreen('home');
+
   (window as any).game = game;
 }
 

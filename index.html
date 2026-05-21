@@ -1,39 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <main class="app">
-
-    <!-- ================= HOME ================= -->
+    <!-- HOME SCREEN -->
     <section id="screen-home" class="screen screen--active" aria-label="Home screen">
       <div class="panel panel--home">
         <p class="muted">It’s play time</p>
         <h1 class="title">Ready to play?</h1>
-        <button id="btn-go-settings" class="btn btn--primary" type="button">
-          Play
-        </button>
+        <button id="btn-go-settings" class="btn btn--primary" type="button">Play</button>
       </div>
     </section>
 
-    <!-- ================= SETTINGS ================= -->
+    <!-- SETTINGS SCREEN -->
     <section id="screen-settings" class="screen" aria-label="Settings screen">
       <div class="settings-page">
-
         <header class="settings-page__header">
           <h2 class="settings-page__title">Settings</h2>
         </header>
 
         <div class="settings-layout">
-
-          <!-- LEFT SIDE -->
           <div class="settings-form">
-
-            <!-- ===== THEMES ===== -->
             <div class="settings-block">
               <div class="settings-block__headline">
                 <span class="settings-icon settings-icon--themes">🎨</span>
@@ -67,7 +61,6 @@
               </div>
             </div>
 
-            <!-- ===== CHOOSE PLAYER ===== -->
             <div class="settings-block">
               <div class="settings-block__headline">
                 <span class="settings-icon settings-icon--player">👤</span>
@@ -89,7 +82,6 @@
               </div>
             </div>
 
-            <!-- ===== BOARD SIZE ===== -->
             <div class="settings-block">
               <div class="settings-block__headline">
                 <span class="settings-icon settings-icon--board">🧩</span>
@@ -116,8 +108,35 @@
                 </label>
               </div>
             </div>
+          </div>
 
-            <!-- ACTIONS -->
+          <aside class="settings-preview">
+            <div id="theme-preview" class="preview preview--code">
+              <div class="preview__topbar">
+                <div class="preview__scores">
+                  <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="10" height="8" />
+                  <span class="preview-chip preview-chip--blue">Blue  0</span>
+
+                  <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="10" height="8" />
+                  <span class="preview-chip preview-chip--orange">Orange  6</span>
+                </div>
+
+                <div class="preview__current">
+                  Current player:
+                  <img class="preview-dot" src="public/assets/Settings/topbar/label-orange.svg" alt="">
+                </div>
+
+                <button class="preview-exit" type="button" disabled><img
+                    src="public/assets/Settings/topbar/move_item.svg" alt="">Exit game</button>
+              </div>
+
+              <div class="preview__stage">
+                <img id="preview-img-main" class="preview__img preview__img--main" src="" alt="Theme preview main" />
+                <img id="preview-img-sub" class="preview__img preview__img--sub" src="" alt="Theme preview secondary" />
+              </div>
+            </div>
+
+            <!-- settings-actions jetzt unter der Preview -->
             <div class="settings-actions">
               <div class="settings-actions__tabs">
                 <span>Game theme</span>
@@ -126,127 +145,118 @@
                 <span class="sep">/</span>
                 <span>Board size</span>
               </div>
-
-              <div class="settings-actions__buttons">
-                <button id="btn-start-game" class="btn btn--primary" type="button">
-                  Start
-                </button>
-                <button id="btn-back-home" class="btn" type="button">
-                  Back
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- RIGHT SIDE PREVIEW -->
-          <aside class="settings-preview">
-            <div id="theme-preview" class="preview preview--code">
-
-              <div class="preview__topbar">
-                <div class="preview__scores">
-                  <span class="preview-chip preview-chip--blue">Blue</span>
-                  <span class="preview-chip preview-chip--orange">Orange</span>
-                </div>
-
-                <div class="preview__current">
-                  Current player:
-                  <span class="preview-dot"></span>
-                </div>
-
-                <button class="preview-exit" type="button" disabled>
-                  Exit game
-                </button>
-              </div>
-
-              <div class="preview__stage">
-                <!-- Diese SRC kannst du später anpassen -->
-                <img
-                  id="preview-img-main"
-                  class="preview__img preview__img--main"
-                  src="/assets/preview/code_main.png"
-                  alt="Theme preview main"
-                />
-                <img
-                  id="preview-img-sub"
-                  class="preview__img preview__img--sub"
-                  src="/assets/preview/code_sub.png"
-                  alt="Theme preview secondary"
-                />
-              </div>
-
+              <button id="btn-start-game" class="btn-start" type="button">Start</button>
             </div>
           </aside>
-
         </div>
       </div>
     </section>
 
-    <!-- ================= GAME ================= -->
+    <!-- GAME SCREEN -->
     <section id="screen-game" class="screen" aria-label="Game screen">
-      <header class="topbar">
+      <div class="game-container">
+        <!-- GAME HUD -->
+        <div class="game-hud game-hud--preview-style">
+          <div class="preview__scores">
+            <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="16" height="16" />
+            <span id="blueScore" class="preview-chip preview-chip--blue">0</span>
 
-        <div class="topbar__left">
-          <div class="topbar__stat">
-            <span class="topbar__label">Moves</span>
-            <span id="moves" class="topbar__value">0</span>
+            <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="16" height="16" />
+            <span id="orangeScore" class="preview-chip preview-chip--orange">0</span>
           </div>
 
-          <div id="playersbar" class="playersbar">
-            <div id="blueChip" class="playerchip playerchip--blue">
-              <span class="playerchip__name">Blue</span>
-              <span id="blueScore" class="playerchip__score">0</span>
-            </div>
-
-            <div id="orangeChip" class="playerchip playerchip--orange">
-              <span class="playerchip__name">Orange</span>
-              <span id="orangeScore" class="playerchip__score">0</span>
-            </div>
+          <div class="preview__current">
+            Current player:
+            <span id="currentPlayerDot" class="preview-dot current-player__dot--blue"></span>
           </div>
+
+          <button id="btn-exit-game" class="preview-exit" type="button">
+            <img src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="12" height="12"/>Exit game
+          </button>
         </div>
 
-        <button id="restart" class="btn" type="button">
-          Restart
-        </button>
+        <!-- Moves Counter (dezenter) -->
+        <div class="moves-counter">
+          <span class="moves-counter__label">Moves</span>
+          <span id="moves" class="moves-counter__value">0</span>
+        </div>
 
-      </header>
-
-      <section id="field" class="board" aria-label="Memory board"></section>
-
-      <div class="game__actions">
-        <button id="btn-to-settings" class="btn" type="button">
-          Settings
-        </button>
+        <!-- Game Board -->
+        <section id="field" class="board" aria-label="Memory board"></section>
       </div>
     </section>
 
-    <!-- ================= MODAL ================= -->
+    <!-- RESULT SCREEN -->
+    <section id="screen-result" class="screen result-screen" aria-label="Result screen">
+      <div id="result-confetti" class="result-confetti" aria-hidden="true"></div>
+
+      <div id="result-gameover" class="result-block result-block--gameover">
+        <h1 class="result-gameover__title">Game over</h1>
+        <p class="result-score-label">Final score</p>
+        <div class="result-score">
+          <span class="result-score__blue">Blue <strong id="result-blue-score">0</strong></span>
+          <span class="result-score__orange">Orange <strong id="result-orange-score">0</strong></span>
+        </div>
+      </div>
+
+      <div id="result-winner" class="result-block result-block--winner" style="display: none;">
+        <p class="result-kicker">The winner is</p>
+        <h1 id="result-winner-title" class="result-winner-title">BLUE PLAYER</h1>
+        <div id="result-player-icon" class="result-player-icon" aria-hidden="true"></div>
+        <button id="btn-result-back" class="btn result-back-btn" type="button">Back to start</button>
+      </div>
+
+      <div id="result-draw" class="result-block result-block--draw" style="display: none;">
+        <p class="result-kicker">It’s a</p>
+        <h1 class="result-draw-title">DRAW</h1>
+        <div class="result-draw-icon" aria-hidden="true">⚖️</div>
+        <button id="btn-draw-back" class="btn result-back-btn" type="button">Back to start</button>
+      </div>
+    </section>
+
+    <!-- EXIT CONFIRMATION POPUP -->
+    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
+      <div class="exit-modal__overlay"></div>
+      <div class="exit-modal__content">
+        <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
+        <div class="exit-modal__actions">
+          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">Back to
+            game</button>
+          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">Exit
+            game</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OLD MODAL (unused, kept for reference) -->
     <div id="modal-gameover" class="modal" role="dialog" aria-modal="true">
       <div class="modal__overlay"></div>
       <div class="modal__content">
         <h2 class="modal__title">Game Over</h2>
-
         <div id="modal-icon" class="modal__icon">🎉</div>
 
         <p class="modal__text">
           You finished in <strong id="modal-moves">0</strong> moves
         </p>
 
+        <p class="modal__text">
+          Blue: <strong id="modal-blue-score">0</strong> points
+        </p>
+
+        <p class="modal__text">
+          Orange: <strong id="modal-orange-score">0</strong> points
+        </p>
+
         <p id="modal-winner" class="modal__subtext"></p>
 
         <div class="modal__actions">
-          <button id="modal-play-again" class="btn btn--primary" type="button">
-            Play Again
-          </button>
-          <button id="modal-settings" class="btn" type="button">
-            Settings
-          </button>
+          <button id="modal-play-again" class="btn btn--primary" type="button">Play Again</button>
+          <button id="modal-settings" class="btn" type="button">Settings</button>
         </div>
       </div>
     </div>
-
   </main>
-
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>
