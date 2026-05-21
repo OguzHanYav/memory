@@ -115,10 +115,10 @@
               <div class="preview__topbar">
                 <div class="preview__scores">
                   <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="10" height="8" />
-                  <span class="preview-chip preview-chip--blue">Blue  0</span>
+                  <span class="preview-chip preview-chip--blue">Blue 0</span>
 
                   <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="10" height="8" />
-                  <span class="preview-chip preview-chip--orange">Orange  6</span>
+                  <span class="preview-chip preview-chip--orange">Orange 6</span>
                 </div>
 
                 <div class="preview__current">
@@ -158,28 +158,25 @@
         <!-- GAME HUD -->
         <div class="game-hud game-hud--preview-style">
           <div class="preview__scores">
-            <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="16" height="16" />
-            <span id="blueScore" class="preview-chip preview-chip--blue">0</span>
+            <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="24" height="20" />
+            <span id="blueScore" class="preview-chip preview-chip--blue">Blue 0</span>
 
-            <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="16" height="16" />
-            <span id="orangeScore" class="preview-chip preview-chip--orange">0</span>
+            <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="24" height="20" />
+            <span id="orangeScore" class="preview-chip preview-chip--orange">Orange 0</span>
           </div>
 
           <div class="preview__current">
             Current player:
-            <span id="currentPlayerDot" class="preview-dot current-player__dot--blue"></span>
+            <img id="currentPlayerImg" class="preview-dot" src="public/assets/Settings/topbar/label-blue.svg"
+              alt="Current Player">
           </div>
 
           <button id="btn-exit-game" class="preview-exit" type="button">
-            <img src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="12" height="12"/>Exit game
+            <img src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="30" height="30" />Exit game
           </button>
         </div>
 
-        <!-- Moves Counter (dezenter) -->
-        <div class="moves-counter">
-          <span class="moves-counter__label">Moves</span>
-          <span id="moves" class="moves-counter__value">0</span>
-        </div>
+
 
         <!-- Game Board -->
         <section id="field" class="board" aria-label="Memory board"></section>

@@ -28,10 +28,9 @@ function init() {
 
   // Game UI
   const field = assertEl(document.getElementById('field'), 'Missing #field');
-  const movesEl = assertEl(document.getElementById('moves'), 'Missing #moves');
   const blueScoreEl = assertEl(document.getElementById('blueScore'), 'Missing #blueScore');
   const orangeScoreEl = assertEl(document.getElementById('orangeScore'), 'Missing #orangeScore');
-  const currentPlayerDot = assertEl(document.getElementById('currentPlayerDot'), 'Missing #currentPlayerDot');
+
 
   // Exit Modal Elements
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
@@ -67,45 +66,64 @@ function init() {
   let selectedTheme: ThemeId = 'code';
   let selectedGrid: GridSize = 16;
   let selectedPlayer: PlayerColor = 'blue';
+  // Current Player Image
+  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
 
-  const renderGameUi = (game: GameController) => {
-    movesEl.textContent = String(game.state.moves);
-    blueScoreEl.textContent = String(game.state.blueMatches);
-    orangeScoreEl.textContent = String(game.state.orangeMatches);
+  /**
+   * Update Current Player indicator
+   * @param player 'blue' | 'orange'
+   */
+  function updateCurrentPlayer(player: 'blue' | 'orange') {
+    if (!currentPlayerImg) return;
 
-    if (currentPlayerDot) {
-      currentPlayerDot.classList.remove('current-player__dot--blue', 'current-player__dot--orange');
-      currentPlayerDot.classList.add(game.state.currentPlayer === 'blue' ? 'current-player__dot--blue' : 'current-player__dot--orange');
+    if (player === 'blue') {
+      currentPlayerImg.src = 'public/assets/Settings/topbar/label.svg';
+      currentPlayerImg.alt = 'Blue Player';
+    } else {
+      currentPlayerImg.src = 'public/assets/Settings/topbar/label-orange.svg';
+      currentPlayerImg.alt = 'Orange Player';
+    }
+  }
+
+const renderGameUi = (game: GameController) => {
+    if (blueScoreEl) {
+        blueScoreEl.textContent = `Blue ${game.state.blueMatches}`;
+    }
+    if (orangeScoreEl) {
+        orangeScoreEl.textContent = `Orange ${game.state.orangeMatches}`;
+    }
+
+    // Update Current Player Image
+    updateCurrentPlayer(game.state.currentPlayer);
+};
+
+  const updateThemePreview = () => {
+    // Entferne alte Theme-Klassen
+    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+
+    // Füge neue Theme-Klasse hinzu
+    previewRoot.classList.add(`preview--${selectedTheme}`);
+
+    // Setze die Kartenbilder
+    switch (selectedTheme) {
+      case 'code':
+        previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
+        previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
+        break;
+      case 'games':
+        previewImgMain.src = './assets/Settings/Cards 5/Rectangle 40.svg';
+        previewImgSub.src = './assets/Settings/Cards 5/Front.svg';
+        break;
+      case 'da':
+        previewImgMain.src = './assets/Settings/Cards 5/Frame 727.svg';
+        previewImgSub.src = './assets/Settings/Cards 5/Frame 728.svg';
+        break;
+      case 'food':
+        previewImgMain.src = './assets/Settings/Cards 5/frond.svg';
+        previewImgSub.src = './assets/Settings/Cards 5/frond_foods.svg';
+        break;
     }
   };
-
- const updateThemePreview = () => {
-  // Entferne alte Theme-Klassen
-  previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
-
-  // Füge neue Theme-Klasse hinzu
-  previewRoot.classList.add(`preview--${selectedTheme}`);
-
-  // Setze die Kartenbilder
-  switch (selectedTheme) {
-    case 'code':
-      previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
-      previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
-      break;
-    case 'games':
-      previewImgMain.src = './assets/Settings/Cards 5/Rectangle 40.svg';
-      previewImgSub.src = './assets/Settings/Cards 5/Front.svg';
-      break;
-    case 'da':
-      previewImgMain.src = './assets/Settings/Cards 5/Frame 727.svg';
-      previewImgSub.src = './assets/Settings/Cards 5/Frame 728.svg';
-      break;
-    case 'food':
-      previewImgMain.src = './assets/Settings/Cards 5/frond.svg';
-      previewImgSub.src = './assets/Settings/Cards 5/frond_foods.svg';
-      break;
-  }
-};
 
   // Apply defaults
   renderer.setTheme(selectedTheme);
@@ -142,19 +160,19 @@ function init() {
     renderGameUi(game);
   });
 
-  game.onWin(({ moves, blueMatches, orangeMatches, winner }) => {
+  game.onWin(({ blueMatches, orangeMatches, winner }) => {
     // Set scores
     resultBlueScore.textContent = String(blueMatches);
     resultOrangeScore.textContent = String(orangeMatches);
-    
+
     // Reset all blocks
     resultGameover.style.display = 'block';
     resultWinner.style.display = 'none';
     resultDraw.style.display = 'none';
-    
+
     // Remove old classes
     resultScreen.classList.remove('result-screen--winner-blue', 'result-screen--winner-orange', 'result-screen--draw');
-    
+
     if (winner === 'blue') {
       resultScreen.classList.add('result-screen--winner-blue');
       resultWinnerTitle.textContent = 'BLUE PLAYER';
@@ -167,7 +185,7 @@ function init() {
       resultScreen.classList.add('result-screen--draw');
       resultDraw.style.display = 'block';
     }
-    
+
     showScreen('result');
   });
 
