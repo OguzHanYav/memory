@@ -15,6 +15,7 @@
   --card-size: 96px;
   --gap: 12px;
   --font-redrose: 'Red Rose', sans-serif;
+
 }
 
 /* Body themes for GAME */
@@ -64,6 +65,7 @@ body.modal-open {
   overflow: hidden;
 }
 
+
 .app {
   width: min(1080px, 94vw);
   display: grid;
@@ -94,11 +96,7 @@ body.modal-open {
   margin: 0 auto;
 }
 
-/* =========================
-   GAME HUD - 4 THEMES
-   ========================= */
-
-/* BASE HUD - für alle Themes */
+/* Game HUD */
 .game-hud--preview-style {
   display: flex;
   align-items: center;
@@ -116,6 +114,7 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  background: rgba(54, 82, 77, 1);
   padding: 4px 8px;
   width: 292px;
   height: 62px;
@@ -126,15 +125,15 @@ body.modal-open {
   font-size: 24px;
   line-height: 100%;
   letter-spacing: 0%;
-  opacity: 1 !important;
+
 }
 
 .game-hud--preview-style .preview-chip--blue {
-  color: #2aa8ff !important;
+  color: #2aa8ff;
 }
 
 .game-hud--preview-style .preview-chip--orange {
-  color: #ff8c42 !important;
+  color: #ff8c42;
 }
 
 .game-hud--preview-style .preview__current {
@@ -159,138 +158,115 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  background: rgba(54, 82, 77, 1);
   padding: 4px 8px;
 }
 
-/* =========================
-   THEME-SPEZIFISCHE HUD STYLES
-   ========================= */
+#theme-preview {
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
 
-/* THEME 1: CODE (Default) */
-.theme-code .game-hud--preview-style {
-  background: #303131;
-  border-radius: 20px;
 }
 
-.theme-code .game-hud--preview-style .preview__scores {
-  background: rgba(54, 82, 77, 1);
-  border-radius: 12px;
+/* Kompakter Score-Block */
+.score-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.theme-code .game-hud--preview-style .preview-exit {
-  background: rgba(54, 82, 77, 1);
-  border-radius: 12px;
-  border: 1px solid rgba(76, 213, 188, 1);
-  color: rgba(255, 255, 255, 0.92);
+.score-compact__label {
+  opacity: 0.7;
+  font-size: 12px;
 }
 
-/* THEME 2: GAMES - KORRIGIERT nach Figma */
-.theme-games .game-hud--preview-style {
-  background: #535d75;
-  border-radius: 20px;
-  height: 102px;
+.score-compact__value {
+  font-weight: 800;
+  font-size: 18px;
 }
 
-.theme-games .game-hud--preview-style .preview__scores {
-  background-color: white;
-  border-radius: 12px;
-  width: unset;
+.score-compact__separator {
+  color: #ffd23f;
+  font-weight: 800;
+  margin: 0 4px;
 }
 
-.theme-games .game-hud--preview-style .preview-chip {
-  color: #fff !important;
+/* Current Player */
+.current-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.theme-games .game-hud--preview-style .preview-chip--blue {
-  color: #097fc5 !important;
+.current-player__label {
+  font-size: 13px;
+  opacity: 0.7;
 }
 
-.theme-games .game-hud--preview-style .preview-chip--orange {
-  color: #ea6a26 !important;
+.current-player__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
-.theme-games .game-hud--preview-style .preview__current {
-  color: #fff;
-  font-weight: 400;
-  font-size: 26px;
+.current-player__dot--blue {
+  background-color: #2aa8ff;
+  box-shadow: 0 0 8px rgba(42, 168, 255, 0.5);
 }
 
-.theme-games .game-hud--preview-style .preview-dot {
-  width: 29px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+.current-player__dot--orange {
+  background-color: #ff8c42;
+  box-shadow: 0 0 8px rgba(255, 140, 66, 0.5);
 }
 
-.theme-games .game-hud--preview-style .preview-exit {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  border: 3px solid rgba(176, 59,94, 1);
-  color: rgba(255, 255, 255, 0.92);
+/* Exit Game Button */
+.btn-exit {
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 18px;
+  border-radius: 40px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
 }
 
-/* THEME 3: DA */
-.theme-da .game-hud--preview-style {
-  background: #f4fbff;
-  border-radius: 20px;
-  color: #0f2a35;
+.btn-exit:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.theme-da .game-hud--preview-style .preview__scores {
-  background: rgba(47, 127, 166, 0.15);
-  border-radius: 12px;
-  color: #0f2a35;
+.btn-exit:active {
+  transform: translateY(1px);
 }
 
-.theme-da .game-hud--preview-style .preview-chip--blue {
-  color: #2aa8ff !important;
+/* Moves Counter - dezenter */
+.moves-counter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 0 8px;
 }
 
-.theme-da .game-hud--preview-style .preview-chip--orange {
-  color: #ff8c42 !important;
+.moves-counter__label {
+  font-size: 11px;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.theme-da .game-hud--preview-style .preview__current {
-  color: #0f2a35;
-}
-
-.theme-da .game-hud--preview-style .preview-exit {
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  border: 1px solid rgba(47, 127, 166, 0.3);
-  color: #0f2a35;
-}
-
-/* THEME 4: FOOD */
-.theme-food .game-hud--preview-style {
-  background: #fff5ec;
-  border-radius: 20px;
-  color: #2a1408;
-}
-
-.theme-food .game-hud--preview-style .preview__scores {
-  background: rgba(255, 140, 66, 0.15);
-  border-radius: 12px;
-  color: #2a1408;
-}
-
-.theme-food .game-hud--preview-style .preview-chip--blue {
-  color: #2aa8ff !important;
-}
-
-.theme-food .game-hud--preview-style .preview-chip--orange {
-  color: #ff8c42 !important;
-}
-
-.theme-food .game-hud--preview-style .preview__current {
-  color: #2a1408;
-}
-
-.theme-food .game-hud--preview-style .preview-exit {
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 140, 66, 0.3);
-  color: #2a1408;
+.moves-counter__value {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 /* =========================
@@ -477,7 +453,7 @@ body.modal-open {
   display: inline-block;
 }
 
-.radio-input:checked + .radio-dot {
+.radio-input:checked+.radio-dot {
   border-color: #111;
   background: #111;
   box-shadow: inset 0 0 0 3px #fff;
@@ -556,6 +532,7 @@ body.modal-open {
   font-family: 'Red Rose', sans-serif;
   font-weight: 700;
   font-style: normal;
+  /* Bold */
   font-size: 10px;
   line-height: 100%;
   letter-spacing: 0%;
@@ -568,10 +545,15 @@ body.modal-open {
   gap: 8px;
   align-items: center;
   background-color: rgba(79, 128, 119, 1);
-  height: 18px;
-  gap: 8px;
-  padding: 4px 8px;
+  width: 117;
+  height: 18;
   opacity: 1;
+  gap: 8px;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+
 }
 
 .preview-chip {
@@ -580,15 +562,15 @@ body.modal-open {
   font-style: normal;
   font-size: 8px;
   line-height: 100%;
-  opacity: 1 !important;
+
 }
 
 .preview-chip--blue {
-  color: #2aa8ff !important;
+  color: #2aa8ff;
 }
 
 .preview-chip--orange {
-  color: #ff8c42 !important;
+  color: #ff8c42;
 }
 
 .preview__current {
@@ -601,15 +583,18 @@ body.modal-open {
   font-size: 10px;
   line-height: 100%;
   letter-spacing: 0%;
-  height: 12px;
+  width: 87;
+  height: 12;
   opacity: 1;
   gap: 4px;
+
 }
 
 .preview-dot {
   width: 10px;
   height: 8px;
   opacity: 1;
+
 }
 
 .preview-exit {
@@ -623,7 +608,10 @@ body.modal-open {
   align-items: center;
   opacity: 1;
   gap: 6px;
-  padding: 4px 8px;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 4px;
+  padding-left: 8px;
 }
 
 .preview__stage {
@@ -641,14 +629,18 @@ body.modal-open {
   background: linear-gradient(to bottom, rgba(48, 49, 49, 1) 0%, rgba(85, 86, 86, 1) 100%);
 }
 
+/* Games Theme: radial gradient mit korrekten Farben */
 .preview--games {
   background: linear-gradient(rgba(48, 49, 49, 1), rgba(42, 80, 97, 1));
+
 }
 
+/* DA Theme: radial gradient nur grau */
 .preview--da {
   background: rgba(191, 229, 242, 1);
 }
 
+/* Food Theme: radial gradient nur grau */
 .preview--food {
   background: rgba(232, 226, 220, 1);
 }
@@ -663,6 +655,7 @@ body.modal-open {
 .preview--code .preview__img--main {
   position: absolute;
   width: 180px;
+  /* Größe nach Preview */
   height: 180px;
   left: 16px;
   top: 0;
@@ -672,13 +665,14 @@ body.modal-open {
 .preview--code .preview__img--sub {
   position: absolute;
   width: 180px;
+  /* Größe nach Preview */
   height: 180px;
   top: 26px;
   left: 142px;
   z-index: 1;
 }
 
-/* GAMES Theme - KORRIGIERT nach Figma */
+/* GAMES Theme */
 .preview--games .preview__img--main {
   position: absolute;
   width: 170px;
@@ -686,7 +680,6 @@ body.modal-open {
   top: 0px;
   left: 28px;
   z-index: 2;
-  opacity: 1;
 }
 
 .preview--games .preview__img--sub {
@@ -696,7 +689,6 @@ body.modal-open {
   top: 21px;
   left: 157px;
   z-index: 1;
-  opacity: 0.7;
 }
 
 /* DA Projects Theme */
@@ -707,6 +699,7 @@ body.modal-open {
   top: 19px;
   left: 9.51px;
   z-index: 1;
+
 }
 
 .preview--da .preview__img--sub {
@@ -715,6 +708,7 @@ body.modal-open {
   height: 150px;
   top: 87px;
   left: 167.51px;
+
 }
 
 /* FOOD Theme */
@@ -725,6 +719,7 @@ body.modal-open {
   top: 0px;
   left: 20px;
   z-index: 2;
+
 }
 
 .preview--food .preview__img--sub {
@@ -976,6 +971,7 @@ body.modal-open {
     height: 100%;
   }
 
+  /* Preview Bilder für mobile */
   .preview--code .preview__img--main {
     width: 110px;
     height: 110px;
@@ -1081,6 +1077,7 @@ body.modal-open {
   }
 }
 
+/* Result Blocks */
 .result-block {
   max-width: 500px;
   margin: 0 auto;
@@ -1175,19 +1172,9 @@ body.modal-open {
   box-shadow: 0 0 40px rgba(42, 168, 255, 0.4);
 }
 
-/* Schachfigur als Standard für alle regulären Themes */
-.result-screen--winner-blue .result-player-icon::before,
-.result-screen--winner-orange .result-player-icon::before {
-  content: "♟️";
+.result-screen--winner-blue .result-player-icon::before {
+  content: "👤";
   font-size: 60px;
-}
-
-/* Trophäe exklusiv für das Gaming-Theme */
-.theme-games {
-  .result-screen--winner-blue .result-player-icon::before,
-  .result-screen--winner-orange .result-player-icon::before {
-    content: "🏆";
-  }
 }
 
 .result-screen--winner-orange .result-player-icon {
@@ -1217,6 +1204,7 @@ body.modal-open {
 }
 
 @keyframes drawIconShake {
+
   0%,
   100% {
     transform: rotate(0deg);
@@ -1377,61 +1365,7 @@ body.modal-open {
   background: white;
 }
 
+/* Um den Body Hintergrund zu überschreiben */
 body:has(#screen-settings.screen--active) {
   background: white;
-}
-
-
-
-
-/* FIX: Verhindert den weißen Kasten bei allen Themes, indem das Text-Clipping sauber überschrieben wird */
-.result-gameover__title {
-  background: transparent !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-}
-
-/* FIGMA-LAYOUT-SCHALTER: Blendet den doppelten Game-Over-Header aus, wenn ein Ergebnis feststeht */
-.result-screen--winner-blue .result-block--gameover,
-.result-screen--winner-orange .result-block--gameover,
-.result-screen--draw .result-block--gameover {
-  display: none;
-}
-
-/* 1. GAMING THEME */
-.theme-games {
-  .result-screen {
-    background: linear-gradient(135deg, #24404b 0%, #172a31 100%) !important;
-  }
-  .result-gameover__title {
-    color: #ff2f8b !important; /* Knallpink laut Figma */
-  }
-}
-
-/* 2. DA PROJECTS THEME */
-.theme-da {
-  .result-screen {
-    background: linear-gradient(135deg, #2f7fa6 0%, #1d526d 100%) !important;
-  }
-  .result-gameover__title {
-    color: #ff8c42 !important; /* Orange-Rot für reines Game Over */
-  }
-  /* Textanpassungen für das DA Theme im Winner-Screen */
-  .result-kicker {
-    color: #ffffff !important;
-    opacity: 0.9;
-  }
-  .result-winner-title {
-    color: #ffffff !important;
-  }
-}
-
-/* 3. FOODS THEME */
-.theme-food {
-  .result-screen {
-    background: #ff8c42 !important; /* Vollflächig Orange */
-  }
-  .result-gameover__title {
-    color: #ffffff !important;
-  }
 }

@@ -21,32 +21,6 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
   result.classList.toggle('screen--active', id === 'result');
 }
 
-// ============================================
-// THEME-SPEZIFISCHE HUD ICONS
-// ============================================
-const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
-  // THEME 1: CODE - ORIGINALE ICONS (aus public/assets)
-  code: {
-    blue: 'public/assets/Settings/topbar/label.svg',
-    orange: 'public/assets/Settings/topbar/label-orange.svg',
-  },
-  // THEME 2: GAMES - Schachfiguren (aus public/assets/game-hud)
-  games: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
-  },
-  // THEME 3: DA - Schachfiguren (gleiche wie games)
-  da: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
-  },
-  // THEME 4: FOOD - Schachfiguren (gleiche wie games)
-  food: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
-  },
-};
-
 function init() {
   // Screens
   const btnGoSettings = assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings');
@@ -57,10 +31,6 @@ function init() {
   const blueScoreEl = assertEl(document.getElementById('blueScore'), 'Missing #blueScore');
   const orangeScoreEl = assertEl(document.getElementById('orangeScore'), 'Missing #orangeScore');
 
-  // HUD Icons
-  const blueIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement;
-  const orangeIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:last-of-type') as HTMLImageElement;
-  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
 
   // Exit Modal Elements
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
@@ -90,42 +60,14 @@ function init() {
     'Missing #preview-img-sub'
   );
 
-  const gameScreen = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
-
   const renderer = new Renderer(field);
 
   // Defaults
   let selectedTheme: ThemeId = 'code';
   let selectedGrid: GridSize = 16;
   let selectedPlayer: PlayerColor = 'blue';
-
-  // ============================================
-  // GAME INSTANCE - FRÜHER DEFINIEREN
-  // ============================================
-  const game = new GameController(renderer, {
-    theme: selectedTheme,
-    gridSize: selectedGrid,
-    startingPlayer: selectedPlayer,
-    pairs: pairsFromGrid(selectedGrid),
-    flipBackDelayMs: 700,
-  });
-
-  /**
-   * Update HUD Icons basierend auf Theme
-   */
-  function updateHudIcons(theme: ThemeId) {
-    const icons = THEME_ICONS[theme];
-    if (!icons) return;
-
-    if (blueIconImg) blueIconImg.src = icons.blue;
-    if (orangeIconImg) orangeIconImg.src = icons.orange;
-
-    // Current Player Icon basierend auf aktuellem Player
-    const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
-    if (currentPlayerImg) {
-      currentPlayerImg.src = currentPlayer === 'blue' ? icons.blue : icons.orange;
-    }
-  }
+  // Current Player Image
+  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
 
   /**
    * Update Current Player indicator
@@ -133,44 +75,34 @@ function init() {
    */
   function updateCurrentPlayer(player: 'blue' | 'orange') {
     if (!currentPlayerImg) return;
-    const icons = THEME_ICONS[selectedTheme];
-    if (!icons) return;
 
-    currentPlayerImg.src = player === 'blue' ? icons.blue : icons.orange;
-    currentPlayerImg.alt = player === 'blue' ? 'Blue Player' : 'Orange Player';
+    if (player === 'blue') {
+      currentPlayerImg.src = 'public/assets/Settings/topbar/label.svg';
+      currentPlayerImg.alt = 'Blue Player';
+    } else {
+      currentPlayerImg.src = 'public/assets/Settings/topbar/label-orange.svg';
+      currentPlayerImg.alt = 'Orange Player';
+    }
   }
 
-  const renderGameUi = (gameInstance: GameController) => {
-    if (blueScoreEl && orangeScoreEl) {
-      // Theme 1 (Code): "Blue 0" und "Orange 0"
-      if (selectedTheme === 'code') {
-        blueScoreEl.textContent = `Blue ${gameInstance.state.blueMatches}`;
-        orangeScoreEl.textContent = `Orange ${gameInstance.state.orangeMatches}`;
-      } else {
-        // Themes 2-4: Nur die Zahl, ohne "Blue" und "Orange"
-        blueScoreEl.textContent = `${gameInstance.state.blueMatches}`;
-        orangeScoreEl.textContent = `${gameInstance.state.orangeMatches}`;
-      }
+const renderGameUi = (game: GameController) => {
+    if (blueScoreEl) {
+        blueScoreEl.textContent = `Blue ${game.state.blueMatches}`;
+    }
+    if (orangeScoreEl) {
+        orangeScoreEl.textContent = `Orange ${game.state.orangeMatches}`;
     }
 
     // Update Current Player Image
-    updateCurrentPlayer(gameInstance.state.currentPlayer);
-  };
+    updateCurrentPlayer(game.state.currentPlayer);
+};
 
   const updateThemePreview = () => {
-    // Entferne alte Theme-Klassen von Preview
+    // Entferne alte Theme-Klassen
     previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
 
     // Füge neue Theme-Klasse hinzu
     previewRoot.classList.add(`preview--${selectedTheme}`);
-
-    // Entferne alte Theme-Klassen vom Game Screen
-    gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    // Füge neue Theme-Klasse zum Game Screen hinzu
-    gameScreen.classList.add(`theme-${selectedTheme}`);
-
-    // Update HUD Icons
-    updateHudIcons(selectedTheme);
 
     // Setze die Kartenbilder
     switch (selectedTheme) {
@@ -202,13 +134,6 @@ function init() {
     renderer.setTheme(selectedTheme);
     renderer.setGrid(selectedGrid);
 
-    // Theme-Klasse auf Game Screen anwenden
-    gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    gameScreen.classList.add(`theme-${selectedTheme}`);
-
-    // HUD Icons aktualisieren
-    updateHudIcons(selectedTheme);
-
     game.updateConfig({
       theme: selectedTheme,
       gridSize: selectedGrid,
@@ -221,6 +146,14 @@ function init() {
     renderGameUi(game);
     showScreen('game');
   };
+
+  const game = new GameController(renderer, {
+    theme: selectedTheme,
+    gridSize: selectedGrid,
+    startingPlayer: selectedPlayer,
+    pairs: pairsFromGrid(selectedGrid),
+    flipBackDelayMs: 700,
+  });
 
   // State change callback für UI-Updates
   game.onStateChange(() => {

@@ -2,14 +2,12 @@ import type { CardData, GridSize, ThemeId } from '../core/types';
 
 export class Renderer {
   private root: HTMLElement;
-  private gameScreen: HTMLElement;
 
   private grid: GridSize = 16;
   private theme: ThemeId = 'code';
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.gameScreen = document.getElementById('screen-game') as HTMLElement;
   }
 
   setGrid(grid: GridSize) {
@@ -20,15 +18,8 @@ export class Renderer {
   setTheme(theme: ThemeId) {
     this.theme = theme;
 
-    // Theme-Klasse auf body (für globale Styles wie Cards)
     document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     document.body.classList.add(`theme-${theme}`);
-
-    // Theme-Klasse auf game-screen (für HUD-Styles)
-    if (this.gameScreen) {
-      this.gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-      this.gameScreen.classList.add(`theme-${theme}`);
-    }
   }
 
   renderBoard(cards: CardData[]) {
@@ -49,6 +40,7 @@ export class Renderer {
   }
 
   private applyBoardColumns(total: number) {
+    // fixed columns like before (no 1fr stretching)
     let cols = 4;
     if (total === 16) cols = 4;
     else if (total === 24) cols = 6;
@@ -76,10 +68,12 @@ export class Renderer {
     const inner = document.createElement('div');
     inner.className = 'card__inner';
 
+    // Hidden side (front face) -> back.svg (pattern)
     const faceFront = document.createElement('div');
     faceFront.className = 'card__face card__face--front';
     this.applyCoverBg(faceFront, card.backSrc);
 
+    // Revealed side (back face) -> front-xx.svg (icon)
     const faceBack = document.createElement('div');
     faceBack.className = 'card__face card__face--back';
     this.applyCoverBg(faceBack, card.frontSrc);
