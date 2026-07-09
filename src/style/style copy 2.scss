@@ -1,0 +1,1590 @@
+:root {
+  --bg: #0f1115;
+  --text: #eaeef5;
+
+  --panel: rgba(255, 255, 255, 0.06);
+  --stroke: rgba(255, 255, 255, 0.10);
+
+  --btn-bg: rgba(255, 255, 255, 0.12);
+  --btn-text: var(--text);
+
+  --primary: #ffd23f;
+
+  --radius: 14px;
+  --card-radius: 12px;
+  --card-size: 96px;
+  --gap: 12px;
+  --font-redrose: 'Red Rose', sans-serif;
+}
+
+/* Body themes for GAME */
+.theme-code {
+  --bg: #303131;
+  --text: #e8fff8;
+}
+
+.theme-games {
+  --bg: #24404b;
+  --text: #eaf6ff;
+}
+
+.theme-da {
+  --bg: #f4fbff;
+  --text: #0f2a35;
+  --panel: rgba(0, 0, 0, 0.06);
+  --stroke: rgba(0, 0, 0, 0.10);
+  --btn-bg: rgba(0, 0, 0, 0.08);
+  --btn-text: var(--text);
+}
+
+.theme-food {
+  --bg: #fff5ec;
+  --text: #2a1408;
+  --panel: rgba(0, 0, 0, 0.06);
+  --stroke: rgba(0, 0, 0, 0.10);
+  --btn-bg: rgba(0, 0, 0, 0.08);
+  --btn-text: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.app {
+  width: min(1080px, 94vw);
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+}
+
+/* Screens */
+.screen {
+  display: none;
+}
+
+.screen--active {
+  display: grid;
+  gap: 16px;
+}
+
+/* =========================
+   GAME SCREEN
+   ========================= */
+#screen-game {
+  background: var(--bg);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.game-container {
+  margin: 0 auto;
+}
+
+/* =========================
+   GAME HUD - 4 THEMES
+   ========================= */
+
+/* BASE HUD - für alle Themes */
+.game-hud--preview-style {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  font-family: 'Red Rose', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  width: 1217px;
+  height: 62px;
+}
+
+.game-hud--preview-style .preview__scores {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 8px;
+  width: 292px;
+  height: 62px;
+}
+
+.game-hud--preview-style .preview-chip {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  opacity: 1 !important;
+}
+
+.game-hud--preview-style .preview-chip--blue {
+  color: #2aa8ff !important;
+}
+
+.game-hud--preview-style .preview-chip--orange {
+  color: #ff8c42 !important;
+}
+
+.game-hud--preview-style .preview__current {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 400;
+  font-size: 26px;
+}
+
+.game-hud--preview-style .preview-dot {
+  width: 29px;
+  height: 24px;
+}
+
+.game-hud--preview-style .preview-exit {
+  font-weight: 700;
+  font-size: 24px;
+  height: 62px;
+  width: 207px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+/* =========================
+   THEME-SPEZIFISCHE HUD STYLES
+   ========================= */
+
+/* THEME 1: CODE (Default) */
+.theme-code .game-hud--preview-style {
+  background: #303131;
+  border-radius: 20px;
+}
+
+.theme-code .game-hud--preview-style .preview__scores {
+  background: rgba(54, 82, 77, 1);
+  border-radius: 12px;
+}
+
+.theme-code .game-hud--preview-style .preview-exit {
+  background: rgba(54, 82, 77, 1);
+  border-radius: 12px;
+  border: 1px solid rgba(76, 213, 188, 1);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* THEME 2: GAMES - KORRIGIERT nach Figma */
+.theme-games .game-hud--preview-style {
+  background: #535d75;
+  border-radius: 20px;
+  height: 102px;
+}
+
+.theme-games .game-hud--preview-style .preview__scores {
+  background-color: white;
+  border-radius: 12px;
+  width: unset;
+}
+
+.theme-games .game-hud--preview-style .preview-chip {
+  color: #fff !important;
+}
+
+.theme-games .game-hud--preview-style .preview-chip--blue {
+  color: #097fc5 !important;
+}
+
+.theme-games .game-hud--preview-style .preview-chip--orange {
+  color: #ea6a26 !important;
+}
+
+.theme-games .game-hud--preview-style .preview__current {
+  color: #fff;
+  font-weight: 400;
+  font-size: 26px;
+}
+
+.theme-games .game-hud--preview-style .preview-dot {
+  width: 29px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.theme-games .game-hud--preview-style .preview-exit {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  border: 3px solid rgba(176, 59, 94, 1);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* THEME 3: DA */
+.theme-da .game-hud--preview-style {
+  background: #f4fbff;
+  border-radius: 20px;
+  color: #0f2a35;
+}
+
+.theme-da .game-hud--preview-style .preview__scores {
+  background: rgba(47, 127, 166, 0.15);
+  border-radius: 12px;
+  color: #0f2a35;
+}
+
+.theme-da .game-hud--preview-style .preview-chip--blue {
+  color: #2aa8ff !important;
+}
+
+.theme-da .game-hud--preview-style .preview-chip--orange {
+  color: #ff8c42 !important;
+}
+
+.theme-da .game-hud--preview-style .preview__current {
+  color: #0f2a35;
+}
+
+.theme-da .game-hud--preview-style .preview-exit {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  border: 1px solid rgba(47, 127, 166, 0.3);
+  color: #0f2a35;
+}
+
+/* THEME 4: FOOD */
+.theme-food .game-hud--preview-style {
+  background: #fff5ec;
+  border-radius: 20px;
+  color: #2a1408;
+}
+
+.theme-food .game-hud--preview-style .preview__scores {
+  background: rgba(255, 140, 66, 0.15);
+  border-radius: 12px;
+  color: #2a1408;
+}
+
+.theme-food .game-hud--preview-style .preview-chip--blue {
+  color: #2aa8ff !important;
+}
+
+.theme-food .game-hud--preview-style .preview-chip--orange {
+  color: #ff8c42 !important;
+}
+
+.theme-food .game-hud--preview-style .preview__current {
+  color: #2a1408;
+}
+
+.theme-food .game-hud--preview-style .preview-exit {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  color: #2a1408;
+}
+
+/* =========================
+   HOME PANEL
+   ========================= */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+
+.panel--home {
+  width: min(520px, 92vw);
+  justify-self: center;
+  text-align: left;
+  display: grid;
+  gap: 10px;
+}
+
+.title {
+  margin: 0;
+  font-size: 38px;
+  line-height: 1.05;
+}
+
+.muted {
+  margin: 0;
+  opacity: 0.75;
+  font-size: 13px;
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+.btn {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: #111;
+  font-weight: 800;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* =========================
+   SETTINGS PAGE
+   ========================= */
+.settings-page {
+  background: #ffffff;
+  color: #1b1b1b;
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.settings-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-page__title {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  position: relative;
+  display: inline-block;
+  padding-left: 14px;
+}
+
+.settings-page__title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: #ffd23f;
+  transform: rotate(45deg);
+}
+
+.settings-page__title::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  bottom: -2px;
+  width: 160px;
+  height: 3px;
+  background: #ffd23f;
+  border-radius: 999px;
+}
+
+.settings-layout {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+.settings-form {
+  display: grid;
+  gap: 18px;
+}
+
+.settings-block__headline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.settings-icon {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.settings-icon--themes {
+  color: #ff2f8b;
+}
+
+.settings-icon--player {
+  color: #2ed3b7;
+}
+
+.settings-icon--board {
+  color: #2f7fa6;
+}
+
+.settings-block__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.radio-list {
+  display: grid;
+  gap: 8px;
+  padding-left: 36px;
+}
+
+.radio-item {
+  border: none;
+  background: transparent;
+  color: #1b1b1b;
+  padding: 6px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  user-select: none;
+}
+
+.radio-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radio-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.radio-input:checked+.radio-dot {
+  border-color: #111;
+  background: #111;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.settings-actions {
+  margin-top: 10px;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.settings-actions__tabs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.settings-actions__tabs .sep {
+  color: #ffd23f;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.btn-start {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #ffd23f;
+  color: #111;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.btn-start:active {
+  transform: translateY(1px);
+}
+
+/* =========================
+   RIGHT PREVIEW
+   ========================= */
+.settings-preview {
+  display: grid;
+  justify-items: end;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 460px;
+  max-width: 100%;
+  height: 412px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  background: #1f1f1f;
+}
+
+.preview__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 430px;
+  height: 36px;
+  margin-top: 8px;
+  gap: 10px;
+  padding: 8px 20px 8px 20px;
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(54, 82, 77, 1);
+}
+
+.preview__scores {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background-color: rgba(79, 128, 119, 1);
+  height: 18px;
+  gap: 8px;
+  padding: 4px 8px;
+  opacity: 1;
+}
+
+.preview-chip {
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 8px;
+  line-height: 100%;
+  opacity: 1 !important;
+}
+
+.preview-chip--blue {
+  color: #2aa8ff !important;
+}
+
+.preview-chip--orange {
+  color: #ff8c42 !important;
+}
+
+.preview__current {
+  display: flex;
+  align-items: center;
+  opacity: 0.9;
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  height: 12px;
+  opacity: 1;
+  gap: 4px;
+}
+
+.preview-dot {
+  width: 10px;
+  height: 8px;
+  opacity: 1;
+}
+
+.preview-exit {
+  border: 1px solid rgba(76, 213, 188, 1);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  padding: 6px 10px;
+  font-weight: 800;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.preview__stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 337px;
+  height: 237px;
+  margin: 73px auto 0 auto;
+}
+
+/* theme preview backgrounds */
+.preview--code {
+  background: linear-gradient(to bottom, rgba(48, 49, 49, 1) 0%, rgba(85, 86, 86, 1) 100%);
+}
+
+.preview--games {
+  background: linear-gradient(rgba(48, 49, 49, 1), rgba(42, 80, 97, 1));
+}
+
+.preview--da {
+  background: rgba(191, 229, 242, 1);
+}
+
+.preview--food {
+  background: rgba(232, 226, 220, 1);
+}
+
+/* preview images */
+.preview__img {
+  object-fit: contain;
+  transform-origin: center;
+}
+
+/* CODE Theme */
+.preview--code .preview__img--main {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  left: 16px;
+  top: 0;
+  z-index: 2;
+}
+
+.preview--code .preview__img--sub {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: 26px;
+  left: 142px;
+  z-index: 1;
+}
+
+/* GAMES Theme - KORRIGIERT nach Figma */
+.preview--games .preview__img--main {
+  position: absolute;
+  width: 170px;
+  height: 220px;
+  top: 0px;
+  left: 28px;
+  z-index: 2;
+  opacity: 1;
+}
+
+.preview--games .preview__img--sub {
+  position: absolute;
+  width: 170px;
+  height: 220px;
+  top: 21px;
+  left: 157px;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+/* DA Projects Theme */
+.preview--da .preview__img--main {
+  position: absolute;
+  width: 180px;
+  height: 150px;
+  top: 19px;
+  left: 9.51px;
+  z-index: 1;
+}
+
+.preview--da .preview__img--sub {
+  position: absolute;
+  width: 170px;
+  height: 150px;
+  top: 87px;
+  left: 167.51px;
+}
+
+/* FOOD Theme */
+.preview--food .preview__img--main {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  top: 0px;
+  left: 20px;
+  z-index: 2;
+}
+
+.preview--food .preview__img--sub {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  top: 85px;
+  left: 148px;
+}
+
+/* =========================
+   BOARD & CARDS
+   ========================= */
+.board {
+  display: grid;
+  gap: var(--gap);
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+/* CARD FLIP */
+.card {
+  height: var(--card-size);
+  width: var(--card-size);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 280ms ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.card__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background-color: transparent !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+.theme-games .card__face {
+  background-size: contain !important;
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+}
+
+.card.is-flipped .card__inner {
+  transform: rotateY(180deg);
+}
+
+.card:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.card__img {
+  display: none;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  z-index: 50;
+}
+
+.modal.is-open {
+  display: grid;
+}
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal__content {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 28px;
+  width: min(420px, 90vw);
+  display: grid;
+  gap: 12px;
+  text-align: center;
+  z-index: 1;
+  animation: modalIn 220ms ease;
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.modal__icon {
+  font-size: 42px;
+  margin-bottom: 2px;
+}
+
+.modal__text {
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.modal__subtext {
+  margin: 0;
+  opacity: 0.85;
+  font-weight: 700;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.modal__scores {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.winner-code .modal__content {
+  border-color: #2ed3b7;
+  box-shadow: 0 0 25px rgba(46, 211, 183, 0.4);
+}
+
+.winner-games .modal__content {
+  border-color: #ff2f8b;
+  box-shadow: 0 0 25px rgba(255, 47, 139, 0.4);
+}
+
+.winner-da .modal__content {
+  border-color: #2f7fa6;
+  box-shadow: 0 0 25px rgba(47, 127, 166, 0.4);
+}
+
+.winner-food .modal__content {
+  border-color: #ff8c42;
+  box-shadow: 0 0 25px rgba(255, 140, 66, 0.4);
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 980px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-preview {
+    justify-items: start;
+  }
+
+  .preview {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-hud {
+    padding: 12px 16px;
+  }
+
+  .score-compact__value {
+    font-size: 14px;
+  }
+
+  .score-compact__label {
+    font-size: 10px;
+  }
+
+  .current-player__label {
+    font-size: 11px;
+  }
+
+  .btn-exit {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --card-size: 76px;
+    --gap: 10px;
+  }
+
+  .app {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .settings-page__title {
+    font-size: 32px;
+  }
+
+  .game-hud {
+    border-radius: 40px;
+  }
+
+  .score-compact {
+    gap: 4px;
+  }
+
+  .current-player__dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .preview__stage {
+    height: 100%;
+  }
+
+  .preview--code .preview__img--main {
+    width: 110px;
+    height: 110px;
+    left: 30px;
+    top: 70px;
+  }
+
+  .preview--code .preview__img--sub {
+    width: 110px;
+    height: 110px;
+    left: 120px;
+    top: 85px;
+  }
+
+  .preview--games .preview__img--main {
+    width: 100px;
+    height: 130px;
+    left: 30px;
+    top: 60px;
+  }
+
+  .preview--games .preview__img--sub {
+    width: 100px;
+    height: 130px;
+    left: 130px;
+    top: 75px;
+  }
+
+  .preview--da .preview__img--main {
+    width: 110px;
+    height: 90px;
+    left: 35px;
+    top: 70px;
+  }
+
+  .preview--da .preview__img--sub {
+    width: 110px;
+    height: 90px;
+    left: 140px;
+    top: 110px;
+  }
+
+  .preview--food .preview__img--main {
+    width: 100px;
+    height: 100px;
+    left: 65px;
+    top: 110px;
+  }
+
+  .preview--food .preview__img--sub {
+    width: 100px;
+    height: 100px;
+    left: 145px;
+    top: 160px;
+  }
+}
+
+/* =========================
+   RESULT SCREEN
+   ========================= */
+.result-screen {
+  position: fixed;
+  inset: 0;
+  background: #303131;
+  z-index: 100;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+
+.result-screen--winner-blue {
+  background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
+}
+
+.result-screen--winner-orange {
+  background: linear-gradient(135deg, #3a251a 0%, #24150f 100%);
+}
+
+.result-screen--draw {
+  background: linear-gradient(135deg, #1a3a3a 0%, #0f2424 100%);
+}
+
+/* Confetti */
+.result-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 210, 63, 0.3) 2%, transparent 2.5%),
+    radial-gradient(circle at 80% 70%, rgba(46, 211, 183, 0.3) 1.5%, transparent 2%),
+    radial-gradient(circle at 40% 90%, rgba(255, 47, 139, 0.25) 2%, transparent 2.5%),
+    radial-gradient(circle at 90% 20%, rgba(42, 168, 255, 0.3) 1.8%, transparent 2.2%);
+  background-size: 60px 60px, 80px 80px, 100px 100px, 70px 70px;
+  background-repeat: repeat;
+  animation: confettiFloat 20s linear infinite;
+}
+
+@keyframes confettiFloat {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 60px 60px, 80px 80px, 100px 100px, 70px 70px;
+  }
+}
+
+.result-block {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.result-block--gameover {
+  margin-bottom: 40px;
+}
+
+.result-gameover__title {
+  font-size: 72px;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  background: linear-gradient(135deg, #2ed3b7, #1a9e8a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 30px rgba(46, 211, 183, 0.3);
+  letter-spacing: 2px;
+}
+
+.result-score-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+
+.result-score {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.result-score__blue {
+  color: #2aa8ff;
+}
+
+.result-score__orange {
+  color: #ff8c42;
+}
+
+.result-score strong {
+  font-size: 32px;
+  display: block;
+  margin-top: 8px;
+}
+
+/* Winner Block */
+.result-kicker {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+
+.result-winner-title {
+  font-size: 64px;
+  font-weight: 800;
+  margin: 0 0 30px 0;
+  letter-spacing: 4px;
+}
+
+.result-screen--winner-blue .result-winner-title {
+  color: #2aa8ff;
+  text-shadow: 0 0 20px rgba(42, 168, 255, 0.5);
+}
+
+.result-screen--winner-orange .result-winner-title {
+  color: #ff8c42;
+  text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
+}
+
+.result-player-icon {
+  width: 120px;
+  height: 120px;
+  margin: 30px auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+}
+
+/* Schachfigur als Standard für alle regulären Themes */
+.result-screen--winner-blue .result-player-icon::before,
+.result-screen--winner-orange .result-player-icon::before {
+  content: "♟️";
+  font-size: 60px;
+}
+
+/* Trophäe exklusiv für das Gaming-Theme */
+.theme-games {
+
+  .result-screen--winner-blue .result-player-icon::before,
+  .result-screen--winner-orange .result-player-icon::before {
+    content: "🏆";
+  }
+}
+
+.result-screen--winner-orange .result-player-icon::before {
+  content: "👤";
+  font-size: 60px;
+}
+
+/* Draw Block */
+.result-draw-title {
+  font-size: 72px;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  color: #2ed3b7;
+  text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
+  letter-spacing: 4px;
+}
+
+.result-draw-icon {
+  font-size: 80px;
+  margin: 30px auto;
+  animation: drawIconShake 0.5s ease;
+}
+
+@keyframes drawIconShake {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(10deg);
+  }
+
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* Back Button */
+.result-back-btn {
+  margin-top: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 40px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.result-back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   EXIT MODAL
+   ========================= */
+.exit-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.exit-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.exit-modal__content {
+  position: relative;
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  animation: exitModalIn 0.2s ease;
+  color: #1b1b1b;
+}
+
+.exit-modal__title {
+  margin: 0 0 24px 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.exit-modal__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.exit-modal__btn {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.exit-modal__btn--primary {
+  background: #2ed3b7;
+  color: white;
+}
+
+.exit-modal__btn--primary:hover {
+  background: #25b89f;
+  transform: translateY(-1px);
+}
+
+.exit-modal__btn--secondary {
+  background: rgba(0, 0, 0, 0.08);
+  color: #333;
+}
+
+.exit-modal__btn--secondary:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+@keyframes exitModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Result Screen */
+@media (max-width: 560px) {
+  .result-gameover__title {
+    font-size: 48px;
+  }
+
+  .result-winner-title {
+    font-size: 40px;
+  }
+
+  .result-draw-title {
+    font-size: 48px;
+  }
+
+  .result-score {
+    gap: 20px;
+    font-size: 16px;
+  }
+
+  .result-score strong {
+    font-size: 24px;
+  }
+
+  .result-player-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+
+  .result-player-icon::before {
+    font-size: 40px !important;
+  }
+}
+
+/* Weißer Hintergrund für Settings Screen */
+#screen-settings {
+  background: white;
+}
+
+#screen-settings.screen--active {
+  background: white;
+}
+
+body:has(#screen-settings.screen--active) {
+  background: white;
+}
+
+
+/* ==========================================================================
+   1. AUFGABE 1: GEWINNER-ICONS (Jetzt mit echten SVGs je nach Spielerfarbe)
+   ========================================================================== */
+.result-player-icon::before {
+  content: "" !important;               /* Löscht das alte Text-Emoji (♟️ / 🏆) */
+  display: block !important;
+  width: 120px !important;              /* Breite des SVGs im Figma-Design */
+  height: 120px !important;             /* Höhe des SVGs im Figma-Design */
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: 0 auto !important;
+}
+
+/* FALL A: Wenn BLAU gewinnt -> Lade die blaue Schachfigur */
+.result-screen--winner-blue {
+  .result-player-icon::before {
+    background-image: url('/assets/game-hud/chess_pawn_blue.svg') !important;
+  }
+}
+
+/* FALL B: Wenn ORANGE gewinnt -> Lade die orange/standard Schachfigur */
+.result-screen--winner-orange {
+  .result-player-icon::before {
+    background-image: url('/assets/game-hud/chess_pawn.svg') !important;
+  }
+}
+
+/* ==========================================================================
+   2. AUFGABE 2: ERGEBNIS-SCREENS TRENNEN (Figma-Logik)
+   ========================================================================== */
+
+/* FIX: Setzt die Schriften zurück, damit sie durch alte Gradient-Clips nicht unsichtbar werden */
+.result-gameover__title,
+.result-winner-title {
+  background: transparent !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  text-align: center;
+}
+
+/* SICHTBARKEITS-STEUERUNG: Zuerst blenden wir ALLE potenziellen Ergebnis-Blöcke komplett aus */
+.result-screen {
+
+  .result-block--gameover,
+  #result-gameover,
+  .result-block--winner-blue,
+  .result-block--winner-orange,
+  #result-winner,
+  .result-block--draw,
+  #result-draw,
+  .result-card {
+    display: none !important;
+    /* Erzwingt das Ausblenden im Standardzustand */
+  }
+}
+
+/* JETZT SCHALTEN WIR PER FIGMA-KLASSE NUR DEN JEWEILS PASSENDEN BLOCK EIN: */
+
+/* FALL A: Blue gewinnt -> Zeige nur den Winner-Block und die Punktekarte */
+.result-screen--winner-blue {
+
+  .result-block--winner-blue,
+  #result-winner,
+  .result-card {
+    display: block !important;
+  }
+}
+
+/* FALL B: Orange gewinnt -> Zeige nur den Winner-Block und die Punktekarte */
+.result-screen--winner-orange {
+
+  .result-block--winner-orange,
+  #result-winner,
+  .result-card {
+    display: block !important;
+  }
+}
+
+/* FALL C: Unentschieden -> Zeige nur den Draw-Block (Game Over / Punktekarte bleiben weg) */
+.result-screen--draw {
+
+  .result-block--draw,
+  #result-draw {
+    display: block !important;
+  }
+}
+
+/* FALL D: Klassisches Game Over (optionaler Fallback) */
+.result-screen--gameover {
+
+  .result-block--gameover,
+  #result-gameover {
+    display: block !important;
+  }
+}
+
+/* ==========================================================================
+   3. THEME-DESIGNS (Hintergründe & Farben aus Figma)
+   ========================================================================== */
+
+/* CODE THEME (Dunkel/Mint) */
+.theme-code {
+  .result-screen {
+    background: #303131 !important;
+  }
+
+  .result-gameover__title {
+    color: #2ed3b7 !important;
+  }
+}
+
+/* GAMING THEME (Dark-Teal Verlauf & Pink) */
+.theme-games {
+  .result-screen {
+    background: linear-gradient(135deg, #24404b 0%, #172a31 100%) !important;
+  }
+
+  .result-gameover__title {
+    color: #ff2f8b !important;
+  }
+
+  .result-winner-title,
+  .result-kicker {
+    color: #ffffff !important;
+  }
+}
+
+/* DA PROJECTS THEME (Clean-White Layout) */
+.theme-da {
+  .result-screen {
+    background: #1e7594 !important;
+  }
+
+  .result-gameover__title {
+    color: #0f2a35 !important;
+  }
+
+  .result-winner-title {
+    color: #ff8c42 !important;
+  }
+
+  .result-kicker {
+    color: #0f2a35 !important;
+    opacity: 0.7;
+  }
+
+  /* Die eigentliche Werte-Karte wird im DA-Theme sauber weiß */
+  .result-card {
+    background: white !important;
+    box-shadow: 0 8px 30px rgba(15, 42, 53, 0.06);
+    border: 1px solid rgba(15, 42, 53, 0.08);
+
+    .result-player-name,
+    .result-score-value {
+      color: #0f2a35 !important;
+    }
+  }
+}
+
+/* FOODS THEME (Vollflächig Orange) */
+.theme-food {
+  .result-screen {
+    background: #ff8c42 !important;
+  }
+
+  .result-gameover__title,
+  .result-winner-title,
+  .result-kicker {
+    color: #ffffff !important;
+  }
+}
+/* ==========================================================================
+   FIGMA-FINETUNING: WINNER SCREEN (Große Trophäe & Großer Text auf 1 Linie)
+   ========================================================================== */
+
+/* 1. Trophäe / Icon deutlich vergrößern & Container-Begrenzung aufheben */
+.result-player-icon {
+  width: auto !important;   /* Entfernt die alte 80px Begrenzung */
+  height: auto !important;  /* Entfernt die alte 80px Begrenzung */
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 auto 15px auto !important;
+}
+
+.result-player-icon::before {
+  font-size: 110px !important; /* Von 60px auf 110px angehoben für echte Figma-Größe */
+  line-height: 1 !important;
+}
+
+/* 2. Gewinner-Text riesig machen und Zeilenumbruch radikal verbieten */
+.result-winner-title {
+  font-size: 48px !important;     /* Schön groß und prominent */
+  font-weight: 800 !important;
+  white-space: nowrap !important;  /* ZWINGT den Text "ORANGE PLAYER" auf eine einzige Linie */
+  letter-spacing: 2px !important;  /* Schicker Figma-Buchstabenabstand */
+  display: block !important;
+  text-align: center !important;
+  margin: 10px 0 25px 0 !important;
+}
+
+/* 3. Farb-Garantie: Überschreibt das Weiß aus den Themes, damit Orange auch Orange ist */
+.result-screen--winner-orange {
+  .result-winner-title {
+    color: #ff8c42 !important; /* Exaktes Figma-Orange */
+  }
+}
+
+.result-screen--winner-blue {
+  .result-winner-title {
+    color: #2aa8ff !important; /* Exaktes Figma-Blau */
+  }
+}
