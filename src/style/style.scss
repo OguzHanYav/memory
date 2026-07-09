@@ -225,7 +225,7 @@ body.modal-open {
 .theme-games .game-hud--preview-style .preview-exit {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  border: 3px solid rgba(176, 59,94, 1);
+  border: 3px solid rgba(176, 59, 94, 1);
   color: rgba(255, 255, 255, 0.92);
 }
 
@@ -477,7 +477,7 @@ body.modal-open {
   display: inline-block;
 }
 
-.radio-input:checked + .radio-dot {
+.radio-input:checked+.radio-dot {
   border-color: #111;
   background: #111;
   box-shadow: inset 0 0 0 3px #fff;
@@ -1170,11 +1170,6 @@ body.modal-open {
   font-size: 60px;
 }
 
-.result-screen--winner-blue .result-player-icon {
-  background: linear-gradient(135deg, #2aa8ff, #1a6ec9);
-  box-shadow: 0 0 40px rgba(42, 168, 255, 0.4);
-}
-
 /* Schachfigur als Standard für alle regulären Themes */
 .result-screen--winner-blue .result-player-icon::before,
 .result-screen--winner-orange .result-player-icon::before {
@@ -1184,15 +1179,11 @@ body.modal-open {
 
 /* Trophäe exklusiv für das Gaming-Theme */
 .theme-games {
+
   .result-screen--winner-blue .result-player-icon::before,
   .result-screen--winner-orange .result-player-icon::before {
     content: "🏆";
   }
-}
-
-.result-screen--winner-orange .result-player-icon {
-  background: linear-gradient(135deg, #ff8c42, #e56a1a);
-  box-shadow: 0 0 40px rgba(255, 140, 66, 0.4);
 }
 
 .result-screen--winner-orange .result-player-icon::before {
@@ -1217,6 +1208,7 @@ body.modal-open {
 }
 
 @keyframes drawIconShake {
+
   0%,
   100% {
     transform: rotate(0deg);
@@ -1382,56 +1374,217 @@ body:has(#screen-settings.screen--active) {
 }
 
 
+/* ==========================================================================
+   1. AUFGABE 1: GEWINNER-ICONS (Jetzt mit echten SVGs je nach Spielerfarbe)
+   ========================================================================== */
+.result-player-icon::before {
+  content: "" !important;               /* Löscht das alte Text-Emoji (♟️ / 🏆) */
+  display: block !important;
+  width: 120px !important;              /* Breite des SVGs im Figma-Design */
+  height: 120px !important;             /* Höhe des SVGs im Figma-Design */
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: 0 auto !important;
+}
 
+/* FALL A: Wenn BLAU gewinnt -> Lade die blaue Schachfigur */
+.result-screen--winner-blue {
+  .result-player-icon::before {
+    background-image: url('/assets/game-hud/chess_pawn_blue.svg') !important;
+  }
+}
 
-/* FIX: Verhindert den weißen Kasten bei allen Themes, indem das Text-Clipping sauber überschrieben wird */
-.result-gameover__title {
+/* FALL B: Wenn ORANGE gewinnt -> Lade die orange/standard Schachfigur */
+.result-screen--winner-orange {
+  .result-player-icon::before {
+    background-image: url('/assets/game-hud/chess_pawn.svg') !important;
+  }
+}
+
+/* ==========================================================================
+   2. AUFGABE 2: ERGEBNIS-SCREENS TRENNEN (Figma-Logik)
+   ========================================================================== */
+
+/* FIX: Setzt die Schriften zurück, damit sie durch alte Gradient-Clips nicht unsichtbar werden */
+.result-gameover__title,
+.result-winner-title {
   background: transparent !important;
   -webkit-background-clip: initial !important;
   background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  text-align: center;
 }
 
-/* FIGMA-LAYOUT-SCHALTER: Blendet den doppelten Game-Over-Header aus, wenn ein Ergebnis feststeht */
-.result-screen--winner-blue .result-block--gameover,
-.result-screen--winner-orange .result-block--gameover,
-.result-screen--draw .result-block--gameover {
-  display: none;
+/* SICHTBARKEITS-STEUERUNG: Zuerst blenden wir ALLE potenziellen Ergebnis-Blöcke komplett aus */
+.result-screen {
+
+  .result-block--gameover,
+  #result-gameover,
+  .result-block--winner-blue,
+  .result-block--winner-orange,
+  #result-winner,
+  .result-block--draw,
+  #result-draw,
+  .result-card {
+    display: none !important;
+    /* Erzwingt das Ausblenden im Standardzustand */
+  }
 }
 
-/* 1. GAMING THEME */
+/* JETZT SCHALTEN WIR PER FIGMA-KLASSE NUR DEN JEWEILS PASSENDEN BLOCK EIN: */
+
+/* FALL A: Blue gewinnt -> Zeige nur den Winner-Block und die Punktekarte */
+.result-screen--winner-blue {
+
+  .result-block--winner-blue,
+  #result-winner,
+  .result-card {
+    display: block !important;
+  }
+}
+
+/* FALL B: Orange gewinnt -> Zeige nur den Winner-Block und die Punktekarte */
+.result-screen--winner-orange {
+
+  .result-block--winner-orange,
+  #result-winner,
+  .result-card {
+    display: block !important;
+  }
+}
+
+/* FALL C: Unentschieden -> Zeige nur den Draw-Block (Game Over / Punktekarte bleiben weg) */
+.result-screen--draw {
+
+  .result-block--draw,
+  #result-draw {
+    display: block !important;
+  }
+}
+
+/* FALL D: Klassisches Game Over (optionaler Fallback) */
+.result-screen--gameover {
+
+  .result-block--gameover,
+  #result-gameover {
+    display: block !important;
+  }
+}
+
+/* ==========================================================================
+   3. THEME-DESIGNS (Hintergründe & Farben aus Figma)
+   ========================================================================== */
+
+/* CODE THEME (Dunkel/Mint) */
+.theme-code {
+  .result-screen {
+    background: #303131 !important;
+  }
+
+  .result-gameover__title {
+    color: #2ed3b7 !important;
+  }
+}
+
+/* GAMING THEME (Dark-Teal Verlauf & Pink) */
 .theme-games {
   .result-screen {
     background: linear-gradient(135deg, #24404b 0%, #172a31 100%) !important;
   }
-  .result-gameover__title {
-    color: #ff2f8b !important; /* Knallpink laut Figma */
-  }
-}
 
-/* 2. DA PROJECTS THEME */
-.theme-da {
-  .result-screen {
-    background: linear-gradient(135deg, #2f7fa6 0%, #1d526d 100%) !important;
-  }
   .result-gameover__title {
-    color: #ff8c42 !important; /* Orange-Rot für reines Game Over */
+    color: #ff2f8b !important;
   }
-  /* Textanpassungen für das DA Theme im Winner-Screen */
+
+  .result-winner-title,
   .result-kicker {
     color: #ffffff !important;
-    opacity: 0.9;
-  }
-  .result-winner-title {
-    color: #ffffff !important;
   }
 }
 
-/* 3. FOODS THEME */
+/* DA PROJECTS THEME (Clean-White Layout) */
+.theme-da {
+  .result-screen {
+    background: #1e7594 !important;
+  }
+
+  .result-gameover__title {
+    color: #0f2a35 !important;
+  }
+
+  .result-winner-title {
+    color: #ff8c42 !important;
+  }
+
+  .result-kicker {
+    color: #0f2a35 !important;
+    opacity: 0.7;
+  }
+
+  /* Die eigentliche Werte-Karte wird im DA-Theme sauber weiß */
+  .result-card {
+    background: white !important;
+    box-shadow: 0 8px 30px rgba(15, 42, 53, 0.06);
+    border: 1px solid rgba(15, 42, 53, 0.08);
+
+    .result-player-name,
+    .result-score-value {
+      color: #0f2a35 !important;
+    }
+  }
+}
+
+/* FOODS THEME (Vollflächig Orange) */
 .theme-food {
   .result-screen {
-    background: #ff8c42 !important; /* Vollflächig Orange */
+    background: #ff8c42 !important;
   }
-  .result-gameover__title {
+
+  .result-gameover__title,
+  .result-winner-title,
+  .result-kicker {
     color: #ffffff !important;
+  }
+}
+/* ==========================================================================
+   FIGMA-FINETUNING: WINNER SCREEN (Große Trophäe & Großer Text auf 1 Linie)
+   ========================================================================== */
+
+/* 1. Trophäe / Icon deutlich vergrößern & Container-Begrenzung aufheben */
+.result-player-icon {
+  width: auto !important;   /* Entfernt die alte 80px Begrenzung */
+  height: auto !important;  /* Entfernt die alte 80px Begrenzung */
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 auto 15px auto !important;
+}
+
+.result-player-icon::before {
+  font-size: 110px !important; /* Von 60px auf 110px angehoben für echte Figma-Größe */
+  line-height: 1 !important;
+}
+
+/* 2. Gewinner-Text riesig machen und Zeilenumbruch radikal verbieten */
+.result-winner-title {
+  font-size: 48px !important;     /* Schön groß und prominent */
+  font-weight: 800 !important;
+  white-space: nowrap !important;  /* ZWINGT den Text "ORANGE PLAYER" auf eine einzige Linie */
+  letter-spacing: 2px !important;  /* Schicker Figma-Buchstabenabstand */
+  display: block !important;
+  text-align: center !important;
+  margin: 10px 0 25px 0 !important;
+}
+
+/* 3. Farb-Garantie: Überschreibt das Weiß aus den Themes, damit Orange auch Orange ist */
+.result-screen--winner-orange {
+  .result-winner-title {
+    color: #ff8c42 !important; /* Exaktes Figma-Orange */
+  }
+}
+
+.result-screen--winner-blue {
+  .result-winner-title {
+    color: #2aa8ff !important; /* Exaktes Figma-Blau */
   }
 }

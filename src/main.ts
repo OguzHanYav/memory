@@ -228,34 +228,43 @@ function init() {
   });
 
   game.onWin(({ blueMatches, orangeMatches, winner }) => {
-    // Set scores
+    // 1. Spielstände eintragen
     resultBlueScore.textContent = String(blueMatches);
     resultOrangeScore.textContent = String(orangeMatches);
 
-    // Reset all blocks
-    resultGameover.style.display = 'block';
-    resultWinner.style.display = 'none';
-    resultDraw.style.display = 'none';
+    // 2. Figma-Klassen auf dem Haupt-Container setzen
+    const resultScreenEl = document.getElementById('screen-result');
+    if (resultScreenEl) {
+      // Alle alten Zustandsklassen sauber entfernen
+      resultScreenEl.classList.remove(
+        'result-screen--winner-blue',
+        'result-screen--winner-orange',
+        'result-screen--draw',
+        'result-screen--gameover'
+      );
 
-    // Remove old classes
-    resultScreen.classList.remove('result-screen--winner-blue', 'result-screen--winner-orange', 'result-screen--draw');
+      // Nur die eine, richtige Klasse für den aktuellen Zustand hinzufügen
+      if (winner === 'tie') {
+        resultScreenEl.classList.add('result-screen--draw');
+      } else {
+        resultScreenEl.classList.add(`result-screen--winner-${winner}`);
+      }
+    }
 
-    if (winner === 'blue') {
-      resultScreen.classList.add('result-screen--winner-blue');
-      resultWinnerTitle.textContent = 'BLUE PLAYER';
-      resultWinner.style.display = 'block';
-    } else if (winner === 'orange') {
-      resultScreen.classList.add('result-screen--winner-orange');
-      resultWinnerTitle.textContent = 'ORANGE PLAYER';
-      resultWinner.style.display = 'block';
-    } else if (winner === 'tie') {
-      resultScreen.classList.add('result-screen--draw');
-      resultDraw.style.display = 'block';
+    // 3. WICHTIGER FIX: Alle alten JS-Inline-Styles komplett löschen!
+    // Das erlaubt es deinem CSS, die Elemente ohne Blockade ein- und auszublenden.
+    resultGameover.style.display = '';
+    resultWinner.style.display = '';
+    resultDraw.style.display = '';
+
+    // 4. Gewinner-Text & Farben setzen (falls kein Unentschieden)
+    if (winner !== 'tie') {
+      resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
+      resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
     }
 
     showScreen('result');
   });
-
   // Result Screen Back Buttons
   btnResultBack.addEventListener('click', () => {
     showScreen('home');
