@@ -25,22 +25,22 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
 // THEME-SPEZIFISCHE HUD ICONS
 // ============================================
 const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
-  // THEME 1: CODE - ORIGINALE ICONS (aus public/assets)
+  // CODE THEME: Original Icons
   code: {
     blue: 'public/assets/Settings/topbar/label.svg',
     orange: 'public/assets/Settings/topbar/label-orange.svg',
   },
-  // THEME 2: GAMES - Schachfiguren (aus public/assets/game-hud)
+  // GAMES THEME: Farbige Schachfiguren für Scores
   games: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
-  // THEME 3: DA - Schachfiguren (gleiche wie games)
+  // DA THEME: Farbige Schachfiguren für Scores
   da: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
-  // THEME 4: FOOD - Schachfiguren (gleiche wie games)
+  // FOOD THEME: Farbige Schachfiguren für Scores
   food: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
@@ -100,7 +100,7 @@ function init() {
   let selectedPlayer: PlayerColor = 'blue';
 
   // ============================================
-  // GAME INSTANCE - FRÜHER DEFINIEREN
+  // GAME INSTANCE
   // ============================================
   const game = new GameController(renderer, {
     theme: selectedTheme,
@@ -111,19 +111,37 @@ function init() {
   });
 
   /**
+   * Get Current Player Icon basierend auf Theme und Player
+   */
+  function getCurrentPlayerIcon(theme: ThemeId, player: 'blue' | 'orange'): string {
+    // CODE THEME: Eigene Icons (farbig)
+    if (theme === 'code') {
+      return player === 'blue' 
+        ? 'public/assets/Settings/topbar/label.svg'
+        : 'public/assets/Settings/topbar/label-orange.svg';
+    }
+    
+    // GAMES, DA, FOOD: Weiße Schachfigur
+    return 'public/assets/game-hud/chess_pawn_current_player.svg';
+  }
+
+  /**
    * Update HUD Icons basierend auf Theme
    */
   function updateHudIcons(theme: ThemeId) {
     const icons = THEME_ICONS[theme];
     if (!icons) return;
 
+    // Score Icons (farbig)
     if (blueIconImg) blueIconImg.src = icons.blue;
     if (orangeIconImg) orangeIconImg.src = icons.orange;
 
-    // Current Player Icon basierend auf aktuellem Player
+    // Current Player Icon
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
-      currentPlayerImg.src = currentPlayer === 'blue' ? icons.blue : icons.orange;
+      currentPlayerImg.src = getCurrentPlayerIcon(theme, currentPlayer);
+      currentPlayerImg.classList.remove('player-blue', 'player-orange');
+      currentPlayerImg.classList.add(`player-${currentPlayer}`);
     }
   }
 
@@ -133,46 +151,38 @@ function init() {
    */
   function updateCurrentPlayer(player: 'blue' | 'orange') {
     if (!currentPlayerImg) return;
-    const icons = THEME_ICONS[selectedTheme];
-    if (!icons) return;
 
-    currentPlayerImg.src = player === 'blue' ? icons.blue : icons.orange;
+    // Current Player Icon
+    currentPlayerImg.src = getCurrentPlayerIcon(selectedTheme, player);
     currentPlayerImg.alt = player === 'blue' ? 'Blue Player' : 'Orange Player';
+
+    currentPlayerImg.classList.remove('player-blue', 'player-orange');
+    currentPlayerImg.classList.add(`player-${player}`);
   }
 
   const renderGameUi = (gameInstance: GameController) => {
     if (blueScoreEl && orangeScoreEl) {
-      // Theme 1 (Code): "Blue 0" und "Orange 0"
       if (selectedTheme === 'code') {
         blueScoreEl.textContent = `Blue ${gameInstance.state.blueMatches}`;
         orangeScoreEl.textContent = `Orange ${gameInstance.state.orangeMatches}`;
       } else {
-        // Themes 2-4: Nur die Zahl, ohne "Blue" und "Orange"
         blueScoreEl.textContent = `${gameInstance.state.blueMatches}`;
         orangeScoreEl.textContent = `${gameInstance.state.orangeMatches}`;
       }
     }
 
-    // Update Current Player Image
     updateCurrentPlayer(gameInstance.state.currentPlayer);
   };
 
   const updateThemePreview = () => {
-    // Entferne alte Theme-Klassen von Preview
     previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
-
-    // Füge neue Theme-Klasse hinzu
     previewRoot.classList.add(`preview--${selectedTheme}`);
 
-    // Entferne alte Theme-Klassen vom Game Screen
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    // Füge neue Theme-Klasse zum Game Screen hinzu
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
-    // Update HUD Icons
     updateHudIcons(selectedTheme);
 
-    // Setze die Kartenbilder
     switch (selectedTheme) {
       case 'code':
         previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
@@ -202,11 +212,9 @@ function init() {
     renderer.setTheme(selectedTheme);
     renderer.setGrid(selectedGrid);
 
-    // Theme-Klasse auf Game Screen anwenden
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
-    // HUD Icons aktualisieren
     updateHudIcons(selectedTheme);
 
     game.updateConfig({
@@ -228,14 +236,11 @@ function init() {
   });
 
   game.onWin(({ blueMatches, orangeMatches, winner }) => {
-    // 1. Spielstände eintragen
     resultBlueScore.textContent = String(blueMatches);
     resultOrangeScore.textContent = String(orangeMatches);
 
-    // 2. Figma-Klassen auf dem Haupt-Container setzen
     const resultScreenEl = document.getElementById('screen-result');
     if (resultScreenEl) {
-      // Alle alten Zustandsklassen sauber entfernen
       resultScreenEl.classList.remove(
         'result-screen--winner-blue',
         'result-screen--winner-orange',
@@ -243,7 +248,6 @@ function init() {
         'result-screen--gameover'
       );
 
-      // Nur die eine, richtige Klasse für den aktuellen Zustand hinzufügen
       if (winner === 'tie') {
         resultScreenEl.classList.add('result-screen--draw');
       } else {
@@ -251,13 +255,10 @@ function init() {
       }
     }
 
-    // 3. WICHTIGER FIX: Alle alten JS-Inline-Styles komplett löschen!
-    // Das erlaubt es deinem CSS, die Elemente ohne Blockade ein- und auszublenden.
     resultGameover.style.display = '';
     resultWinner.style.display = '';
     resultDraw.style.display = '';
 
-    // 4. Gewinner-Text & Farben setzen (falls kein Unentschieden)
     if (winner !== 'tie') {
       resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
       resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
@@ -265,6 +266,7 @@ function init() {
 
     showScreen('result');
   });
+
   // Result Screen Back Buttons
   btnResultBack.addEventListener('click', () => {
     showScreen('home');
@@ -334,7 +336,6 @@ function init() {
     if (!id) return;
 
     game.handleCardClick(id);
-    // UI wird automatisch durch onStateChange aktualisiert
   });
 
   showScreen('home');
