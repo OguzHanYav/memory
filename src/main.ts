@@ -25,22 +25,18 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
 // THEME-SPEZIFISCHE HUD ICONS
 // ============================================
 const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
-  // CODE THEME: Original Icons
   code: {
     blue: 'public/assets/Settings/topbar/label.svg',
     orange: 'public/assets/Settings/topbar/label-orange.svg',
   },
-  // GAMES THEME: Farbige Schachfiguren für Scores
   games: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
-  // DA THEME: Farbige Schachfiguren für Scores
   da: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
-  // FOOD THEME: Farbige Schachfiguren für Scores
   food: {
     blue: 'public/assets/game-hud/chess_pawn_blue.svg',
     orange: 'public/assets/game-hud/chess_pawn.svg',
@@ -52,9 +48,9 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
 // ============================================
 const EXIT_ICONS: Record<ThemeId, string> = {
   code: 'public/assets/Settings/topbar/move_item.svg',
-  games: 'public/assets/game-hud/GAME-Theme/move_item.svg',
+  games: 'public/assets/game-hud/DA-Theme/move_item.svg',
   da: 'public/assets/game-hud/DA-Theme/move_item.svg',
-  food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
+  food: 'public/assets/game-hud/DA-Theme/move_item.svg',
 };
 
 function init() {
@@ -110,6 +106,7 @@ function init() {
   let selectedTheme: ThemeId = 'code';
   let selectedGrid: GridSize = 16;
   let selectedPlayer: PlayerColor = 'blue';
+  let hoveredTheme: ThemeId | null = null;
 
   // ============================================
   // GAME INSTANCE
@@ -126,14 +123,11 @@ function init() {
    * Get Current Player Icon basierend auf Theme und Player
    */
   function getCurrentPlayerIcon(theme: ThemeId, player: 'blue' | 'orange'): string {
-    // CODE THEME: Eigene Icons (farbig)
     if (theme === 'code') {
       return player === 'blue'
         ? 'public/assets/Settings/topbar/label.svg'
         : 'public/assets/Settings/topbar/label-orange.svg';
     }
-
-    // GAMES, DA, FOOD: Weiße Schachfigur
     return 'public/assets/game-hud/chess_pawn_current_player.svg';
   }
 
@@ -144,16 +138,13 @@ function init() {
     const icons = THEME_ICONS[theme];
     if (!icons) return;
 
-    // Score Icons (farbig)
     if (blueIconImg) blueIconImg.src = icons.blue;
     if (orangeIconImg) orangeIconImg.src = icons.orange;
 
-    // Exit Game Icon
     if (exitGameIcon) {
       exitGameIcon.src = EXIT_ICONS[theme];
     }
 
-    // Current Player Icon
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
       currentPlayerImg.src = getCurrentPlayerIcon(theme, currentPlayer);
@@ -164,12 +155,10 @@ function init() {
 
   /**
    * Update Current Player indicator
-   * @param player 'blue' | 'orange'
    */
   function updateCurrentPlayer(player: 'blue' | 'orange') {
     if (!currentPlayerImg) return;
 
-    // Current Player Icon
     currentPlayerImg.src = getCurrentPlayerIcon(selectedTheme, player);
     currentPlayerImg.alt = player === 'blue' ? 'Blue Player' : 'Orange Player';
 
@@ -192,19 +181,19 @@ function init() {
   };
 
   const updateThemePreview = () => {
-    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
-    previewRoot.classList.add(`preview--${selectedTheme}`);
-
+    // Theme-Klassen auf Game Screen aktualisieren
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
-    // Preview Exit Icon aktualisieren
-    if (previewExitIcon) {
-      previewExitIcon.src = EXIT_ICONS[selectedTheme];
-    }
 
-    switch (selectedTheme) {
+    // Preview mit hoveredTheme oder selectedTheme
+    const themeToShow = hoveredTheme || selectedTheme;
+
+    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+    previewRoot.classList.add(`preview--${themeToShow}`);
+
+    switch (themeToShow) {
       case 'code':
         previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
         previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
@@ -222,6 +211,10 @@ function init() {
         previewImgSub.src = './assets/Settings/Cards 5/frond_foods.svg';
         break;
     }
+
+    if (previewExitIcon) {
+      previewExitIcon.src = EXIT_ICONS[themeToShow];
+    }
   };
 
   // Apply defaults
@@ -237,6 +230,10 @@ function init() {
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
+
+    if (previewExitIcon) {
+      previewExitIcon.src = EXIT_ICONS[selectedTheme];
+    }
 
     game.updateConfig({
       theme: selectedTheme,
@@ -324,7 +321,33 @@ function init() {
       if (!['code', 'games', 'da', 'food'].includes(t)) return;
 
       selectedTheme = t;
+      hoveredTheme = null;
       renderer.setTheme(selectedTheme);
+      updateThemePreview();
+    });
+  });
+
+  // ============================================
+  // SETTINGS PREVIEW HOVER EFFECT (NUR FÜR THEMES)
+  // ============================================
+  document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
+    const radio = label.querySelector<HTMLInputElement>('.radio-input');
+    if (!radio) return;
+
+    // NUR für Theme-Radios (nicht für Player oder Grid)
+    const isThemeRadio = radio.name === 'theme';
+    if (!isThemeRadio) return;
+
+    label.addEventListener('mouseenter', () => {
+      const themeValue = radio.value as ThemeId;
+      if (['code', 'games', 'da', 'food'].includes(themeValue)) {
+        hoveredTheme = themeValue;
+        updateThemePreview();
+      }
+    });
+
+    label.addEventListener('mouseleave', () => {
+      hoveredTheme = null;
       updateThemePreview();
     });
   });

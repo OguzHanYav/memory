@@ -39,24 +39,28 @@
                   <input class="radio-input" type="radio" name="theme" value="code" checked />
                   <span class="radio-dot"></span>
                   <span>Code vibes theme</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="theme" value="games" />
                   <span class="radio-dot"></span>
                   <span>Gaming theme</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="theme" value="da" />
                   <span class="radio-dot"></span>
                   <span>DA Projects theme</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="theme" value="food" />
                   <span class="radio-dot"></span>
                   <span>Foods theme</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
               </div>
             </div>
@@ -72,12 +76,14 @@
                   <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked />
                   <span class="radio-dot"></span>
                   <span>Blue</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="startingPlayer" value="orange" />
                   <span class="radio-dot"></span>
                   <span>Orange</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
               </div>
             </div>
@@ -93,18 +99,21 @@
                   <input class="radio-input" type="radio" name="grid" value="16" checked />
                   <span class="radio-dot"></span>
                   <span>16 cards</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="grid" value="24" />
                   <span class="radio-dot"></span>
                   <span>24 cards</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
 
                 <label class="radio-item">
                   <input class="radio-input" type="radio" name="grid" value="36" />
                   <span class="radio-dot"></span>
                   <span>36 cards</span>
+                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
                 </label>
               </div>
             </div>
@@ -127,7 +136,7 @@
                 </div>
 
                 <button class="preview-exit" type="button" disabled><img id="previewExitIcon"
-                    src="public/assets/Settings/topbar/move_item.svg" alt="" width = "12" height = "12">Exit game</button>
+                    src="public/assets/Settings/topbar/move_item.svg" alt="" width="12" height="12">Exit game</button>
               </div>
 
               <div class="preview__stage">
@@ -172,11 +181,10 @@
           </div>
 
           <button id="btn-exit-game" class="preview-exit" type="button">
-            <img id="exitGameIcon" src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="30" height="30" />Exit game
+            <img id="exitGameIcon" src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="30"
+              height="30" />Exit game
           </button>
         </div>
-
-
 
         <!-- Game Board -->
         <section id="field" class="board" aria-label="Memory board"></section>
@@ -225,33 +233,6 @@
       </div>
     </div>
 
-    <!-- OLD MODAL (unused, kept for reference) -->
-    <div id="modal-gameover" class="modal" role="dialog" aria-modal="true">
-      <div class="modal__overlay"></div>
-      <div class="modal__content">
-        <h2 class="modal__title">Game Over</h2>
-        <div id="modal-icon" class="modal__icon">🎉</div>
-
-        <p class="modal__text">
-          You finished in <strong id="modal-moves">0</strong> moves
-        </p>
-
-        <p class="modal__text">
-          Blue: <strong id="modal-blue-score">0</strong> points
-        </p>
-
-        <p class="modal__text">
-          Orange: <strong id="modal-orange-score">0</strong> points
-        </p>
-
-        <p id="modal-winner" class="modal__subtext"></p>
-
-        <div class="modal__actions">
-          <button id="modal-play-again" class="btn btn--primary" type="button">Play Again</button>
-          <button id="modal-settings" class="btn" type="button">Settings</button>
-        </div>
-      </div>
-    </div>
   </main>
   <script type="module" src="/src/main.ts"></script>
 </body>
