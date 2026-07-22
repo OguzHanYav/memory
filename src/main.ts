@@ -46,6 +46,15 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
 };
+// ============================================
+// EXIT GAME ICONS PRO THEME
+// ============================================
+const EXIT_ICONS: Record<ThemeId, string> = {
+  code: 'public/assets/Settings/topbar/move_item.svg',
+  games: 'public/assets/Settings/topbar/move_item_white.svg',
+  da: 'public/assets/game-hud/DA-Theme/move_item.svg',
+  food: 'public/assets/Settings/topbar/move_item_dark.svg',
+};
 
 function init() {
   // Screens
@@ -66,7 +75,7 @@ function init() {
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
   const btnBackToGame = assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game');
   const btnConfirmExit = assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit');
-  const btnExitGame = assertEl(document.getElementById('btn-exit-game'), 'Missing #btn-exit-game');
+  const btnExitGame = document.getElementById('btn-exit-game') as HTMLImageElement;
 
   // Result Screen Elements
   const resultScreen = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
@@ -116,11 +125,11 @@ function init() {
   function getCurrentPlayerIcon(theme: ThemeId, player: 'blue' | 'orange'): string {
     // CODE THEME: Eigene Icons (farbig)
     if (theme === 'code') {
-      return player === 'blue' 
+      return player === 'blue'
         ? 'public/assets/Settings/topbar/label.svg'
         : 'public/assets/Settings/topbar/label-orange.svg';
     }
-    
+
     // GAMES, DA, FOOD: Weiße Schachfigur
     return 'public/assets/game-hud/chess_pawn_current_player.svg';
   }
@@ -136,6 +145,10 @@ function init() {
     if (blueIconImg) blueIconImg.src = icons.blue;
     if (orangeIconImg) orangeIconImg.src = icons.orange;
 
+    // Exit Game Icon
+    if (btnExitGame) {
+      btnExitGame.src = EXIT_ICONS[theme];
+    }
     // Current Player Icon
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
@@ -143,6 +156,7 @@ function init() {
       currentPlayerImg.classList.remove('player-blue', 'player-orange');
       currentPlayerImg.classList.add(`player-${currentPlayer}`);
     }
+
   }
 
   /**
