@@ -797,9 +797,8 @@ body:has(#screen-settings.screen--active) {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
-
 /* ============================================
-   EXIT MODAL
+   EXIT MODAL - BASE (Code Theme bleibt unverändert)
    ============================================ */
 .exit-modal {
   position: fixed;
@@ -820,7 +819,6 @@ body:has(#screen-settings.screen--active) {
 .exit-modal__content {
   position: relative;
   background: white;
-  border-radius: 24px;
   padding: 32px;
   max-width: 420px;
   width: 90%;
@@ -852,35 +850,137 @@ body:has(#screen-settings.screen--active) {
   transition: all 0.2s;
 }
 
-.exit-modal__btn--primary {
-  background: #2ed3b7;
-  color: white;
-}
-
-.exit-modal__btn--primary:hover {
-  background: #25b89f;
-  transform: translateY(-1px);
-}
-
-.exit-modal__btn--secondary {
-  background: rgba(0, 0, 0, 0.08);
-  color: #333;
-}
-
-.exit-modal__btn--secondary:hover {
-  background: rgba(0, 0, 0, 0.12);
-}
-
 @keyframes exitModalIn {
   from {
     opacity: 0;
     transform: scale(0.95);
   }
-
   to {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ============================================
+   EXIT MODAL - CODE THEME (UNVERÄNDERT)
+   ============================================ */
+.theme-code .exit-modal__btn--primary {
+  background: #eefcf9;
+  color: #25b89f;
+  border-radius: unset;
+  border: 2px solid #25b89f;
+}
+
+.theme-code .exit-modal__btn--primary:hover {
+  background: #e6f5f2;
+  transform: translateY(-1px);
+}
+
+.theme-code .exit-modal__btn--secondary {
+  background: #2ed3b7;
+  color: white;
+  border-radius: unset;
+}
+
+.theme-code .exit-modal__btn--secondary:hover {
+  background: #94ddd0;
+  border: 2px solid #25b89f;
+}
+
+/* ============================================
+   EXIT MODAL - GAMES THEME
+   ============================================ */
+.theme-games .exit-modal__content {
+  background: #2a3a4a;
+  color: #eaf6ff;
+}
+
+.theme-games .exit-modal__btn--primary {
+  background: #ff2f8b;
+  color: white;
+  border: 2px solid #ff2f8b;
+  border-radius: unset;
+}
+
+.theme-games .exit-modal__btn--primary:hover {
+  background: #e62a7a;
+  transform: translateY(-1px);
+}
+
+.theme-games .exit-modal__btn--secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #eaf6ff;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: unset;
+}
+
+.theme-games .exit-modal__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid #ff2f8b;
+}
+
+/* ============================================
+   EXIT MODAL - DA THEME
+   ============================================ */
+.theme-da .exit-modal__content {
+  background: #f4fbff;
+  color: #0f2a35;
+}
+
+.theme-da .exit-modal__btn--primary {
+  background: #2f7fa6;
+  color: white;
+  border: 2px solid #2f7fa6;
+  border-radius: unset;
+}
+
+.theme-da .exit-modal__btn--primary:hover {
+  background: #256a8a;
+  transform: translateY(-1px);
+}
+
+.theme-da .exit-modal__btn--secondary {
+  background: rgba(47, 127, 166, 0.1);
+  color: #0f2a35;
+  border: 2px solid rgba(47, 127, 166, 0.3);
+  border-radius: unset;
+}
+
+.theme-da .exit-modal__btn--secondary:hover {
+  background: rgba(47, 127, 166, 0.2);
+  border: 2px solid #2f7fa6;
+}
+
+/* ============================================
+   EXIT MODAL - FOOD THEME
+   ============================================ */
+.theme-food .exit-modal__content {
+  background: #fff5ec;
+  color: #2a1408;
+}
+
+.theme-food .exit-modal__btn--primary {
+  background: #ff8c42;
+  color: white;
+  border: 2px solid #ff8c42;
+  border-radius: unset;
+}
+
+.theme-food .exit-modal__btn--primary:hover {
+  background: #e67a38;
+  transform: translateY(-1px);
+}
+
+.theme-food .exit-modal__btn--secondary {
+  background: rgba(255, 140, 66, 0.1);
+  color: #2a1408;
+  border: 2px solid rgba(255, 140, 66, 0.3);
+  border-radius: unset;
+}
+
+.theme-food .exit-modal__btn--secondary:hover {
+  background: rgba(255, 140, 66, 0.2);
+  border: 2px solid #ff8c42;
 }
 
 /* ============================================
