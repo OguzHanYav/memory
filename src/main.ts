@@ -46,14 +46,15 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
     orange: 'public/assets/game-hud/chess_pawn.svg',
   },
 };
+
 // ============================================
 // EXIT GAME ICONS PRO THEME
 // ============================================
 const EXIT_ICONS: Record<ThemeId, string> = {
   code: 'public/assets/Settings/topbar/move_item.svg',
-  games: 'public/assets/Settings/topbar/move_item_white.svg',
+  games: 'public/assets/game-hud/GAME-Theme/move_item.svg',
   da: 'public/assets/game-hud/DA-Theme/move_item.svg',
-  food: 'public/assets/Settings/topbar/move_item_dark.svg',
+  food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
 };
 
 function init() {
@@ -70,12 +71,14 @@ function init() {
   const blueIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement;
   const orangeIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:last-of-type') as HTMLImageElement;
   const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
+  const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
+  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
 
   // Exit Modal Elements
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
   const btnBackToGame = assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game');
   const btnConfirmExit = assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit');
-  const btnExitGame = document.getElementById('btn-exit-game') as HTMLImageElement;
+  const btnExitGame = assertEl(document.getElementById('btn-exit-game'), 'Missing #btn-exit-game');
 
   // Result Screen Elements
   const resultScreen = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
@@ -146,9 +149,10 @@ function init() {
     if (orangeIconImg) orangeIconImg.src = icons.orange;
 
     // Exit Game Icon
-    if (btnExitGame) {
-      btnExitGame.src = EXIT_ICONS[theme];
+    if (exitGameIcon) {
+      exitGameIcon.src = EXIT_ICONS[theme];
     }
+
     // Current Player Icon
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
@@ -156,7 +160,6 @@ function init() {
       currentPlayerImg.classList.remove('player-blue', 'player-orange');
       currentPlayerImg.classList.add(`player-${currentPlayer}`);
     }
-
   }
 
   /**
@@ -196,6 +199,10 @@ function init() {
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
+    // Preview Exit Icon aktualisieren
+    if (previewExitIcon) {
+      previewExitIcon.src = EXIT_ICONS[selectedTheme];
+    }
 
     switch (selectedTheme) {
       case 'code':
