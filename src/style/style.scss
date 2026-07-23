@@ -1188,17 +1188,18 @@ body:has(#screen-settings.screen--active) {
 
 /* BOARD - CODE THEME */
 .theme-code .board {
-  gap: 12px;
+  gap: 32px;
   margin-top: 50px;
 }
 
 .theme-code .card {
-  height: 96px;
-  width: 96px;
+  height: 120px;
+  width: 120px;
+  margin-bottom: -20px;
 }
 
 .theme-code .card__face {
-  border-radius: 12px;
+  border-radius: 0px;
 }
 
 /* SETTINGS PREVIEW */
@@ -1350,7 +1351,7 @@ body:has(#screen-settings.screen--active) {
 .theme-games .card {
   height: 120px;
   width: 105px;
-  margin-bottom: -16px;
+  margin-bottom: calc((120px - var(--card-size)) / 2 * -1);
 }
 
 .theme-games .card__face {
@@ -1496,13 +1497,14 @@ body:has(#screen-settings.screen--active) {
 
 /* BOARD - DA THEME */
 .theme-da .board {
-  gap: 10px;
-  margin-top: 60px;
+  gap: 32px;
 }
 
 .theme-da .card {
   height: 100px;
-  width: 100px;
+  width: 120px;
+  margin-bottom: -20px;
+
 }
 
 .theme-da .card__face {
@@ -1643,7 +1645,7 @@ body:has(#screen-settings.screen--active) {
 
 /* BOARD - FOOD THEME */
 .theme-food .board {
-  gap: 16px;
+  gap: 8px;
   margin-top: 30px;
 }
 
@@ -1653,7 +1655,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .card__face {
-  border-radius: 20px;
+  border-radius: 0px;
 }
 
 /* SETTINGS PREVIEW */
