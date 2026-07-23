@@ -524,7 +524,7 @@ body:has(#screen-settings.screen--active) {
    ============================================ */
 .board {
   display: grid;
-  gap: var(--gap);
+  gap: 0;
   justify-content: center;
   align-content: center;
   margin: 50px auto 0;
@@ -797,6 +797,7 @@ body:has(#screen-settings.screen--active) {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
+
 /* ============================================
    EXIT MODAL - BASE (Code Theme bleibt unverändert)
    ============================================ */
@@ -855,6 +856,7 @@ body:has(#screen-settings.screen--active) {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -1156,6 +1158,7 @@ body:has(#screen-settings.screen--active) {
 .theme-code {
   --bg: #303131;
   --text: #e8fff8;
+  --card-size: 96px;
 }
 
 /* GAME HUD */
@@ -1181,6 +1184,21 @@ body:has(#screen-settings.screen--active) {
   background: transparent !important;
   border-radius: 0;
   padding: 0;
+}
+
+/* BOARD - CODE THEME */
+.theme-code .board {
+  gap: 12px;
+  margin-top: 50px;
+}
+
+.theme-code .card {
+  height: 96px;
+  width: 96px;
+}
+
+.theme-code .card__face {
+  border-radius: 12px;
 }
 
 /* SETTINGS PREVIEW */
@@ -1268,6 +1286,8 @@ body:has(#screen-settings.screen--active) {
 .theme-games {
   --bg: #24404b;
   --text: #eaf6ff;
+  --card-size: 88px;
+
 }
 
 /* GAME HUD */
@@ -1318,6 +1338,23 @@ body:has(#screen-settings.screen--active) {
 
 .theme-games .game-hud--preview-style .preview-dot.player-orange {
   background-color: #ea6a26 !important;
+}
+
+/* BOARD - GAMES THEME */
+.theme-games .board {
+  gap: 8px;
+  margin-top: 40px;
+  padding: 4px;
+}
+
+.theme-games .card {
+  height: 120px;
+  width: 105px;
+  margin-bottom: -16px;
+}
+
+.theme-games .card__face {
+  border-radius: 16px;
 }
 
 .theme-games .card__face {
@@ -1411,6 +1448,7 @@ body:has(#screen-settings.screen--active) {
   --panel: rgba(0, 0, 0, 0.06);
   --stroke: rgba(0, 0, 0, 0.10);
   --btn-bg: rgba(0, 0, 0, 0.08);
+  --card-size: 100px;
 }
 
 /* GAME HUD */
@@ -1454,6 +1492,21 @@ body:has(#screen-settings.screen--active) {
 
 .theme-da .game-hud--preview-style .preview-dot.player-orange {
   background-color: #ff8c42 !important;
+}
+
+/* BOARD - DA THEME */
+.theme-da .board {
+  gap: 10px;
+  margin-top: 60px;
+}
+
+.theme-da .card {
+  height: 100px;
+  width: 100px;
+}
+
+.theme-da .card__face {
+  border-radius: 8px;
 }
 
 /* SETTINGS PREVIEW */
@@ -1540,6 +1593,7 @@ body:has(#screen-settings.screen--active) {
   --panel: rgba(0, 0, 0, 0.06);
   --stroke: rgba(0, 0, 0, 0.10);
   --btn-bg: rgba(0, 0, 0, 0.08);
+  --card-size: 80px;
 }
 
 /* GAME HUD */
@@ -1585,6 +1639,21 @@ body:has(#screen-settings.screen--active) {
 
 .theme-food .game-hud--preview-style .preview-dot.player-orange {
   background-color: #ff8c42 !important;
+}
+
+/* BOARD - FOOD THEME */
+.theme-food .board {
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.theme-food .card {
+  height: 80px;
+  width: 80px;
+}
+
+.theme-food .card__face {
+  border-radius: 20px;
 }
 
 /* SETTINGS PREVIEW */
@@ -1652,7 +1721,6 @@ body:has(#screen-settings.screen--active) {
   color: #ff8c42 !important;
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
 }
-
 
 /* ============================================
    DEFAULT / FALLBACK
