@@ -87,7 +87,6 @@ body.modal-open {
 body:has(#screen-settings.screen--active) {
   background: white;
 }
-
 /* ============================================
    APP & SCREENS
    ============================================ */
@@ -114,109 +113,30 @@ body:has(#screen-settings.screen--active) {
 /* ============================================
    HOME PANEL - FULLSCREEN
    ============================================ */
-#screen-home {
-  display: none;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--bg);
-  z-index: 10;
-  place-items: center;
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
 }
 
-#screen-home.screen--active {
-  display: grid;
-}
-
-#screen-home .panel--home {
-  width: 100%;
-  height: 100%;
+.panel--home {
+  width: 100vw;          /* ← Volle Breite */
+  height: 100vh;         /* ← Volle Höhe */
   max-width: 100%;
   max-height: 100%;
-  border-radius: 0;
-  border: none;
-  padding: 40px 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-self: center;
+  text-align: left;
+  display: grid;
   gap: 10px;
-  background: var(--bg);
-  position: relative;
-}
-
-/* "It's play time" */
-#screen-home .muted {
-  margin: 0;
-  opacity: 0.75;
-  font-size: 48px;
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-}
-
-/* "Ready to play?" */
-#screen-home .title {
-  margin: 0;
-  font-size: 140px;
-  font-weight: 800;
-  line-height: 1.05;
-  display: flex;
-  align-items: center;
   opacity: 1;
-  letter-spacing: -1px;
+  border-radius: 0;      /* ← Keine Rundung für Fullscreen */
+  border: none;          /* ← Kein Border für Fullscreen */
+  padding: 40px 60px;    /* ← Mehr Innenabstand */
+  align-content: center; /* ← Inhalt vertikal zentrieren */
 }
-
-/* Play Button */
-#screen-home #btn-go-settings {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-block;
-  width: 250px;
-  height: 98px;
-  padding: 24px;
-  margin-top: 10px;
-}
-
-#screen-home #btn-go-settings img {
-  display: block;
-  width: 250px;
-  height: 98px;
-  object-fit: contain;
-  transition: transform 0.2s ease;
-}
-
-#screen-home #btn-go-settings:hover img {
-  transform: scale(1.05);
-}
-
-#screen-home #btn-go-settings:active img {
-  transform: scale(0.95);
-}
-
-/* Home Screen Controller Icon - links unten */
-#screen-home .home-controller {
-  position: absolute;
-  bottom: 0px;
-  left: -88px;
-  width: 414.31px;
-  height: 301.31px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Stelle sicher, dass der Inhalt über dem Controller liegt */
-#screen-home .muted,
-#screen-home .title,
-#screen-home #btn-go-settings {
-  position: relative;
-  z-index: 1;
-}
-
 /* ============================================
    BUTTONS
    ============================================ */
@@ -245,27 +165,11 @@ body:has(#screen-settings.screen--active) {
    ============================================ */
 #screen-settings {
   background: white;
-  font-family: 'Almarai', sans-serif;
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+    font-family: 'Almarai', sans-serif;
 }
 
 #screen-settings.screen--active {
   background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 40px;
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-  min-height: 100vh;
 }
 
 .settings-page {
@@ -273,16 +177,12 @@ body:has(#screen-settings.screen--active) {
   color: #1b1b1b;
   border-radius: 16px;
   padding: 28px;
-  width: 100%;
-  max-width: 1103px;
-  margin: 0 auto;
 }
 
 .settings-page__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 20px;
 }
 
 .settings-page__title {
