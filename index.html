@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -219,19 +220,21 @@
       </div>
     </section>
 
-    <!-- EXIT CONFIRMATION POPUP -->
-    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
-      <div class="exit-modal__overlay"></div>
-      <div class="exit-modal__content">
-        <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
-        <div class="exit-modal__actions">
-          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">Back to
-            game</button>
-          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">Exit
-            game</button>
-        </div>
-      </div>
+   <!-- EXIT CONFIRMATION POPUP -->
+<div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
+  <div class="exit-modal__overlay"></div>
+  <div class="exit-modal__content">
+    <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
+    <div class="exit-modal__actions">
+      <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">
+        <span id="back-to-game-text">Back to game</span>
+      </button>
+      <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">
+        <span id="confirm-exit-text">Exit game</span>
+      </button>
     </div>
+  </div>
+</div>
 
   </main>
   <script type="module" src="/src/main.ts"></script>

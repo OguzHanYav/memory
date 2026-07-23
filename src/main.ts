@@ -53,6 +53,28 @@ const EXIT_ICONS: Record<ThemeId, string> = {
   food: 'public/assets/game-hud/DA-Theme/move_item.svg',
 };
 
+// ============================================
+// EXIT POPUP TEXTE PRO THEME
+// ============================================
+const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
+  code: {
+    back: 'Back to game',
+    confirm: 'Exit game',
+  },
+  games: {
+    back: 'No, back to game',
+    confirm: 'Yes, quit game',
+  },
+  da: {
+    back: 'Back to game',
+    confirm: 'Exit game',
+  },
+  food: {
+    back: 'No, back to game',
+    confirm: 'Exit game',
+  },
+};
+
 function init() {
   // Screens
   const btnGoSettings = assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings');
@@ -69,6 +91,10 @@ function init() {
   const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
   const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
   const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+
+  // Exit Popup Textelemente
+  const backToGameText = document.getElementById('back-to-game-text') as HTMLSpanElement;
+  const confirmExitText = document.getElementById('confirm-exit-text') as HTMLSpanElement;
 
   // Exit Modal Elements
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
@@ -132,6 +158,17 @@ function init() {
   }
 
   /**
+   * Update Exit Popup Texte basierend auf Theme
+   */
+  function updateExitTexts(theme: ThemeId) {
+    const texts = EXIT_TEXTS[theme];
+    if (!texts) return;
+    
+    if (backToGameText) backToGameText.textContent = texts.back;
+    if (confirmExitText) confirmExitText.textContent = texts.confirm;
+  }
+
+  /**
    * Update HUD Icons basierend auf Theme
    */
   function updateHudIcons(theme: ThemeId) {
@@ -144,6 +181,9 @@ function init() {
     if (exitGameIcon) {
       exitGameIcon.src = EXIT_ICONS[theme];
     }
+
+    // Exit Popup Texte aktualisieren
+    updateExitTexts(theme);
 
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
