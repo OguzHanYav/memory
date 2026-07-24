@@ -208,7 +208,11 @@ body:has(#screen-settings.screen--active) {
   pointer-events: none;
   z-index: 0;
 }
+.home-content{
+display: flex;
+flex-direction: column;
 
+}
 /* Stelle sicher, dass der Inhalt über dem Controller liegt */
 #screen-home .muted,
 #screen-home .title,
@@ -249,7 +253,7 @@ body:has(#screen-settings.screen--active) {
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   min-height: 100vh;

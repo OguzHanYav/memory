@@ -15,10 +15,22 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
   const game = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
   const result = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
 
-  home.classList.toggle('screen--active', id === 'home');
-  settings.classList.toggle('screen--active', id === 'settings');
-  game.classList.toggle('screen--active', id === 'game');
-  result.classList.toggle('screen--active', id === 'result');
+  // Alle Screens ausblenden
+  home.classList.remove('screen--active');
+  settings.classList.remove('screen--active');
+  game.classList.remove('screen--active');
+  result.classList.remove('screen--active');
+
+  // Nur den gewünschten Screen anzeigen
+  if (id === 'home') {
+    home.classList.add('screen--active');
+  } else if (id === 'settings') {
+    settings.classList.add('screen--active');
+  } else if (id === 'game') {
+    game.classList.add('screen--active');
+  } else if (id === 'result') {
+    result.classList.add('screen--active');
+  }
 }
 
 // ============================================

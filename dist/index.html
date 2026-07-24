@@ -4,26 +4,32 @@
   <title>Memory</title>
   <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/projects/Memory/assets/index-CRTIB0-_.js"></script>
-  <link rel="stylesheet" crossorigin href="/projects/Memory/assets/index-DwDo2N0W.css">
+  <script type="module" crossorigin src="/projects/Memory/assets/index-CHU6BQlK.js"></script>
+  <link rel="stylesheet" crossorigin href="/projects/Memory/assets/index-DQg_Dwpg.css">
 </head>
 
 <body>
   <main class="app">
-<!-- HOME SCREEN -->
-<section id="screen-home" class="screen screen--active" aria-label="Home screen">
-  <div class="panel panel--home">
-    <p class="muted">It’s play time</p>
-    <h1 class="title">Ready to play?</h1>
-    <button id="btn-go-settings" class="btn btn--primary" type="button">
-      <img src="/projects/Memory/assets/Frame%20530-CNXT5xaq.svg" alt="Play" />
-    </button>
-    <img class="home-controller" src="/projects/Memory/assets/stadia_controller-CcsXEKot.svg" alt="" />
-  </div>
-</section>
+    <!-- HOME SCREEN -->
+    <section id="screen-home" class="screen screen--active" aria-label="Home screen">
+      <div class="panel panel--home">
+        <div class="home-content">
+          <p class="muted">It’s play time</p>
+          <h1 class="title">Ready to play?</h1>
+          <div style="display: flex; justify-content: center;">
+            <button id="btn-go-settings" class="btn btn--primary" type="button">
+              <img src="/projects/Memory/assets/Frame%20530-CNXT5xaq.svg" alt="Play" />
+            </button>
+          </div>
+
+        </div>
+        <img class="home-controller" src="/projects/Memory/assets/stadia_controller-CcsXEKot.svg" alt="" />
+      </div>
+    </section>
 
     <!-- SETTINGS SCREEN -->
     <section id="screen-settings" class="screen" aria-label="Settings screen">
@@ -225,21 +231,21 @@
       </div>
     </section>
 
-   <!-- EXIT CONFIRMATION POPUP -->
-<div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
-  <div class="exit-modal__overlay"></div>
-  <div class="exit-modal__content">
-    <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
-    <div class="exit-modal__actions">
-      <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">
-        <span id="back-to-game-text">Back to game</span>
-      </button>
-      <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">
-        <span id="confirm-exit-text">Exit game</span>
-      </button>
+    <!-- EXIT CONFIRMATION POPUP -->
+    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
+      <div class="exit-modal__overlay"></div>
+      <div class="exit-modal__content">
+        <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
+        <div class="exit-modal__actions">
+          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">
+            <span id="back-to-game-text">Back to game</span>
+          </button>
+          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">
+            <span id="confirm-exit-text">Exit game</span>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
   </main>
 </body>
