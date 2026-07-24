@@ -82,8 +82,8 @@ const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
     confirm: 'Exit game',
   },
   food: {
-    back: 'No, back to game',
-    confirm: 'Exit game',
+    back: 'NO, BACK TO GAME',
+    confirm: 'EXIT GAME',
   },
 };
 

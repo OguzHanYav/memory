@@ -22,12 +22,15 @@
 .theme-code {
   --font-family: 'Red Rose', sans-serif;
 }
+
 .theme-games {
   --font-family: 'Orbitron', sans-serif;
 }
+
 .theme-da {
   --font-family: 'Figtree', sans-serif;
 }
+
 .theme-food {
   --font-family: 'Klee One', cursive;
 }
@@ -208,11 +211,13 @@ body:has(#screen-settings.screen--active) {
   pointer-events: none;
   z-index: 0;
 }
-.home-content{
-display: flex;
-flex-direction: column;
+
+.home-content {
+  display: flex;
+  flex-direction: column;
 
 }
+
 /* Stelle sicher, dass der Inhalt über dem Controller liegt */
 #screen-home .muted,
 #screen-home .title,
@@ -762,6 +767,7 @@ flex-direction: column;
   0% {
     background-position: 0 0, 0 0, 0 0, 0 0;
   }
+
   100% {
     background-position: 60px 60px, 80px 80px, 100px 100px, 70px 70px;
   }
@@ -871,12 +877,16 @@ flex-direction: column;
 }
 
 @keyframes drawIconShake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg);
   }
+
   25% {
     transform: rotate(10deg);
   }
+
   75% {
     transform: rotate(-10deg);
   }
@@ -988,6 +998,7 @@ flex-direction: column;
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -1319,27 +1330,28 @@ flex-direction: column;
 }
 
 .theme-da .exit-modal__btn--primary {
-  background: #2f7fa6;
+  background: #FD8A81;
   color: white;
-  border: 2px solid #2f7fa6;
-  border-radius: unset;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px 0px #2F2E2E33;
 }
 
 .theme-da .exit-modal__btn--primary:hover {
-  background: #256a8a;
+  background: #ed5b50;
   transform: translateY(-1px);
 }
 
 .theme-da .exit-modal__btn--secondary {
-  background: rgba(47, 127, 166, 0.1);
-  color: #0f2a35;
-  border: 2px solid rgba(47, 127, 166, 0.3);
-  border-radius: unset;
+  background: #bfe5f2;
+  color: #5b9fb7;
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px 0px #2F2E2E33;
 }
 
 .theme-da .exit-modal__btn--secondary:hover {
-  background: rgba(47, 127, 166, 0.2);
+  background: #2f7fa6;
   border: 2px solid #2f7fa6;
+  color: white;
 }
 
 /* ============================================
@@ -1438,27 +1450,29 @@ flex-direction: column;
 }
 
 .theme-food .exit-modal__btn--primary {
-  background: #ff8c42;
-  color: white;
-  border: 2px solid #ff8c42;
-  border-radius: unset;
+  background: white;
+  color: #ff8c42;
+  border-radius: 10px;
+  border: 3px solid #F3832D
 }
 
 .theme-food .exit-modal__btn--primary:hover {
-  background: #e67a38;
+  background: #ff8c42;
   transform: translateY(-1px);
+  color: white;
 }
 
 .theme-food .exit-modal__btn--secondary {
-  background: rgba(255, 140, 66, 0.1);
-  color: #2a1408;
+  background: #fbaa3e;
+  color: white;
   border: 2px solid rgba(255, 140, 66, 0.3);
-  border-radius: unset;
+  border-radius: 10px;
+  border: 3px solid #F3832D
 }
 
 .theme-food .exit-modal__btn--secondary:hover {
-  background: rgba(255, 140, 66, 0.2);
-  border: 2px solid #ff8c42;
+  background: #ff8c42;
+
 }
 
 /* ============================================
@@ -1663,9 +1677,11 @@ flex-direction: column;
   .settings-layout {
     grid-template-columns: 1fr;
   }
+
   .settings-preview {
     justify-items: start;
   }
+
   .preview {
     max-width: 100%;
   }
@@ -1675,15 +1691,19 @@ flex-direction: column;
   .game-hud {
     padding: 12px 16px;
   }
+
   .score-compact__value {
     font-size: 14px;
   }
+
   .score-compact__label {
     font-size: 10px;
   }
+
   .current-player__label {
     font-size: 11px;
   }
+
   .btn-exit {
     padding: 6px 14px;
     font-size: 11px;
@@ -1695,25 +1715,32 @@ flex-direction: column;
     --card-size: 76px;
     --gap: 10px;
   }
+
   .app {
     padding: 12px;
   }
+
   .title {
     font-size: 32px;
   }
+
   .settings-page__title {
     font-size: 32px;
   }
+
   .game-hud {
     border-radius: 40px;
   }
+
   .score-compact {
     gap: 4px;
   }
+
   .current-player__dot {
     width: 12px;
     height: 12px;
   }
+
   .preview__stage {
     height: 100%;
   }
@@ -1724,42 +1751,49 @@ flex-direction: column;
     left: 30px;
     top: 70px;
   }
+
   .preview--code .preview__img--sub {
     width: 110px;
     height: 110px;
     left: 120px;
     top: 85px;
   }
+
   .preview--games .preview__img--main {
     width: 100px;
     height: 130px;
     left: 30px;
     top: 60px;
   }
+
   .preview--games .preview__img--sub {
     width: 100px;
     height: 130px;
     left: 130px;
     top: 75px;
   }
+
   .preview--da .preview__img--main {
     width: 110px;
     height: 90px;
     left: 35px;
     top: 70px;
   }
+
   .preview--da .preview__img--sub {
     width: 110px;
     height: 90px;
     left: 140px;
     top: 110px;
   }
+
   .preview--food .preview__img--main {
     width: 100px;
     height: 100px;
     left: 65px;
     top: 110px;
   }
+
   .preview--food .preview__img--sub {
     width: 100px;
     height: 100px;
@@ -1770,24 +1804,30 @@ flex-direction: column;
   .result-gameover__title {
     font-size: 48px;
   }
+
   .result-winner-title {
     font-size: 40px;
   }
+
   .result-draw-title {
     font-size: 48px;
   }
+
   .result-score {
     gap: 20px;
     font-size: 16px;
   }
+
   .result-score strong {
     font-size: 24px;
   }
+
   .result-player-icon {
     width: 80px;
     height: 80px;
     font-size: 40px;
   }
+
   .result-player-icon::before {
     font-size: 40px !important;
   }
