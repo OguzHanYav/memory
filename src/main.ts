@@ -60,9 +60,9 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
 // ============================================
 const EXIT_ICONS: Record<ThemeId, string> = {
   code: 'public/assets/Settings/topbar/move_item.svg',
-  games: 'public/assets/game-hud/DA-Theme/move_item.svg',
+  games: 'public/assets/Settings/topbar/move_item.svg',
   da: 'public/assets/game-hud/DA-Theme/move_item.svg',
-  food: 'public/assets/game-hud/DA-Theme/move_item.svg',
+  food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
 };
 
 // ============================================

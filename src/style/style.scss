@@ -959,11 +959,15 @@ body:has(#screen-settings.screen--active) {
   position: relative;
   background: white;
   padding: 32px;
-  max-width: 420px;
-  width: 90%;
+  max-width: 539px;
+  width: 100%;
   text-align: center;
   animation: exitModalIn 0.2s ease;
   color: #1b1b1b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .exit-modal__title {
@@ -1066,7 +1070,14 @@ body:has(#screen-settings.screen--active) {
   color: #2ed3b7 !important;
   text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
 }
-
+.theme-code .exit-modal__content {
+width: 539px;
+height: 270px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
 .theme-code .exit-modal__btn--primary {
   background: #eefcf9;
   color: #25b89f;
@@ -1196,8 +1207,11 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-games .exit-modal__content {
-  background: #2a3a4a;
-  color: #eaf6ff;
+  background: white;
+  color: #2a3a4a;
+  border-radius: 10px;
+  height: 254px;
+  width: 481px;
 }
 
 .theme-games .exit-modal__btn--primary {
@@ -1323,6 +1337,9 @@ body:has(#screen-settings.screen--active) {
 .theme-da .exit-modal__content {
   background: #f4fbff;
   color: #0f2a35;
+  border-radius: 10px;
+  height: 253px;
+  width: 456px;
 }
 
 .theme-da .exit-modal__btn--primary {
@@ -1388,10 +1405,11 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .game-hud--preview-style .preview-exit {
-  background: rgba(0, 0, 0, 0.06);
+  background: white;
   border-radius: 12px;
-  border: 1px solid rgba(255, 140, 66, 0.3);
-  color: #2a1408;
+  border: 3px solid #F3832D;
+  color: #F3832D;
+  align-items: center;
 }
 
 .theme-food .game-hud--preview-style .preview-dot {
@@ -1441,8 +1459,11 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .exit-modal__content {
-  background: #fff5ec;
-  color: #2a1408;
+  background: white;
+  color: #a95d20;
+  width: 456px;
+  height: 256px;
+  border-radius: 10px;
 }
 
 .theme-food .exit-modal__btn--primary {
