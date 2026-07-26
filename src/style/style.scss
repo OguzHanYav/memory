@@ -559,6 +559,7 @@ body:has(#screen-settings.screen--active) {
   gap: 6px;
   padding: 4px 8px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .preview__stage {
@@ -1028,9 +1029,12 @@ body:has(#screen-settings.screen--active) {
 
 .theme-code .game-hud--preview-style .preview-exit {
   background: rgba(54, 82, 77, 1);
-  border-radius: 12px;
   border: 1px solid rgba(76, 213, 188, 1);
   color: rgba(255, 255, 255, 0.92);
+}
+
+.theme-code .game-hud--preview-style .preview-exit:hover {
+  border: 3px solid rgba(76, 213, 188, 1);
 }
 
 .theme-code .game-hud--preview-style .preview-dot {
@@ -1070,14 +1074,16 @@ body:has(#screen-settings.screen--active) {
   color: #2ed3b7 !important;
   text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
 }
+
 .theme-code .exit-modal__content {
-width: 539px;
-height: 270px;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
+  width: 539px;
+  height: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 .theme-code .exit-modal__btn--primary {
   background: #eefcf9;
   color: #25b89f;
@@ -1145,6 +1151,11 @@ justify-content: center;
   border-radius: 12px;
   border: 3px solid rgba(176, 59, 94, 1);
   color: rgba(255, 255, 255, 0.92);
+}
+
+.theme-games .game-hud--preview-style .preview-exit:hover {
+  border: 5px solid rgba(176, 59, 94, 1);
+  background: #ED1B760D;
 }
 
 .theme-games .game-hud--preview-style .preview-dot {
@@ -1281,6 +1292,12 @@ justify-content: center;
   border: unset;
 }
 
+.theme-da .game-hud--preview-style .preview-exit:hover {
+  background: #1d7694;
+  border-radius: 12px;
+  color: white;
+}
+
 .theme-da .game-hud--preview-style .preview-dot {
   padding: 4px;
   border-radius: 4px;
@@ -1407,9 +1424,14 @@ justify-content: center;
 .theme-food .game-hud--preview-style .preview-exit {
   background: white;
   border-radius: 12px;
-  border: 3px solid #F3832D;
+  border: 2px solid #F3832D;
   color: #F3832D;
   align-items: center;
+}
+
+.theme-food .game-hud--preview-style .preview-exit:hover {
+  background: #F3832D;
+  color: white;
 }
 
 .theme-food .game-hud--preview-style .preview-dot {

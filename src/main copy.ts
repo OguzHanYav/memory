@@ -15,10 +15,22 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
   const game = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
   const result = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
 
-  home.classList.toggle('screen--active', id === 'home');
-  settings.classList.toggle('screen--active', id === 'settings');
-  game.classList.toggle('screen--active', id === 'game');
-  result.classList.toggle('screen--active', id === 'result');
+  // Alle Screens ausblenden
+  home.classList.remove('screen--active');
+  settings.classList.remove('screen--active');
+  game.classList.remove('screen--active');
+  result.classList.remove('screen--active');
+
+  // Nur den gewünschten Screen anzeigen
+  if (id === 'home') {
+    home.classList.add('screen--active');
+  } else if (id === 'settings') {
+    settings.classList.add('screen--active');
+  } else if (id === 'game') {
+    game.classList.add('screen--active');
+  } else if (id === 'result') {
+    result.classList.add('screen--active');
+  }
 }
 
 // ============================================
@@ -48,9 +60,31 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
 // ============================================
 const EXIT_ICONS: Record<ThemeId, string> = {
   code: 'public/assets/Settings/topbar/move_item.svg',
-  games: 'public/assets/game-hud/DA-Theme/move_item.svg',
+  games: 'public/assets/Settings/topbar/move_item.svg',
   da: 'public/assets/game-hud/DA-Theme/move_item.svg',
-  food: 'public/assets/game-hud/DA-Theme/move_item.svg',
+  food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
+};
+
+// ============================================
+// EXIT POPUP TEXTE PRO THEME
+// ============================================
+const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
+  code: {
+    back: 'Back to game',
+    confirm: 'Exit game',
+  },
+  games: {
+    back: 'No, back to game',
+    confirm: 'Yes, quit game',
+  },
+  da: {
+    back: 'Back to game',
+    confirm: 'Exit game',
+  },
+  food: {
+    back: 'NO, BACK TO GAME',
+    confirm: 'EXIT GAME',
+  },
 };
 
 function init() {
@@ -69,6 +103,10 @@ function init() {
   const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
   const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
   const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+
+  // Exit Popup Textelemente
+  const backToGameText = document.getElementById('back-to-game-text') as HTMLSpanElement;
+  const confirmExitText = document.getElementById('confirm-exit-text') as HTMLSpanElement;
 
   // Exit Modal Elements
   const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
@@ -132,6 +170,17 @@ function init() {
   }
 
   /**
+   * Update Exit Popup Texte basierend auf Theme
+   */
+  function updateExitTexts(theme: ThemeId) {
+    const texts = EXIT_TEXTS[theme];
+    if (!texts) return;
+    
+    if (backToGameText) backToGameText.textContent = texts.back;
+    if (confirmExitText) confirmExitText.textContent = texts.confirm;
+  }
+
+  /**
    * Update HUD Icons basierend auf Theme
    */
   function updateHudIcons(theme: ThemeId) {
@@ -144,6 +193,9 @@ function init() {
     if (exitGameIcon) {
       exitGameIcon.src = EXIT_ICONS[theme];
     }
+
+    // Exit Popup Texte aktualisieren
+    updateExitTexts(theme);
 
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
@@ -328,11 +380,15 @@ function init() {
   });
 
   // ============================================
-  // SETTINGS PREVIEW HOVER EFFECT
+  // SETTINGS PREVIEW HOVER EFFECT (NUR FÜR THEMES)
   // ============================================
   document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
     const radio = label.querySelector<HTMLInputElement>('.radio-input');
     if (!radio) return;
+
+    // NUR für Theme-Radios (nicht für Player oder Grid)
+    const isThemeRadio = radio.name === 'theme';
+    if (!isThemeRadio) return;
 
     label.addEventListener('mouseenter', () => {
       const themeValue = radio.value as ThemeId;

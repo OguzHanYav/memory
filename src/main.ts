@@ -66,6 +66,16 @@ const EXIT_ICONS: Record<ThemeId, string> = {
 };
 
 // ============================================
+// EXIT GAME ICONS HOVER PRO THEME
+// ============================================
+const EXIT_ICONS_HOVER: Record<ThemeId, string> = {
+  code: 'public/assets/Settings/topbar/move_item_hover.svg',
+  games: 'public/assets/game-hud/GAME-Theme/move_item.svg',
+  da: 'public/assets/Settings/topbar/move_item.svg',
+  food: 'public/assets/Settings/topbar/move_item.svg',
+};
+
+// ============================================
 // EXIT POPUP TEXTE PRO THEME
 // ============================================
 const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
@@ -181,6 +191,70 @@ function init() {
   }
 
   /**
+   * Setup Exit Button Hover Effekt
+   */
+  function setupExitButtonHover(theme: ThemeId) {
+    const exitBtn = document.getElementById('btn-exit-game');
+    const exitIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
+    const previewBtn = document.querySelector('.preview-exit');
+    const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+    
+    // Prüfen ob Elemente existieren
+    if (!exitBtn || !exitIcon) return;
+    
+    // Alte Event-Listener entfernen (durch Klonen)
+    const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
+    exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
+    
+    // Neue Referenzen holen
+    const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
+    if (!newExitIcon) return;
+    
+    // Hover Events für Game Button
+    newExitBtn.addEventListener('mouseenter', () => {
+      const hoverIcon = EXIT_ICONS_HOVER[theme];
+      if (hoverIcon && newExitIcon) {
+        newExitIcon.src = hoverIcon;
+      }
+    });
+    
+    newExitBtn.addEventListener('mouseleave', () => {
+      const defaultIcon = EXIT_ICONS[theme];
+      if (defaultIcon && newExitIcon) {
+        newExitIcon.src = defaultIcon;
+      }
+    });
+    
+    // Click Event wieder hinzufügen (wichtig!)
+    newExitBtn.addEventListener('click', () => {
+      exitModal.style.display = 'flex';
+    });
+    
+    // Preview Button Hover (Settings)
+    if (previewBtn && previewIcon) {
+      const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
+      previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
+      
+      const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
+      if (newPreviewIcon) {
+        newPreviewBtn.addEventListener('mouseenter', () => {
+          const hoverIcon = EXIT_ICONS_HOVER[theme];
+          if (hoverIcon) {
+            newPreviewIcon.src = hoverIcon;
+          }
+        });
+        
+        newPreviewBtn.addEventListener('mouseleave', () => {
+          const defaultIcon = EXIT_ICONS[theme];
+          if (defaultIcon) {
+            newPreviewIcon.src = defaultIcon;
+          }
+        });
+      }
+    }
+  }
+
+  /**
    * Update HUD Icons basierend auf Theme
    */
   function updateHudIcons(theme: ThemeId) {
@@ -196,6 +270,9 @@ function init() {
 
     // Exit Popup Texte aktualisieren
     updateExitTexts(theme);
+    
+    // Exit Button Hover neu setzen
+    setupExitButtonHover(theme);
 
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
     if (currentPlayerImg) {
@@ -346,10 +423,11 @@ function init() {
     showScreen('home');
   });
 
-  // Exit Game - zeigt Popup an
-  btnExitGame.addEventListener('click', () => {
-    exitModal.style.display = 'flex';
-  });
+  // Exit Game - zeigt Popup an (wird überschrieben durch setupExitButtonHover)
+  // Der Click-Event wird jetzt in setupExitButtonHover behandelt
+  // btnExitGame.addEventListener('click', () => {
+  //   exitModal.style.display = 'flex';
+  // });
 
   // Popup Buttons
   btnBackToGame.addEventListener('click', () => {
