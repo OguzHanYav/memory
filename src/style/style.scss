@@ -292,11 +292,16 @@ body:has(#screen-settings.screen--active) {
 
 .settings-page__title {
   margin: 0;
-  font-size: 38px;
-  font-weight: 800;
   position: relative;
   display: inline-block;
   padding-left: 14px;
+  font-family: Red Rose;
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+
 }
 
 .settings-page__title::before {
@@ -363,9 +368,14 @@ body:has(#screen-settings.screen--active) {
 }
 
 .settings-block__title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 800;
+  font-family: Almarai;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 24px;
+  leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0%;
+
 }
 
 .radio-list {
@@ -386,6 +396,14 @@ body:has(#screen-settings.screen--active) {
   gap: 10px;
   text-align: left;
   user-select: none;
+  font-family: Almarai;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 20px;
+  leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0%;
+
 }
 
 .radio-item:hover {
@@ -429,6 +447,12 @@ body:has(#screen-settings.screen--active) {
   align-items: center;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.75);
+  font-family: Almarai;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+
 }
 
 .settings-actions__tabs .sep {
@@ -1035,7 +1059,7 @@ body:has(#screen-settings.screen--active) {
 
 .theme-code .board {
   margin-top: 50px;
-  row-gap: 10px ;
+  row-gap: 10px;
   column-gap: 34px;
 }
 
@@ -1510,9 +1534,14 @@ body:has(#screen-settings.screen--active) {
 
 .theme-food .result-gameover__title,
 .theme-food .result-winner-title,
+{
+color: #a45218 !important;
+font-size: 80px !important;
+}
+
 .theme-food .result-kicker {
   font-size: 40px !important;
-  color: #a45218;
+  color: #a45218 !important;
 }
 
 .theme-food .draw-icon-img {
@@ -1572,6 +1601,31 @@ body:has(#screen-settings.screen--active) {
 .theme-food .exit-modal__btn--secondary:hover {
   background: #ff8c42;
 
+}
+
+/* ============================================
+   THEME: FOOD - WINNER ICONS
+   ============================================ */
+.theme-food.result-screen--winner-blue .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 250px;
+  background-image: url('./assets/game-hud/FOOD-Theme/chess_pawn_blue.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.theme-food.result-screen--winner-orange .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 250px;
+  background-image: url('./assets/game-hud/FOOD-Theme/chess_pawn_orange.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* ============================================
