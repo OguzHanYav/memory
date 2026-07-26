@@ -115,16 +115,31 @@ function resetAndRestartGame(
     field.innerHTML = '';
   }
 
+  // Theme zurücksetzen auf Code (Standard)
+  const defaultTheme: ThemeId = 'code';
+  
+  // Alle Theme-Klassen von Body entfernen
+  document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+  
+  // Alle Theme-Klassen von Game Screen entfernen
+  const gameScreen = document.getElementById('screen-game');
+  if (gameScreen) {
+    gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+  }
+
+  // Renderer auf Standard-Theme setzen
+  renderer.setTheme(defaultTheme);
+
   // Game-Konfiguration zurücksetzen
   game.updateConfig({
-    theme: selectedTheme,
+    theme: defaultTheme,
     gridSize: selectedGrid,
     startingPlayer: selectedPlayer,
     pairs: pairsFromGrid(selectedGrid),
     flipBackDelayMs: 700,
   });
 
-  // Neues Spiel starten
+  // Neues Spiel starten (im Hintergrund)
   game.startNewGame();
 
   // UI zurücksetzen
@@ -132,13 +147,16 @@ function resetAndRestartGame(
   const orangeScoreEl = document.getElementById('orangeScore');
   
   if (blueScoreEl && orangeScoreEl) {
-    if (selectedTheme === 'code') {
-      blueScoreEl.textContent = 'Blue 0';
-      orangeScoreEl.textContent = 'Orange 0';
-    } else {
-      blueScoreEl.textContent = '0';
-      orangeScoreEl.textContent = '0';
-    }
+    blueScoreEl.textContent = 'Blue 0';
+    orangeScoreEl.textContent = 'Orange 0';
+  }
+
+  // Current Player Icon zurücksetzen
+  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
+  if (currentPlayerImg) {
+    currentPlayerImg.src = 'public/assets/Settings/topbar/label-blue.svg';
+    currentPlayerImg.classList.remove('player-blue', 'player-orange');
+    currentPlayerImg.classList.add('player-blue');
   }
 
   // Result Screen zurücksetzen
@@ -150,6 +168,55 @@ function resetAndRestartGame(
       'result-screen--draw',
       'result-screen--gameover'
     );
+  }
+
+  // Result Back Button Texte zurücksetzen
+  const resultBackText = document.getElementById('result-back-text');
+  const drawBackText = document.getElementById('draw-back-text');
+  if (resultBackText) {
+    resultBackText.textContent = 'Back to start';
+  }
+  if (drawBackText) {
+    drawBackText.textContent = 'Back to start';
+  }
+
+  // Exit Game Icon zurücksetzen
+  const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
+  if (exitGameIcon) {
+    exitGameIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+  }
+
+  // Preview Exit Icon zurücksetzen
+  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+  if (previewExitIcon) {
+    previewExitIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+  }
+
+  // Preview Bilder zurücksetzen
+  const previewImgMain = document.getElementById('preview-img-main') as HTMLImageElement;
+  const previewImgSub = document.getElementById('preview-img-sub') as HTMLImageElement;
+  if (previewImgMain) {
+    previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
+  }
+  if (previewImgSub) {
+    previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
+  }
+
+  // Preview Root zurücksetzen
+  const previewRoot = document.getElementById('theme-preview');
+  if (previewRoot) {
+    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+    previewRoot.classList.add('preview--code');
+  }
+
+  // Exit Popup Texte zurücksetzen
+  const backToGameText = document.getElementById('back-to-game-text');
+  const confirmExitText = document.getElementById('confirm-exit-text');
+  if (backToGameText) {
+    backToGameText.textContent = 'Back to game';
+  }
+  if (confirmExitText) {
+    confirmExitText.textContent = 'Exit game';
   }
 
   // Zur Home-Screen navigieren
