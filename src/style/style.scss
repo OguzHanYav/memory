@@ -585,6 +585,8 @@ body:has(#screen-settings.screen--active) {
   background: var(--bg);
   border-radius: 20px;
   padding: 20px;
+  width: 1440px;
+  height: 1024px;
 }
 
 .game-container {
@@ -1044,14 +1046,14 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-code .board {
-  gap: 32px;
   margin-top: 50px;
+  row-gap: 10px ;
+  column-gap: 34px;
 }
 
 .theme-code .card {
   height: 120px;
   width: 120px;
-  margin-bottom: -20px;
 }
 
 .theme-code .card__face {
@@ -1172,7 +1174,8 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-games .board {
-  gap: 8px;
+  row-gap: 0px;
+  column-gap: 8px;
   margin-top: 40px;
   padding: 4px;
 }
@@ -1180,7 +1183,7 @@ body:has(#screen-settings.screen--active) {
 .theme-games .card {
   height: 120px;
   width: 105px;
-  margin-bottom: calc((120px - var(--card-size)) / 2 * -1);
+  margin-bottom: -10px;
 }
 
 .theme-games .card__face {
@@ -1448,13 +1451,14 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .board {
-  gap: 8px;
+  row-gap: 8px;
+  column-gap: 52px;
   margin-top: 30px;
 }
 
 .theme-food .card {
-  height: 80px;
-  width: 80px;
+  height: 120px;
+  width: 122px;
 }
 
 .theme-food .card__face {
