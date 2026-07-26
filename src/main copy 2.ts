@@ -62,13 +62,6 @@ const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
   },
 };
 
-const RESULT_BACK_TEXTS: Record<ThemeId, string> = {
-  code: 'Back to start',
-  games: 'Home',
-  da: 'Home',
-  food: 'Home',
-};
-
 const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
 const VALID_GRID_SIZES: GridSize[] = [16, 24, 36];
 const VALID_PLAYERS: PlayerColor[] = ['blue', 'orange'];
@@ -99,61 +92,6 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result'): void {
   if (target) {
     target.classList.add('screen--active');
   }
-}
-
-/** Setzt das Spiel komplett zurück und startet neu */
-function resetAndRestartGame(
-  game: GameController,
-  renderer: Renderer,
-  selectedTheme: ThemeId,
-  selectedGrid: GridSize,
-  selectedPlayer: PlayerColor
-): void {
-  // Board leeren
-  const field = document.getElementById('field');
-  if (field) {
-    field.innerHTML = '';
-  }
-
-  // Game-Konfiguration zurücksetzen
-  game.updateConfig({
-    theme: selectedTheme,
-    gridSize: selectedGrid,
-    startingPlayer: selectedPlayer,
-    pairs: pairsFromGrid(selectedGrid),
-    flipBackDelayMs: 700,
-  });
-
-  // Neues Spiel starten
-  game.startNewGame();
-
-  // UI zurücksetzen
-  const blueScoreEl = document.getElementById('blueScore');
-  const orangeScoreEl = document.getElementById('orangeScore');
-  
-  if (blueScoreEl && orangeScoreEl) {
-    if (selectedTheme === 'code') {
-      blueScoreEl.textContent = 'Blue 0';
-      orangeScoreEl.textContent = 'Orange 0';
-    } else {
-      blueScoreEl.textContent = '0';
-      orangeScoreEl.textContent = '0';
-    }
-  }
-
-  // Result Screen zurücksetzen
-  const resultScreen = document.getElementById('screen-result');
-  if (resultScreen) {
-    resultScreen.classList.remove(
-      'result-screen--winner-blue',
-      'result-screen--winner-orange',
-      'result-screen--draw',
-      'result-screen--gameover'
-    );
-  }
-
-  // Zur Home-Screen navigieren
-  showScreen('home');
 }
 
 // ============================================
@@ -202,13 +140,6 @@ function init(): void {
   ) as HTMLSpanElement;
   const confirmExitText = document.getElementById(
     'confirm-exit-text'
-  ) as HTMLSpanElement;
-
-  const resultBackText = document.getElementById(
-    'result-back-text'
-  ) as HTMLSpanElement;
-  const drawBackText = document.getElementById(
-    'draw-back-text'
   ) as HTMLSpanElement;
 
   const exitModal = assertEl(
@@ -327,19 +258,6 @@ function init(): void {
     }
     if (confirmExitText) {
       confirmExitText.textContent = texts.confirm;
-    }
-  }
-
-  /** Aktualisiert die Result-Back-Button-Texte basierend auf dem Theme */
-  function updateResultBackText(theme: ThemeId): void {
-    const text = RESULT_BACK_TEXTS[theme];
-    if (!text) return;
-
-    if (resultBackText) {
-      resultBackText.textContent = text;
-    }
-    if (drawBackText) {
-      drawBackText.textContent = text;
     }
   }
 
@@ -466,7 +384,6 @@ function init(): void {
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
-    updateResultBackText(selectedTheme);
 
     const themeToShow = hoveredTheme || selectedTheme;
 
@@ -517,7 +434,6 @@ function init(): void {
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
-    updateResultBackText(selectedTheme);
 
     if (previewExitIcon) {
       previewExitIcon.src = EXIT_ICONS[selectedTheme];
@@ -577,13 +493,13 @@ function init(): void {
   // EVENT LISTENERS
   // ============================================
 
-  // Result Screen Back Buttons - Spiel komplett zurücksetzen
+  // Result Screen Back Buttons
   btnResultBack.addEventListener('click', () => {
-    resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
+    showScreen('home');
   });
 
   btnDrawBack.addEventListener('click', () => {
-    resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
+    showScreen('home');
   });
 
   // Popup Buttons

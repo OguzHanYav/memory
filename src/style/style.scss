@@ -748,19 +748,6 @@ body:has(#screen-settings.screen--active) {
   background: linear-gradient(135deg, #1a3a3a 0%, #0f2424 100%);
 }
 
-.result-confetti {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(255, 210, 63, 0.3) 2%, transparent 2.5%),
-    radial-gradient(circle at 80% 70%, rgba(46, 211, 183, 0.3) 1.5%, transparent 2%),
-    radial-gradient(circle at 40% 90%, rgba(255, 47, 139, 0.25) 2%, transparent 2.5%),
-    radial-gradient(circle at 90% 20%, rgba(42, 168, 255, 0.3) 1.8%, transparent 2.2%);
-  background-size: 60px 60px, 80px 80px, 100px 100px, 70px 70px;
-  background-repeat: repeat;
-  animation: confettiFloat 20s linear infinite;
-}
 
 @keyframes confettiFloat {
   0% {
@@ -826,11 +813,12 @@ body:has(#screen-settings.screen--active) {
    RESULT SCREEN - WINNER BLOCK
    ============================================ */
 .result-kicker {
-  font-size: 16px;
+  font-size: 40px;
   text-transform: uppercase;
   letter-spacing: 3px;
   opacity: 0.7;
   margin-bottom: 16px;
+  color: white;
 }
 
 .result-winner-title {
@@ -858,7 +846,7 @@ body:has(#screen-settings.screen--active) {
    RESULT SCREEN - DRAW BLOCK
    ============================================ */
 .result-draw-title {
-  font-size: 72px;
+  font-size: 128px;
   font-weight: 800;
   margin: 0 0 20px 0;
   letter-spacing: 4px;
@@ -867,8 +855,8 @@ body:has(#screen-settings.screen--active) {
 
 .draw-icon-img {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 339px;
+  height: 272px;
   margin: 0 auto;
   background-size: contain;
   background-repeat: no-repeat;
@@ -920,7 +908,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   RESULT SCREEN - BACK BUTTON
+   RESULT SCREEN - BACK BUTTON (BASE)
    ============================================ */
 .result-back-btn {
   margin-top: 50px;
@@ -929,7 +917,7 @@ body:has(#screen-settings.screen--active) {
   color: white;
   padding: 12px 30px;
   border-radius: 40px;
-  font-size: 14px;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1077,6 +1065,22 @@ body:has(#screen-settings.screen--active) {
   text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
 }
 
+.theme-code .result-back-btn {
+  background: rgba(46, 211, 183, 0.2);
+  border: 2px solid rgba(46, 211, 183, 0.5);
+  color: #2ed3b7;
+  font-family: 'Red Rose', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.theme-code .result-back-btn:hover {
+  background: rgba(46, 211, 183, 0.3);
+  border-color: #2ed3b7;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(46, 211, 183, 0.2);
+}
+
 .theme-code .exit-modal__content {
   width: 539px;
   height: 270px;
@@ -1210,6 +1214,23 @@ body:has(#screen-settings.screen--active) {
 .theme-games .result-draw-title {
   color: #ff2f8b !important;
   text-shadow: 0 0 20px rgba(255, 47, 139, 0.5);
+}
+
+.theme-games .result-back-btn {
+  background: rgba(255, 47, 139, 0.15);
+  border: 2px solid rgba(255, 47, 139, 0.5);
+  color: #ff2f8b;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.theme-games .result-back-btn:hover {
+  background: rgba(255, 47, 139, 0.3);
+  border-color: #ff2f8b;
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 47, 139, 0.3);
 }
 
 .theme-games .result-screen--winner-blue .result-player-icon::before {
@@ -1354,6 +1375,22 @@ body:has(#screen-settings.screen--active) {
   text-shadow: 0 0 20px rgba(47, 127, 166, 0.5);
 }
 
+.theme-da .result-back-btn {
+  background: rgba(30, 117, 148, 0.15);
+  border: 2px solid rgba(30, 117, 148, 0.4);
+  color: #0f2a35;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.theme-da .result-back-btn:hover {
+  background: rgba(30, 117, 148, 0.25);
+  border-color: #1e7594;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(30, 117, 148, 0.2);
+}
+
 .theme-da .exit-modal__content {
   background: #f4fbff;
   color: #0f2a35;
@@ -1466,13 +1503,15 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-screen {
-  background: #ff8c42 !important;
+  background: white !important;
+  width: 100%;
 }
 
 .theme-food .result-gameover__title,
 .theme-food .result-winner-title,
 .theme-food .result-kicker {
-  color: #fff !important;
+  font-size: 40px !important;
+  color: #a45218;
 }
 
 .theme-food .draw-icon-img {
@@ -1482,6 +1521,22 @@ body:has(#screen-settings.screen--active) {
 .theme-food .result-draw-title {
   color: #ff8c42 !important;
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
+}
+
+.theme-food .result-back-btn {
+  background: rgba(255, 140, 66, 0.15);
+  border: 2px solid rgba(255, 140, 66, 0.4);
+  color: #2a1408;
+  font-family: 'Klee One', cursive;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.theme-food .result-back-btn:hover {
+  background: rgba(255, 140, 66, 0.3);
+  border-color: #ff8c42;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 140, 66, 0.2);
 }
 
 .theme-food .exit-modal__content {
@@ -1902,6 +1957,6 @@ body:has(#screen-settings.screen--active) {
 }
 
 .result-screen--winner-orange .result-winner-title {
-  color: #ff8c42;
+  color: #a45218;
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
 }

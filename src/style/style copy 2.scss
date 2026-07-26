@@ -826,11 +826,12 @@ body:has(#screen-settings.screen--active) {
    RESULT SCREEN - WINNER BLOCK
    ============================================ */
 .result-kicker {
-  font-size: 16px;
+  font-size: 40px;
   text-transform: uppercase;
   letter-spacing: 3px;
   opacity: 0.7;
   margin-bottom: 16px;
+  color: white;
 }
 
 .result-winner-title {
@@ -858,7 +859,7 @@ body:has(#screen-settings.screen--active) {
    RESULT SCREEN - DRAW BLOCK
    ============================================ */
 .result-draw-title {
-  font-size: 72px;
+  font-size: 128px;
   font-weight: 800;
   margin: 0 0 20px 0;
   letter-spacing: 4px;
@@ -867,8 +868,8 @@ body:has(#screen-settings.screen--active) {
 
 .draw-icon-img {
   display: block;
-  width: 120px;
-  height: 120px;
+  width: 339px;
+  height: 272px;
   margin: 0 auto;
   background-size: contain;
   background-repeat: no-repeat;
@@ -929,7 +930,7 @@ body:has(#screen-settings.screen--active) {
   color: white;
   padding: 12px 30px;
   border-radius: 40px;
-  font-size: 14px;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1466,13 +1467,15 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-screen {
-  background: #ff8c42 !important;
+  background: white !important;
+  width: 100%;
 }
 
 .theme-food .result-gameover__title,
 .theme-food .result-winner-title,
 .theme-food .result-kicker {
   color: #fff !important;
+  font-size: 40px !important;
 }
 
 .theme-food .draw-icon-img {
