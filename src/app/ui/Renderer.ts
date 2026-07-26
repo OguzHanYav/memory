@@ -1,9 +1,12 @@
 import type { CardData, GridSize, ThemeId } from '../core/types';
 
+// ============================================
+// RENDERER CLASS
+// ============================================
+
 export class Renderer {
   private root: HTMLElement;
   private gameScreen: HTMLElement;
-
   private grid: GridSize = 16;
   private theme: ThemeId = 'code';
 
@@ -12,82 +15,106 @@ export class Renderer {
     this.gameScreen = document.getElementById('screen-game') as HTMLElement;
   }
 
-  setGrid(grid: GridSize) {
+  /** Setzt die Grid-Größe */
+  setGrid(grid: GridSize): void {
     this.grid = grid;
     this.applyBoardColumns(grid);
   }
 
-  setTheme(theme: ThemeId) {
+  /** Setzt das Theme */
+  setTheme(theme: ThemeId): void {
     this.theme = theme;
 
-    // Theme-Klasse auf body (für globale Styles wie Cards)
+    // Theme-Klasse auf Body (für globale Styles)
     document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     document.body.classList.add(`theme-${theme}`);
 
-    // Theme-Klasse auf game-screen (für HUD-Styles)
+    // Theme-Klasse auf Game-Screen (für HUD-Styles)
     if (this.gameScreen) {
       this.gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
       this.gameScreen.classList.add(`theme-${theme}`);
     }
   }
 
-  renderBoard(cards: CardData[]) {
+  /** Rendert das gesamte Board */
+  renderBoard(cards: CardData[]): void {
     this.root.innerHTML = '';
     this.applyBoardColumns(cards.length);
 
     for (const card of cards) {
-      this.root.appendChild(this.createCardEl(card));
+      this.root.appendChild(this.createCardElement(card));
     }
   }
 
-  updateCard(card: CardData) {
-    const el = this.root.querySelector<HTMLButtonElement>(`.card[data-id="${card.id}"]`);
-    if (!el) return;
+  /** Aktualisiert eine einzelne Karte */
+  updateCard(card: CardData): void {
+    const selector = `.card[data-id="${card.id}"]`;
+    const element = this.root.querySelector<HTMLButtonElement>(selector);
 
-    el.classList.toggle('is-flipped', card.state !== 'hidden');
-    el.disabled = card.state === 'matched';
+    if (!element) return;
+
+    const isFlipped = card.state !== 'hidden';
+    const isMatched = card.state === 'matched';
+
+    element.classList.toggle('is-flipped', isFlipped);
+    element.disabled = isMatched;
   }
 
-  private applyBoardColumns(total: number) {
-    let cols = 4;
-    if (total === 16) cols = 4;
-    else if (total === 24) cols = 6;
-    else if (total === 36) cols = 6;
+  // ============================================
+  // PRIVATE METHODS
+  // ============================================
 
-    this.root.style.gridTemplateColumns = `repeat(${cols}, var(--card-size))`;
+  /** Wendet die Grid-Columns basierend auf der Kartenzahl an */
+  private applyBoardColumns(total: number): void {
+    let columns = 4;
+
+    if (total === 16) {
+      columns = 4;
+    } else if (total === 24) {
+      columns = 6;
+    } else if (total === 36) {
+      columns = 6;
+    }
+
+    this.root.style.gridTemplateColumns = `repeat(${columns}, var(--card-size))`;
   }
 
-  private applyCoverBg(el: HTMLElement, src: string) {
-    el.style.backgroundImage = `url("${src}")`;
-    el.style.backgroundSize = 'cover';
-    el.style.backgroundPosition = 'center';
-    el.style.backgroundRepeat = 'no-repeat';
+  /** Wendet ein Hintergrundbild auf ein Element an */
+  private applyCoverBackground(element: HTMLElement, src: string): void {
+    element.style.backgroundImage = `url("${src}")`;
+    element.style.backgroundSize = 'cover';
+    element.style.backgroundPosition = 'center';
+    element.style.backgroundRepeat = 'no-repeat';
   }
 
-  private createCardEl(card: CardData): HTMLButtonElement {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'card';
-    btn.dataset.id = card.id;
+  /** Erstellt ein DOM-Element für eine Karte */
+  private createCardElement(card: CardData): HTMLButtonElement {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'card';
+    button.dataset.id = card.id;
 
-    btn.classList.toggle('is-flipped', card.state !== 'hidden');
-    btn.disabled = card.state === 'matched';
+    const isFlipped = card.state !== 'hidden';
+    const isMatched = card.state === 'matched';
+
+    button.classList.toggle('is-flipped', isFlipped);
+    button.disabled = isMatched;
 
     const inner = document.createElement('div');
     inner.className = 'card__inner';
 
     const faceFront = document.createElement('div');
     faceFront.className = 'card__face card__face--front';
-    this.applyCoverBg(faceFront, card.backSrc);
+    this.applyCoverBackground(faceFront, card.backSrc);
 
     const faceBack = document.createElement('div');
     faceBack.className = 'card__face card__face--back';
-    this.applyCoverBg(faceBack, card.frontSrc);
+    this.applyCoverBackground(faceBack, card.frontSrc);
 
     inner.appendChild(faceFront);
     inner.appendChild(faceBack);
-    btn.appendChild(inner);
+    button.appendChild(inner);
 
-    return btn;
+    return button;
   }
 }

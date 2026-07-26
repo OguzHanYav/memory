@@ -1,4 +1,8 @@
-export function assertEl<T extends Element>(el: T | null, msg: string): T {
-  if (!el) throw new Error(msg);
-  return el;
+/** Gibt das Element zurück oder wirft einen Fehler, wenn es nicht existiert */
+export function assertEl<T extends Element>(element: T | null, message: string): T {
+  if (!element) {
+    throw new Error(message);
+  }
+
+  return element;
 }

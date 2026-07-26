@@ -1,252 +1,537 @@
+<!DOCTYPE html>
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory</title>
+  <title>Memory Game</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <main class="app">
-    <!-- HOME SCREEN -->
-    <section id="screen-home" class="screen screen--active" aria-label="Home screen">
+    <!-- ============================================
+    HOME SCREEN
+    ============================================ -->
+    <section 
+      id="screen-home" 
+      class="screen screen--active" 
+      aria-label="Home screen"
+    >
       <div class="panel panel--home">
         <div class="home-content">
-          <p class="muted">It’s play time</p>
+          <p class="muted">It's play time</p>
           <h1 class="title">Ready to play?</h1>
-          <div style="display: flex; justify-content: center;">
-            <button id="btn-go-settings" class="btn btn--primary" type="button">
-              <img src="public/assets/Home-screen/Frame 530.svg" alt="Play" />
+          
+          <div class="home-actions">
+            <button 
+              id="btn-go-settings" 
+              class="btn btn--primary" 
+              type="button"
+              aria-label="Open settings"
+            >
+              <img 
+                src="public/assets/Home-screen/Frame 530.svg" 
+                alt="Play button" 
+                width="250" 
+                height="98"
+              />
             </button>
           </div>
-
         </div>
-        <img class="home-controller" src="public/assets/Home-screen/stadia_controller.svg" alt="" />
+
+        <img 
+          class="home-controller" 
+          src="public/assets/Home-screen/stadia_controller.svg" 
+          alt="Game controller decoration" 
+          aria-hidden="true"
+        />
       </div>
     </section>
 
-    <!-- SETTINGS SCREEN -->
-    <section id="screen-settings" class="screen" aria-label="Settings screen">
+    <!-- ============================================
+    SETTINGS SCREEN
+    ============================================ -->
+    <section 
+      id="screen-settings" 
+      class="screen" 
+      aria-label="Settings screen"
+    >
       <div class="settings-page">
         <header class="settings-page__header">
           <h2 class="settings-page__title">Settings</h2>
         </header>
 
         <div class="settings-layout">
-          <div class="settings-form">
-            <div class="settings-block">
-              <div class="settings-block__headline">
-                <span class="settings-icon settings-icon--themes">🎨</span>
+          <!-- Settings Form -->
+          <form class="settings-form" aria-label="Game settings">
+            <!-- Game Themes -->
+            <section class="settings-block">
+              <header class="settings-block__headline">
+                <span class="settings-icon settings-icon--themes" aria-hidden="true">🎨</span>
                 <h3 class="settings-block__title">Game themes</h3>
-              </div>
+              </header>
 
-              <div class="radio-list">
+              <div class="radio-list" role="radiogroup" aria-label="Game themes">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="code" checked />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="theme" 
+                    value="code" 
+                    checked 
+                    role="radio"
+                    aria-label="Code vibes theme"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>Code vibes theme</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="games" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="theme" 
+                    value="games" 
+                    role="radio"
+                    aria-label="Gaming theme"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>Gaming theme</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="da" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="theme" 
+                    value="da" 
+                    role="radio"
+                    aria-label="DA Projects theme"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>DA Projects theme</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="food" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="theme" 
+                    value="food" 
+                    role="radio"
+                    aria-label="Foods theme"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>Foods theme</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
               </div>
-            </div>
+            </section>
 
-            <div class="settings-block">
-              <div class="settings-block__headline">
-                <span class="settings-icon settings-icon--player">👤</span>
+            <!-- Starting Player -->
+            <section class="settings-block">
+              <header class="settings-block__headline">
+                <span class="settings-icon settings-icon--player" aria-hidden="true">👤</span>
                 <h3 class="settings-block__title">Choose player</h3>
-              </div>
+              </header>
 
-              <div class="radio-list">
+              <div class="radio-list" role="radiogroup" aria-label="Starting player">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="startingPlayer" 
+                    value="blue" 
+                    checked 
+                    role="radio"
+                    aria-label="Blue player starts"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>Blue</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="startingPlayer" value="orange" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="startingPlayer" 
+                    value="orange" 
+                    role="radio"
+                    aria-label="Orange player starts"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>Orange</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
               </div>
-            </div>
+            </section>
 
-            <div class="settings-block">
-              <div class="settings-block__headline">
-                <span class="settings-icon settings-icon--board">🧩</span>
+            <!-- Board Size -->
+            <section class="settings-block">
+              <header class="settings-block__headline">
+                <span class="settings-icon settings-icon--board" aria-hidden="true">🧩</span>
                 <h3 class="settings-block__title">Board size</h3>
-              </div>
+              </header>
 
-              <div class="radio-list">
+              <div class="radio-list" role="radiogroup" aria-label="Board size">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="grid" value="16" checked />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="grid" 
+                    value="16" 
+                    checked 
+                    role="radio"
+                    aria-label="16 cards"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>16 cards</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="grid" value="24" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="grid" 
+                    value="24" 
+                    role="radio"
+                    aria-label="24 cards"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>24 cards</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="grid" value="36" />
-                  <span class="radio-dot"></span>
+                  <input 
+                    class="radio-input" 
+                    type="radio" 
+                    name="grid" 
+                    value="36" 
+                    role="radio"
+                    aria-label="36 cards"
+                  />
+                  <span class="radio-dot" aria-hidden="true"></span>
                   <span>36 cards</span>
-                  <img class="radio-arrow" src="public/assets/Settings/Line 3.svg" alt="arrow" />
+                  <img 
+                    class="radio-arrow" 
+                    src="public/assets/Settings/Line 3.svg" 
+                    alt="" 
+                    aria-hidden="true"
+                  />
                 </label>
               </div>
-            </div>
-          </div>
+            </section>
+          </form>
 
-          <aside class="settings-preview">
+          <!-- Preview & Actions -->
+          <aside class="settings-preview" aria-label="Theme preview">
             <div id="theme-preview" class="preview preview--code">
-              <div class="preview__topbar">
+              <header class="preview__topbar">
                 <div class="preview__scores">
-                  <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="10" height="8" />
+                  <img 
+                    src="public/assets/Settings/topbar/label.svg" 
+                    alt="Blue score" 
+                    width="10" 
+                    height="8"
+                  />
                   <span class="preview-chip preview-chip--blue">Blue 0</span>
 
-                  <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="10" height="8" />
+                  <img 
+                    src="public/assets/Settings/topbar/label-orange.svg" 
+                    alt="Orange score" 
+                    width="10" 
+                    height="8"
+                  />
                   <span class="preview-chip preview-chip--orange">Orange 6</span>
                 </div>
 
                 <div class="preview__current">
-                  Current player:
-                  <img class="preview-dot" src="public/assets/Settings/topbar/label-orange.svg" alt="">
+                  <span>Current player:</span>
+                  <img 
+                    class="preview-dot" 
+                    src="public/assets/Settings/topbar/label-orange.svg" 
+                    alt="Current player indicator"
+                  />
                 </div>
 
-                <button class="preview-exit" type="button" disabled><img id="previewExitIcon"
-                    src="public/assets/Settings/topbar/move_item.svg" alt="" width="12" height="12">Exit game</button>
-              </div>
+                <button 
+                  class="preview-exit" 
+                  type="button" 
+                  disabled
+                  aria-label="Exit game (preview)"
+                >
+                  <img 
+                    id="previewExitIcon"
+                    src="public/assets/Settings/topbar/move_item.svg" 
+                    alt="" 
+                    width="12" 
+                    height="12"
+                    aria-hidden="true"
+                  />
+                  Exit game
+                </button>
+              </header>
 
               <div class="preview__stage">
-                <img id="preview-img-main" class="preview__img preview__img--main" src="" alt="Theme preview main" />
-                <img id="preview-img-sub" class="preview__img preview__img--sub" src="" alt="Theme preview secondary" />
+                <img 
+                  id="preview-img-main" 
+                  class="preview__img preview__img--main" 
+                  src="" 
+                  alt="Theme preview main card"
+                />
+                <img 
+                  id="preview-img-sub" 
+                  class="preview__img preview__img--sub" 
+                  src="" 
+                  alt="Theme preview secondary card"
+                />
               </div>
             </div>
 
-            <!-- settings-actions jetzt unter der Preview -->
-            <div class="settings-actions">
-              <div class="settings-actions__tabs">
+            <!-- Settings Actions -->
+            <footer class="settings-actions">
+              <nav class="settings-actions__tabs" aria-label="Settings navigation">
                 <span>Game theme</span>
-                <span class="sep">/</span>
+                <span class="sep" aria-hidden="true">/</span>
                 <span>Player</span>
-                <span class="sep">/</span>
+                <span class="sep" aria-hidden="true">/</span>
                 <span>Board size</span>
-              </div>
-              <button id="btn-start-game" class="btn-start" type="button">Start</button>
-            </div>
+              </nav>
+              <button 
+                id="btn-start-game" 
+                class="btn-start" 
+                type="button"
+                aria-label="Start game with current settings"
+              >
+                Start
+              </button>
+            </footer>
           </aside>
         </div>
       </div>
     </section>
 
-    <!-- GAME SCREEN -->
-    <section id="screen-game" class="screen" aria-label="Game screen">
+    <!-- ============================================
+    GAME SCREEN
+    ============================================ -->
+    <section 
+      id="screen-game" 
+      class="screen" 
+      aria-label="Game screen"
+    >
       <div class="game-container">
-        <!-- GAME HUD -->
-        <div class="game-hud game-hud--preview-style">
+        <!-- Game HUD -->
+        <header class="game-hud game-hud--preview-style">
           <div class="preview__scores">
-            <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="24" height="20" />
+            <img 
+              src="public/assets/Settings/topbar/label.svg" 
+              alt="Blue player score" 
+              width="24" 
+              height="20"
+            />
             <span id="blueScore" class="preview-chip preview-chip--blue">Blue 0</span>
 
-            <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="24" height="20" />
+            <img 
+              src="public/assets/Settings/topbar/label-orange.svg" 
+              alt="Orange player score" 
+              width="24" 
+              height="20"
+            />
             <span id="orangeScore" class="preview-chip preview-chip--orange">Orange 0</span>
           </div>
 
           <div class="preview__current">
-            Current player:
-            <img id="currentPlayerImg" class="preview-dot" src="public/assets/Settings/topbar/label-blue.svg"
-              alt="Current Player">
+            <span>Current player:</span>
+            <img 
+              id="currentPlayerImg" 
+              class="preview-dot" 
+              src="public/assets/Settings/topbar/label-blue.svg"
+              alt="Current player indicator"
+            />
           </div>
 
-          <button id="btn-exit-game" class="preview-exit" type="button">
-            <img id="exitGameIcon" src="public/assets/Settings/topbar/move_item.svg" alt="Exit Game" width="30"
-              height="30" />Exit game
+          <button 
+            id="btn-exit-game" 
+            class="preview-exit" 
+            type="button"
+            aria-label="Exit game"
+          >
+            <img 
+              id="exitGameIcon" 
+              src="public/assets/Settings/topbar/move_item.svg" 
+              alt="" 
+              width="30" 
+              height="30"
+              aria-hidden="true"
+            />
+            Exit game
           </button>
-        </div>
+        </header>
 
         <!-- Game Board -->
-        <section id="field" class="board" aria-label="Memory board"></section>
+        <section 
+          id="field" 
+          class="board" 
+          aria-label="Memory board"
+        ></section>
       </div>
     </section>
 
-    <!-- RESULT SCREEN -->
-    <section id="screen-result" class="screen result-screen" aria-label="Result screen">
+    <!-- ============================================
+    RESULT SCREEN
+    ============================================ -->
+    <section 
+      id="screen-result" 
+      class="screen result-screen" 
+      aria-label="Result screen"
+    >
       <div id="result-confetti" class="result-confetti" aria-hidden="true"></div>
 
+      <!-- Game Over Block -->
       <div id="result-gameover" class="result-block result-block--gameover">
         <h1 class="result-gameover__title">Game over</h1>
         <p class="result-score-label">Final score</p>
-        <div class="result-score">
-          <span class="result-score__blue">Blue <strong id="result-blue-score">0</strong></span>
-          <span class="result-score__orange">Orange <strong id="result-orange-score">0</strong></span>
-        </div>
+        
+        <dl class="result-score">
+          <div>
+            <dt class="result-score__blue">Blue</dt>
+            <dd><strong id="result-blue-score">0</strong></dd>
+          </div>
+          <div>
+            <dt class="result-score__orange">Orange</dt>
+            <dd><strong id="result-orange-score">0</strong></dd>
+          </div>
+        </dl>
       </div>
 
+      <!-- Winner Block -->
       <div id="result-winner" class="result-block result-block--winner" style="display: none;">
         <p class="result-kicker">The winner is</p>
         <h1 id="result-winner-title" class="result-winner-title">BLUE PLAYER</h1>
         <div id="result-player-icon" class="result-player-icon" aria-hidden="true"></div>
-        <button id="btn-result-back" class="btn result-back-btn" type="button">Back to start</button>
+        
+        <button 
+          id="btn-result-back" 
+          class="btn result-back-btn" 
+          type="button"
+          aria-label="Back to home screen"
+        >
+          Back to start
+        </button>
       </div>
 
+      <!-- Draw Block -->
       <div id="result-draw" class="result-block result-block--draw" style="display: none;">
-        <p class="result-kicker">It’s a</p>
+        <p class="result-kicker">It's a</p>
         <h1 class="result-draw-title">DRAW</h1>
         <div id="draw-icon-img" class="draw-icon-img" aria-hidden="true"></div>
-        <button id="btn-draw-back" class="btn result-back-btn" type="button">Back to start</button>
+        
+        <button 
+          id="btn-draw-back" 
+          class="btn result-back-btn" 
+          type="button"
+          aria-label="Back to home screen"
+        >
+          Back to start
+        </button>
       </div>
     </section>
 
-    <!-- EXIT CONFIRMATION POPUP -->
-    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" style="display: none;">
-      <div class="exit-modal__overlay"></div>
+    <!-- ============================================
+    EXIT CONFIRMATION POPUP
+    ============================================ -->
+    <div 
+      id="modal-exit" 
+      class="exit-modal" 
+      role="dialog" 
+      aria-modal="true" 
+      aria-labelledby="exit-modal-title"
+      style="display: none;"
+    >
+      <div class="exit-modal__overlay" aria-hidden="true"></div>
+      
       <div class="exit-modal__content">
-        <h2 class="exit-modal__title">Are you sure you want to quit the game?</h2>
+        <h2 id="exit-modal-title" class="exit-modal__title">
+          Are you sure you want to quit the game?
+        </h2>
+        
         <div class="exit-modal__actions">
-          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button">
+          <button 
+            id="btn-back-to-game" 
+            class="exit-modal__btn exit-modal__btn--secondary" 
+            type="button"
+            aria-label="Return to game"
+          >
             <span id="back-to-game-text">Back to game</span>
           </button>
-          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button">
+          
+          <button 
+            id="btn-confirm-exit" 
+            class="exit-modal__btn exit-modal__btn--primary" 
+            type="button"
+            aria-label="Confirm exit game"
+          >
             <span id="confirm-exit-text">Exit game</span>
           </button>
         </div>
       </div>
     </div>
-
   </main>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
-
 </html>

@@ -1,6 +1,10 @@
 import type { CardData, CardState } from '../core/types';
 
-type CardCtor = {
+// ============================================
+// TYPES
+// ============================================
+
+type CardConstructor = {
   id: string;
   pairId: string;
   frontSrc: string;
@@ -8,16 +12,18 @@ type CardCtor = {
   state?: CardState;
 };
 
+// ============================================
+// CARD CLASS
+// ============================================
+
 export class Card implements CardData {
   id: string;
   pairId: string;
-
   frontSrc: string;
   backSrc: string;
-
   state: CardState;
 
-  constructor(data: CardCtor) {
+  constructor(data: CardConstructor) {
     this.id = data.id;
     this.pairId = data.pairId;
     this.frontSrc = data.frontSrc;

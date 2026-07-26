@@ -1,10 +1,17 @@
+// ============================================
+// CORE TYPES
+// ============================================
+
 export type CardState = 'hidden' | 'revealed' | 'matched';
 export type GameStatus = 'idle' | 'running' | 'won';
 
 export type GridSize = 16 | 24 | 36;
 export type ThemeId = 'code' | 'games' | 'da' | 'food';
-
 export type PlayerColor = 'blue' | 'orange';
+
+// ============================================
+// INTERFACES
+// ============================================
 
 export interface GameConfig {
   gridSize: GridSize;
@@ -17,12 +24,7 @@ export interface GameConfig {
 export interface CardData {
   id: string;
   pairId: string;
-
-  /** hidden-side (pattern / back card) */
   backSrc: string;
-
-  /** revealed-side (icon / front card) */
   frontSrc: string;
-
   state: CardState;
 }

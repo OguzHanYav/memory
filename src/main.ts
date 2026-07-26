@@ -3,39 +3,13 @@ import './style/style.scss';
 import { assertEl } from './app/utils/dom';
 import { Renderer } from './app/ui/Renderer';
 import { GameController } from './app/controllers/GameController';
+
 import type { GridSize, ThemeId, PlayerColor } from './app/core/types';
 
-function pairsFromGrid(grid: GridSize): number {
-  return grid / 2;
-}
-
-function showScreen(id: 'home' | 'settings' | 'game' | 'result') {
-  const home = assertEl(document.getElementById('screen-home'), 'Missing #screen-home');
-  const settings = assertEl(document.getElementById('screen-settings'), 'Missing #screen-settings');
-  const game = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
-  const result = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
-
-  // Alle Screens ausblenden
-  home.classList.remove('screen--active');
-  settings.classList.remove('screen--active');
-  game.classList.remove('screen--active');
-  result.classList.remove('screen--active');
-
-  // Nur den gewünschten Screen anzeigen
-  if (id === 'home') {
-    home.classList.add('screen--active');
-  } else if (id === 'settings') {
-    settings.classList.add('screen--active');
-  } else if (id === 'game') {
-    game.classList.add('screen--active');
-  } else if (id === 'result') {
-    result.classList.add('screen--active');
-  }
-}
-
 // ============================================
-// THEME-SPEZIFISCHE HUD ICONS
+// CONSTANTS
 // ============================================
+
 const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
   code: {
     blue: 'public/assets/Settings/topbar/label.svg',
@@ -55,9 +29,6 @@ const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
   },
 };
 
-// ============================================
-// EXIT GAME ICONS PRO THEME
-// ============================================
 const EXIT_ICONS: Record<ThemeId, string> = {
   code: 'public/assets/Settings/topbar/move_item.svg',
   games: 'public/assets/Settings/topbar/move_item.svg',
@@ -65,19 +36,13 @@ const EXIT_ICONS: Record<ThemeId, string> = {
   food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
 };
 
-// ============================================
-// EXIT GAME ICONS HOVER PRO THEME
-// ============================================
 const EXIT_ICONS_HOVER: Record<ThemeId, string> = {
-  code: 'public/assets/Settings/topbar/move_item_hover.svg',
+  code: '',
   games: 'public/assets/game-hud/GAME-Theme/move_item.svg',
   da: 'public/assets/Settings/topbar/move_item.svg',
   food: 'public/assets/Settings/topbar/move_item.svg',
 };
 
-// ============================================
-// EXIT POPUP TEXTE PRO THEME
-// ============================================
 const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
   code: {
     back: 'Back to game',
@@ -97,46 +62,144 @@ const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
   },
 };
 
-function init() {
-  // Screens
-  const btnGoSettings = assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings');
-  const btnStartGame = assertEl(document.getElementById('btn-start-game'), 'Missing #btn-start-game');
+const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
+const VALID_GRID_SIZES: GridSize[] = [16, 24, 36];
+const VALID_PLAYERS: PlayerColor[] = ['blue', 'orange'];
 
-  // Game UI
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+/** Berechnet die Anzahl der Paare basierend auf der Grid-Größe */
+function pairsFromGrid(grid: GridSize): number {
+  return grid / 2;
+}
+
+/** Zeigt den gewünschten Screen an und blendet alle anderen aus */
+function showScreen(id: 'home' | 'settings' | 'game' | 'result'): void {
+  const screens = {
+    home: document.getElementById('screen-home'),
+    settings: document.getElementById('screen-settings'),
+    game: document.getElementById('screen-game'),
+    result: document.getElementById('screen-result'),
+  };
+
+  // Alle Screens ausblenden
+  Object.values(screens).forEach((el) => el?.classList.remove('screen--active'));
+
+  // Nur den gewünschten Screen anzeigen
+  const target = screens[id];
+  if (target) {
+    target.classList.add('screen--active');
+  }
+}
+
+// ============================================
+// MAIN INIT FUNCTION
+// ============================================
+
+function init(): void {
+  // ----- DOM References -----
+  const btnGoSettings = assertEl(
+    document.getElementById('btn-go-settings'),
+    'Missing #btn-go-settings'
+  );
+  const btnStartGame = assertEl(
+    document.getElementById('btn-start-game'),
+    'Missing #btn-start-game'
+  );
+
   const field = assertEl(document.getElementById('field'), 'Missing #field');
-  const blueScoreEl = assertEl(document.getElementById('blueScore'), 'Missing #blueScore');
-  const orangeScoreEl = assertEl(document.getElementById('orangeScore'), 'Missing #orangeScore');
+  const blueScoreEl = assertEl(
+    document.getElementById('blueScore'),
+    'Missing #blueScore'
+  );
+  const orangeScoreEl = assertEl(
+    document.getElementById('orangeScore'),
+    'Missing #orangeScore'
+  );
 
-  // HUD Icons
-  const blueIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement;
-  const orangeIconImg = document.querySelector('.game-hud--preview-style .preview__scores img:last-of-type') as HTMLImageElement;
-  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
-  const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
-  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+  const blueIconImg = document.querySelector(
+    '.game-hud--preview-style .preview__scores img:first-of-type'
+  ) as HTMLImageElement;
+  const orangeIconImg = document.querySelector(
+    '.game-hud--preview-style .preview__scores img:last-of-type'
+  ) as HTMLImageElement;
+  const currentPlayerImg = document.getElementById(
+    'currentPlayerImg'
+  ) as HTMLImageElement;
+  const exitGameIcon = document.getElementById(
+    'exitGameIcon'
+  ) as HTMLImageElement;
+  const previewExitIcon = document.getElementById(
+    'previewExitIcon'
+  ) as HTMLImageElement;
 
-  // Exit Popup Textelemente
-  const backToGameText = document.getElementById('back-to-game-text') as HTMLSpanElement;
-  const confirmExitText = document.getElementById('confirm-exit-text') as HTMLSpanElement;
+  const backToGameText = document.getElementById(
+    'back-to-game-text'
+  ) as HTMLSpanElement;
+  const confirmExitText = document.getElementById(
+    'confirm-exit-text'
+  ) as HTMLSpanElement;
 
-  // Exit Modal Elements
-  const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
-  const btnBackToGame = assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game');
-  const btnConfirmExit = assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit');
-  const btnExitGame = assertEl(document.getElementById('btn-exit-game'), 'Missing #btn-exit-game');
+  const exitModal = assertEl(
+    document.getElementById('modal-exit'),
+    'Missing #modal-exit'
+  );
+  const btnBackToGame = assertEl(
+    document.getElementById('btn-back-to-game'),
+    'Missing #btn-back-to-game'
+  );
+  const btnConfirmExit = assertEl(
+    document.getElementById('btn-confirm-exit'),
+    'Missing #btn-confirm-exit'
+  );
+  const btnExitGame = assertEl(
+    document.getElementById('btn-exit-game'),
+    'Missing #btn-exit-game'
+  );
 
-  // Result Screen Elements
-  const resultScreen = assertEl(document.getElementById('screen-result'), 'Missing #screen-result');
-  const resultGameover = assertEl(document.getElementById('result-gameover'), 'Missing #result-gameover');
-  const resultWinner = assertEl(document.getElementById('result-winner'), 'Missing #result-winner');
-  const resultDraw = assertEl(document.getElementById('result-draw'), 'Missing #result-draw');
-  const resultBlueScore = assertEl(document.getElementById('result-blue-score'), 'Missing #result-blue-score');
-  const resultOrangeScore = assertEl(document.getElementById('result-orange-score'), 'Missing #result-orange-score');
-  const resultWinnerTitle = assertEl(document.getElementById('result-winner-title'), 'Missing #result-winner-title');
-  const btnResultBack = assertEl(document.getElementById('btn-result-back'), 'Missing #btn-result-back');
-  const btnDrawBack = assertEl(document.getElementById('btn-draw-back'), 'Missing #btn-draw-back');
+  const resultScreen = assertEl(
+    document.getElementById('screen-result'),
+    'Missing #screen-result'
+  );
+  const resultGameover = assertEl(
+    document.getElementById('result-gameover'),
+    'Missing #result-gameover'
+  );
+  const resultWinner = assertEl(
+    document.getElementById('result-winner'),
+    'Missing #result-winner'
+  );
+  const resultDraw = assertEl(
+    document.getElementById('result-draw'),
+    'Missing #result-draw'
+  );
+  const resultBlueScore = assertEl(
+    document.getElementById('result-blue-score'),
+    'Missing #result-blue-score'
+  );
+  const resultOrangeScore = assertEl(
+    document.getElementById('result-orange-score'),
+    'Missing #result-orange-score'
+  );
+  const resultWinnerTitle = assertEl(
+    document.getElementById('result-winner-title'),
+    'Missing #result-winner-title'
+  );
+  const btnResultBack = assertEl(
+    document.getElementById('btn-result-back'),
+    'Missing #btn-result-back'
+  );
+  const btnDrawBack = assertEl(
+    document.getElementById('btn-draw-back'),
+    'Missing #btn-draw-back'
+  );
 
-  // Theme preview (right side)
-  const previewRoot = assertEl(document.getElementById('theme-preview'), 'Missing #theme-preview');
+  const previewRoot = assertEl(
+    document.getElementById('theme-preview'),
+    'Missing #theme-preview'
+  );
   const previewImgMain = assertEl(
     document.getElementById('preview-img-main') as HTMLImageElement | null,
     'Missing #preview-img-main'
@@ -146,19 +209,20 @@ function init() {
     'Missing #preview-img-sub'
   );
 
-  const gameScreen = assertEl(document.getElementById('screen-game'), 'Missing #screen-game');
+  const gameScreen = assertEl(
+    document.getElementById('screen-game'),
+    'Missing #screen-game'
+  );
 
+  // ----- State -----
   const renderer = new Renderer(field);
 
-  // Defaults
   let selectedTheme: ThemeId = 'code';
   let selectedGrid: GridSize = 16;
   let selectedPlayer: PlayerColor = 'blue';
   let hoveredTheme: ThemeId | null = null;
 
-  // ============================================
-  // GAME INSTANCE
-  // ============================================
+  // ----- Game Instance -----
   const game = new GameController(renderer, {
     theme: selectedTheme,
     gridSize: selectedGrid,
@@ -167,74 +231,78 @@ function init() {
     flipBackDelayMs: 700,
   });
 
-  /**
-   * Get Current Player Icon basierend auf Theme und Player
-   */
+  // ============================================
+  // UI UPDATE FUNCTIONS
+  // ============================================
+
+  /** Gibt das aktuelle Player-Icon basierend auf Theme und Player zurück */
   function getCurrentPlayerIcon(theme: ThemeId, player: 'blue' | 'orange'): string {
-    if (theme === 'code') {
+    const isCodeTheme = theme === 'code';
+
+    if (isCodeTheme) {
       return player === 'blue'
         ? 'public/assets/Settings/topbar/label.svg'
         : 'public/assets/Settings/topbar/label-orange.svg';
     }
+
     return 'public/assets/game-hud/chess_pawn_current_player.svg';
   }
 
-  /**
-   * Update Exit Popup Texte basierend auf Theme
-   */
-  function updateExitTexts(theme: ThemeId) {
+  /** Aktualisiert die Exit-Popup-Texte basierend auf dem Theme */
+  function updateExitTexts(theme: ThemeId): void {
     const texts = EXIT_TEXTS[theme];
     if (!texts) return;
-    
-    if (backToGameText) backToGameText.textContent = texts.back;
-    if (confirmExitText) confirmExitText.textContent = texts.confirm;
+
+    if (backToGameText) {
+      backToGameText.textContent = texts.back;
+    }
+    if (confirmExitText) {
+      confirmExitText.textContent = texts.confirm;
+    }
   }
 
-  /**
-   * Setup Exit Button Hover Effekt
-   */
-  function setupExitButtonHover(theme: ThemeId) {
+  /** Richtet den Hover-Effekt für den Exit-Button ein */
+  function setupExitButtonHover(theme: ThemeId): void {
     const exitBtn = document.getElementById('btn-exit-game');
     const exitIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
-    const previewBtn = document.querySelector('.preview-exit');
-    const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
-    
-    // Prüfen ob Elemente existieren
+
     if (!exitBtn || !exitIcon) return;
-    
+
     // Alte Event-Listener entfernen (durch Klonen)
     const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
     exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
-    
-    // Neue Referenzen holen
+
     const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
     if (!newExitIcon) return;
-    
+
     // Hover Events für Game Button
     newExitBtn.addEventListener('mouseenter', () => {
       const hoverIcon = EXIT_ICONS_HOVER[theme];
-      if (hoverIcon && newExitIcon) {
+      if (hoverIcon) {
         newExitIcon.src = hoverIcon;
       }
     });
-    
+
     newExitBtn.addEventListener('mouseleave', () => {
       const defaultIcon = EXIT_ICONS[theme];
-      if (defaultIcon && newExitIcon) {
+      if (defaultIcon) {
         newExitIcon.src = defaultIcon;
       }
     });
-    
-    // Click Event wieder hinzufügen (wichtig!)
+
+    // Click Event wieder hinzufügen
     newExitBtn.addEventListener('click', () => {
       exitModal.style.display = 'flex';
     });
-    
+
     // Preview Button Hover (Settings)
+    const previewBtn = document.querySelector('.preview-exit');
+    const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+
     if (previewBtn && previewIcon) {
       const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
       previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
-      
+
       const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
       if (newPreviewIcon) {
         newPreviewBtn.addEventListener('mouseenter', () => {
@@ -243,7 +311,7 @@ function init() {
             newPreviewIcon.src = hoverIcon;
           }
         });
-        
+
         newPreviewBtn.addEventListener('mouseleave', () => {
           const defaultIcon = EXIT_ICONS[theme];
           if (defaultIcon) {
@@ -254,24 +322,22 @@ function init() {
     }
   }
 
-  /**
-   * Update HUD Icons basierend auf Theme
-   */
-  function updateHudIcons(theme: ThemeId) {
+  /** Aktualisiert alle HUD-Icons basierend auf dem Theme */
+  function updateHudIcons(theme: ThemeId): void {
     const icons = THEME_ICONS[theme];
     if (!icons) return;
 
-    if (blueIconImg) blueIconImg.src = icons.blue;
-    if (orangeIconImg) orangeIconImg.src = icons.orange;
-
+    if (blueIconImg) {
+      blueIconImg.src = icons.blue;
+    }
+    if (orangeIconImg) {
+      orangeIconImg.src = icons.orange;
+    }
     if (exitGameIcon) {
       exitGameIcon.src = EXIT_ICONS[theme];
     }
 
-    // Exit Popup Texte aktualisieren
     updateExitTexts(theme);
-    
-    // Exit Button Hover neu setzen
     setupExitButtonHover(theme);
 
     const currentPlayer = game?.state?.currentPlayer || selectedPlayer;
@@ -282,10 +348,8 @@ function init() {
     }
   }
 
-  /**
-   * Update Current Player indicator
-   */
-  function updateCurrentPlayer(player: 'blue' | 'orange') {
+  /** Aktualisiert den Current-Player-Indikator */
+  function updateCurrentPlayer(player: 'blue' | 'orange'): void {
     if (!currentPlayerImg) return;
 
     currentPlayerImg.src = getCurrentPlayerIcon(selectedTheme, player);
@@ -295,63 +359,74 @@ function init() {
     currentPlayerImg.classList.add(`player-${player}`);
   }
 
-  const renderGameUi = (gameInstance: GameController) => {
+  /** Rendert das Game-UI (Scores und Current Player) */
+  function renderGameUi(gameInstance: GameController): void {
     if (blueScoreEl && orangeScoreEl) {
-      if (selectedTheme === 'code') {
-        blueScoreEl.textContent = `Blue ${gameInstance.state.blueMatches}`;
-        orangeScoreEl.textContent = `Orange ${gameInstance.state.orangeMatches}`;
+      const isCodeTheme = selectedTheme === 'code';
+      const { blueMatches, orangeMatches } = gameInstance.state;
+
+      if (isCodeTheme) {
+        blueScoreEl.textContent = `Blue ${blueMatches}`;
+        orangeScoreEl.textContent = `Orange ${orangeMatches}`;
       } else {
-        blueScoreEl.textContent = `${gameInstance.state.blueMatches}`;
-        orangeScoreEl.textContent = `${gameInstance.state.orangeMatches}`;
+        blueScoreEl.textContent = `${blueMatches}`;
+        orangeScoreEl.textContent = `${orangeMatches}`;
       }
     }
 
     updateCurrentPlayer(gameInstance.state.currentPlayer);
-  };
+  }
 
-  const updateThemePreview = () => {
+  /** Aktualisiert die Theme-Preview im Settings-Bereich */
+  function updateThemePreview(): void {
     // Theme-Klassen auf Game Screen aktualisieren
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
 
-    // Preview mit hoveredTheme oder selectedTheme
     const themeToShow = hoveredTheme || selectedTheme;
 
     previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
     previewRoot.classList.add(`preview--${themeToShow}`);
 
-    switch (themeToShow) {
-      case 'code':
-        previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
-        previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
-        break;
-      case 'games':
-        previewImgMain.src = './assets/Settings/Cards 5/Rectangle 40.svg';
-        previewImgSub.src = './assets/Settings/Cards 5/Front.svg';
-        break;
-      case 'da':
-        previewImgMain.src = './assets/Settings/Cards 5/Frame 727.svg';
-        previewImgSub.src = './assets/Settings/Cards 5/Frame 728.svg';
-        break;
-      case 'food':
-        previewImgMain.src = './assets/Settings/Cards 5/frond.svg';
-        previewImgSub.src = './assets/Settings/Cards 5/frond_foods.svg';
-        break;
+    // Preview-Bilder basierend auf Theme setzen
+    const previewConfig = {
+      code: {
+        main: './assets/Settings/Cards 5/Cards 5_2.svg',
+        sub: './assets/Settings/Cards 5/Cards 5.svg',
+      },
+      games: {
+        main: './assets/Settings/Cards 5/Rectangle 40.svg',
+        sub: './assets/Settings/Cards 5/Front.svg',
+      },
+      da: {
+        main: './assets/Settings/Cards 5/Frame 727.svg',
+        sub: './assets/Settings/Cards 5/Frame 728.svg',
+      },
+      food: {
+        main: './assets/Settings/Cards 5/frond.svg',
+        sub: './assets/Settings/Cards 5/frond_foods.svg',
+      },
+    };
+
+    const config = previewConfig[themeToShow];
+    if (config) {
+      previewImgMain.src = config.main;
+      previewImgSub.src = config.sub;
     }
 
     if (previewExitIcon) {
       previewExitIcon.src = EXIT_ICONS[themeToShow];
     }
-  };
+  }
 
-  // Apply defaults
-  renderer.setTheme(selectedTheme);
-  renderer.setGrid(selectedGrid);
-  updateThemePreview();
+  // ============================================
+  // GAME START
+  // ============================================
 
-  const startGameFromSettings = () => {
+  /** Startet das Spiel mit den aktuellen Einstellungen */
+  function startGameFromSettings(): void {
     renderer.setTheme(selectedTheme);
     renderer.setGrid(selectedGrid);
 
@@ -375,9 +450,12 @@ function init() {
     game.startNewGame();
     renderGameUi(game);
     showScreen('game');
-  };
+  }
 
-  // State change callback für UI-Updates
+  // ============================================
+  // GAME CALLBACKS
+  // ============================================
+
   game.onStateChange(() => {
     renderGameUi(game);
   });
@@ -386,20 +464,17 @@ function init() {
     resultBlueScore.textContent = String(blueMatches);
     resultOrangeScore.textContent = String(orangeMatches);
 
-    const resultScreenEl = document.getElementById('screen-result');
-    if (resultScreenEl) {
-      resultScreenEl.classList.remove(
-        'result-screen--winner-blue',
-        'result-screen--winner-orange',
-        'result-screen--draw',
-        'result-screen--gameover'
-      );
+    resultScreen.classList.remove(
+      'result-screen--winner-blue',
+      'result-screen--winner-orange',
+      'result-screen--draw',
+      'result-screen--gameover'
+    );
 
-      if (winner === 'tie') {
-        resultScreenEl.classList.add('result-screen--draw');
-      } else {
-        resultScreenEl.classList.add(`result-screen--winner-${winner}`);
-      }
+    if (winner === 'tie') {
+      resultScreen.classList.add('result-screen--draw');
+    } else {
+      resultScreen.classList.add(`result-screen--winner-${winner}`);
     }
 
     resultGameover.style.display = '';
@@ -414,6 +489,10 @@ function init() {
     showScreen('result');
   });
 
+  // ============================================
+  // EVENT LISTENERS
+  // ============================================
+
   // Result Screen Back Buttons
   btnResultBack.addEventListener('click', () => {
     showScreen('home');
@@ -422,12 +501,6 @@ function init() {
   btnDrawBack.addEventListener('click', () => {
     showScreen('home');
   });
-
-  // Exit Game - zeigt Popup an (wird überschrieben durch setupExitButtonHover)
-  // Der Click-Event wird jetzt in setupExitButtonHover behandelt
-  // btnExitGame.addEventListener('click', () => {
-  //   exitModal.style.display = 'flex';
-  // });
 
   // Popup Buttons
   btnBackToGame.addEventListener('click', () => {
@@ -441,36 +514,61 @@ function init() {
   });
 
   // Navigation
-  btnGoSettings.addEventListener('click', () => showScreen('settings'));
+  btnGoSettings.addEventListener('click', () => {
+    showScreen('settings');
+  });
+
   btnStartGame.addEventListener('click', startGameFromSettings);
 
   // Theme radios
-  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach(radio => {
+  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
     radio.addEventListener('change', () => {
-      const t = radio.value as ThemeId;
-      if (!['code', 'games', 'da', 'food'].includes(t)) return;
+      const theme = radio.value as ThemeId;
+      if (!VALID_THEMES.includes(theme)) return;
 
-      selectedTheme = t;
+      selectedTheme = theme;
       hoveredTheme = null;
       renderer.setTheme(selectedTheme);
       updateThemePreview();
     });
   });
 
+  // Player radios
+  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const player = radio.value as PlayerColor;
+      if (!VALID_PLAYERS.includes(player)) return;
+
+      selectedPlayer = player;
+    });
+  });
+
+  // Grid radios
+  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const grid = Number(radio.value) as GridSize;
+      if (!VALID_GRID_SIZES.includes(grid)) return;
+
+      selectedGrid = grid;
+      renderer.setGrid(selectedGrid);
+    });
+  });
+
   // ============================================
-  // SETTINGS PREVIEW HOVER EFFECT (NUR FÜR THEMES)
+  // SETTINGS PREVIEW HOVER EFFECT
   // ============================================
+
   document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
     const radio = label.querySelector<HTMLInputElement>('.radio-input');
     if (!radio) return;
 
-    // NUR für Theme-Radios (nicht für Player oder Grid)
+    // Nur für Theme-Radios (nicht für Player oder Grid)
     const isThemeRadio = radio.name === 'theme';
     if (!isThemeRadio) return;
 
     label.addEventListener('mouseenter', () => {
       const themeValue = radio.value as ThemeId;
-      if (['code', 'games', 'da', 'food'].includes(themeValue)) {
+      if (VALID_THEMES.includes(themeValue)) {
         hoveredTheme = themeValue;
         updateThemePreview();
       }
@@ -482,38 +580,31 @@ function init() {
     });
   });
 
-  // Player radios
-  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      const p = radio.value as PlayerColor;
-      if (!['blue', 'orange'].includes(p)) return;
-      selectedPlayer = p;
-    });
-  });
+  // ============================================
+  // BOARD CLICK DELEGATION
+  // ============================================
 
-  // Grid radios
-  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-      const g = Number(radio.value) as GridSize;
-      if (![16, 24, 36].includes(g)) return;
-      selectedGrid = g;
-      renderer.setGrid(selectedGrid);
-    });
-  });
-
-  // Board click delegation
   field.addEventListener('click', (e: MouseEvent) => {
     const cardEl = (e.target as HTMLElement).closest<HTMLButtonElement>('.card');
     if (!cardEl) return;
 
-    const id = cardEl.dataset.id;
-    if (!id) return;
+    const cardId = cardEl.dataset.id;
+    if (!cardId) return;
 
-    game.handleCardClick(id);
+    game.handleCardClick(cardId);
   });
+
+  // ============================================
+  // INIT
+  // ============================================
+
+  renderer.setTheme(selectedTheme);
+  renderer.setGrid(selectedGrid);
+  updateThemePreview();
 
   showScreen('home');
 
+  // Debugging
   (window as any).game = game;
 }
 

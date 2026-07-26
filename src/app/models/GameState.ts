@@ -1,5 +1,9 @@
 import type { CardData, GameStatus, PlayerColor } from '../core/types';
 
+// ============================================
+// GAME STATE CLASS
+// ============================================
+
 export class GameState {
   cards: CardData[] = [];
 
@@ -16,13 +20,14 @@ export class GameState {
   firstPickId: string | null = null;
   secondPickId: string | null = null;
 
-  resetPicks() {
+  /** Setzt die aktuellen Picks zurück */
+  resetPicks(): void {
     this.firstPickId = null;
     this.secondPickId = null;
   }
 
-  switchPlayer() {
-    this.currentPlayer =
-      this.currentPlayer === 'blue' ? 'orange' : 'blue';
+  /** Wechselt den aktuellen Spieler */
+  switchPlayer(): void {
+    this.currentPlayer = this.currentPlayer === 'blue' ? 'orange' : 'blue';
   }
 }
