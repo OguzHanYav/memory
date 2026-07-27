@@ -432,18 +432,21 @@ body:has(#screen-settings.screen--active) {
 
 .settings-actions {
   margin-top: 10px;
-  padding: 12px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: #f6f6f6;
+  padding-top: 14px;
+  padding-right: 20px;
+  padding-bottom: 14px;
+  gap: 16px;
+  min-width: 0;
 }
 
 .settings-actions__tabs {
   display: flex;
-  gap: 10px;
   align-items: center;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.75);
@@ -452,7 +455,14 @@ body:has(#screen-settings.screen--active) {
   font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
-
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 20px;
+  gap: 16px;
+  flex: 1;
+  flex-wrap: nowrap; /* KEIN Umbruch */
+  min-width: 0; /* Verhindert Overflow */
+  white-space: nowrap; /* Verhindert Text-Umbruch */
 }
 
 .settings-actions__tabs .sep {
@@ -461,16 +471,17 @@ body:has(#screen-settings.screen--active) {
   font-weight: 800;
 }
 
-.btn-start {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  background: #ffd23f;
-  color: #111;
-  font-weight: 800;
-  font-size: 14px;
+.settings-actions__tabs span {
+  white-space: nowrap; /* Verhindert Umbruch der Text-Elemente */
 }
+
+.btn-start {
+  cursor: pointer;
+  border:unset;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0; /* Button nicht schrumpfen lassen */
+  margin-left: auto; /* Button nach rechts schieben */}
 
 /* ============================================
    RADIO ITEM - ARROW ICON
