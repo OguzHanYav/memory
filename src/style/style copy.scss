@@ -22,12 +22,15 @@
 .theme-code {
   --font-family: 'Red Rose', sans-serif;
 }
+
 .theme-games {
   --font-family: 'Orbitron', sans-serif;
 }
+
 .theme-da {
   --font-family: 'Figtree', sans-serif;
 }
+
 .theme-food {
   --font-family: 'Klee One', cursive;
 }
@@ -108,7 +111,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   HOME SCREEN
+   HOME PANEL - FULLSCREEN
    ============================================ */
 #screen-home {
   display: none;
@@ -142,6 +145,7 @@ body:has(#screen-settings.screen--active) {
   position: relative;
 }
 
+/* "It's play time" */
 #screen-home .muted {
   margin: 0;
   opacity: 0.75;
@@ -152,6 +156,7 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: 0.5px;
 }
 
+/* "Ready to play?" */
 #screen-home .title {
   margin: 0;
   font-size: 140px;
@@ -163,6 +168,7 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: -1px;
 }
 
+/* Play Button */
 #screen-home #btn-go-settings {
   background: transparent;
   border: none;
@@ -186,10 +192,12 @@ body:has(#screen-settings.screen--active) {
 #screen-home #btn-go-settings:hover img {
   transform: scale(1.05);
 }
+
 #screen-home #btn-go-settings:active img {
   transform: scale(0.95);
 }
 
+/* Home Screen Controller Icon - links unten */
 #screen-home .home-controller {
   position: absolute;
   bottom: 0px;
@@ -203,8 +211,10 @@ body:has(#screen-settings.screen--active) {
 .home-content {
   display: flex;
   flex-direction: column;
+
 }
 
+/* Stelle sicher, dass der Inhalt über dem Controller liegt */
 #screen-home .muted,
 #screen-home .title,
 #screen-home #btn-go-settings {
@@ -291,6 +301,7 @@ body:has(#screen-settings.screen--active) {
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
+
 }
 
 .settings-page__title::before {
@@ -347,9 +358,11 @@ body:has(#screen-settings.screen--active) {
 .settings-icon--themes {
   color: #ff2f8b;
 }
+
 .settings-icon--player {
   color: #2ed3b7;
 }
+
 .settings-icon--board {
   color: #2f7fa6;
 }
@@ -359,8 +372,10 @@ body:has(#screen-settings.screen--active) {
   font-weight: 700;
   font-style: Bold;
   font-size: 24px;
+  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
+
 }
 
 .radio-list {
@@ -385,10 +400,10 @@ body:has(#screen-settings.screen--active) {
   font-weight: 400;
   font-style: Regular;
   font-size: 20px;
+  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
-  position: relative;
-  transition: background-color 0.2s ease;
+
 }
 
 .radio-item:hover {
@@ -415,17 +430,6 @@ body:has(#screen-settings.screen--active) {
   box-shadow: inset 0 0 0 3px #fff;
 }
 
-.radio-arrow {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  flex-shrink: 0;
-}
-
-.radio-item:hover .radio-arrow,
-.radio-item:has(.radio-input:checked) .radio-arrow {
-  opacity: 1;
-}
-
 .settings-actions {
   margin-top: 46px;
   display: flex;
@@ -445,22 +449,35 @@ body:has(#screen-settings.screen--active) {
 .settings-actions__tabs {
   display: flex;
   align-items: center;
-  font-weight: 400;
+  font-weight: 700;
   color: rgba(0, 0, 0, 0.75);
   font-family: Almarai;
+  font-weight: 400;
   font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
-  padding: 14px 0 14px 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 20px;
   gap: 16px;
   flex: 1;
   flex-wrap: nowrap;
+  /* KEIN Umbruch */
   min-width: 0;
+  /* Verhindert Overflow */
   white-space: nowrap;
+  /* Verhindert Text-Umbruch */
+}
+
+.settings-actions__tabs .sep {
+  color: #ffd23f;
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .settings-actions__tabs span {
   white-space: nowrap;
+  /* Verhindert Umbruch der Text-Elemente */
 }
 
 .btn-start {
@@ -469,11 +486,43 @@ body:has(#screen-settings.screen--active) {
   padding: 0;
   margin: 0;
   flex-shrink: 0;
+  /* Button nicht schrumpfen lassen */
   margin-left: auto;
+  /* Button nach rechts schieben */
 }
 
 /* ============================================
-   SETTINGS PREVIEW
+   RADIO ITEM - ARROW ICON
+   ============================================ */
+.radio-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.radio-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.radio-arrow {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.radio-item:hover .radio-arrow,
+.radio-item:has(.radio-input:checked) .radio-arrow {
+  opacity: 1;
+}
+
+/* ============================================
+   SETTINGS PREVIEW - BASE
    ============================================ */
 .settings-preview {
   display: grid;
@@ -526,6 +575,7 @@ body:has(#screen-settings.screen--active) {
 .preview-chip--blue {
   color: #2aa8ff !important;
 }
+
 .preview-chip--orange {
   color: #ff8c42 !important;
 }
@@ -587,7 +637,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   GAME HUD (BASE)
+   GAME HUD - BASE
    ============================================ */
 .game-hud--preview-style {
   display: flex;
@@ -620,6 +670,7 @@ body:has(#screen-settings.screen--active) {
 .game-hud--preview-style .preview-chip--blue {
   color: #2aa8ff !important;
 }
+
 .game-hud--preview-style .preview-chip--orange {
   color: #ff8c42 !important;
 }
@@ -710,7 +761,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   RESULT SCREEN
+   RESULT SCREEN - BASE
    ============================================ */
 .result-screen {
   display: none;
@@ -731,17 +782,21 @@ body:has(#screen-settings.screen--active) {
 .result-screen--winner-blue {
   background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
 }
+
 .result-screen--winner-orange {
   background: linear-gradient(135deg, #3a251a 0%, #24150f 100%);
 }
+
 .result-screen--draw {
   background: linear-gradient(135deg, #1a3a3a 0%, #0f2424 100%);
 }
+
 
 @keyframes confettiFloat {
   0% {
     background-position: 0 0, 0 0, 0 0, 0 0;
   }
+
   100% {
     background-position: 60px 60px, 80px 80px, 100px 100px, 70px 70px;
   }
@@ -757,6 +812,9 @@ body:has(#screen-settings.screen--active) {
   margin-bottom: 40px;
 }
 
+/* ============================================
+   RESULT SCREEN - GAME OVER BLOCK
+   ============================================ */
 .result-gameover__title {
   font-size: 72px;
   font-weight: 800;
@@ -783,6 +841,7 @@ body:has(#screen-settings.screen--active) {
 .result-score__blue {
   color: #2aa8ff;
 }
+
 .result-score__orange {
   color: #ff8c42;
 }
@@ -793,6 +852,9 @@ body:has(#screen-settings.screen--active) {
   margin-top: 8px;
 }
 
+/* ============================================
+   RESULT SCREEN - WINNER BLOCK
+   ============================================ */
 .result-kicker {
   font-size: 40px;
   text-transform: uppercase;
@@ -813,20 +875,21 @@ body:has(#screen-settings.screen--active) {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 260px;
-  height: 298px;
+  width: auto;
+  height: auto;
+  margin: 0 auto 15px auto;
+  width: 200px;
+  height: 250px;
 }
 
 .result-player-icon::before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  font-size: 110px;
+  line-height: 1;
 }
 
+/* ============================================
+   RESULT SCREEN - DRAW BLOCK
+   ============================================ */
 .result-draw-title {
   font-size: 128px;
   font-weight: 800;
@@ -846,18 +909,24 @@ body:has(#screen-settings.screen--active) {
 }
 
 @keyframes drawIconShake {
+
   0%,
   100% {
     transform: rotate(0deg);
   }
+
   25% {
     transform: rotate(10deg);
   }
+
   75% {
     transform: rotate(-10deg);
   }
 }
 
+/* ============================================
+   RESULT SCREEN - VISIBILITY LOGIC
+   ============================================ */
 .result-block,
 #result-gameover,
 #result-winner,
@@ -883,6 +952,9 @@ body:has(#screen-settings.screen--active) {
   display: block !important;
 }
 
+/* ============================================
+   RESULT SCREEN - BACK BUTTON (BASE)
+   ============================================ */
 .result-back-btn {
   margin-top: 50px;
   background: rgba(255, 255, 255, 0.1);
@@ -901,7 +973,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   EXIT MODAL
+   EXIT MODAL - BASE
    ============================================ */
 .exit-modal {
   position: fixed;
@@ -962,21 +1034,11 @@ body:has(#screen-settings.screen--active) {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-/* ============================================
-   WINNER ICONS - DEFAULT
-   ============================================ */
-.result-screen--winner-blue .result-player-icon::before {
-  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
-}
-
-.result-screen--winner-orange .result-player-icon::before {
-  background-image: url('./assets/game-hud/chess_pawn.svg');
 }
 
 /* ============================================
@@ -1057,7 +1119,11 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: 1px;
   border-radius: unset;
   gap: 10px;
-  padding: 16px 24px;
+  padding-top: 16px;
+  padding-right: 24px;
+  padding-bottom: 16px;
+  padding-left: 24px;
+
 }
 
 .theme-code .result-back-btn:hover {
@@ -1495,9 +1561,10 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-gameover__title,
-.theme-food .result-winner-title {
-  color: #a45218 !important;
-  font-size: 80px !important;
+.theme-food .result-winner-title,
+{
+color: #a45218 !important;
+font-size: 80px !important;
 }
 
 .theme-food .result-kicker {
@@ -1531,30 +1598,6 @@ body:has(#screen-settings.screen--active) {
   box-shadow: 0 0 20px rgba(255, 140, 66, 0.2);
 }
 
-/* ============================================
-   THEME: FOOD - WINNER ICONS
-   ============================================ */
-/* ============================================
-   THEME: FOOD - WINNER ICONS
-   ============================================ */
-.theme-food.result-screen--winner-blue .result-player-icon {
-  background-color: #f7e6d5 !important;
-  width: 260px;
-  height: 298px;
-}
-
-.theme-food.result-screen--winner-orange .result-player-icon {
-  background-color: #f7e6d5 !important;
-  width: 260px;
-  height: 298px;
-}
-
-.theme-food.result-screen--winner-blue .result-player-icon::before,
-.theme-food.result-screen--winner-orange .result-player-icon::before {
-  width: 200px;
-  height: 250px;
-}
-
 .theme-food .exit-modal__content {
   background: white;
   color: #a95d20;
@@ -1567,7 +1610,7 @@ body:has(#screen-settings.screen--active) {
   background: white;
   color: #ff8c42;
   border-radius: 10px;
-  border: 3px solid #F3832D;
+  border: 3px solid #F3832D
 }
 
 .theme-food .exit-modal__btn--primary:hover {
@@ -1579,12 +1622,40 @@ body:has(#screen-settings.screen--active) {
 .theme-food .exit-modal__btn--secondary {
   background: #fbaa3e;
   color: white;
-  border: 3px solid #F3832D;
+  border: 2px solid rgba(255, 140, 66, 0.3);
   border-radius: 10px;
+  border: 3px solid #F3832D
 }
 
 .theme-food .exit-modal__btn--secondary:hover {
   background: #ff8c42;
+
+}
+
+/* ============================================
+   THEME: FOOD - WINNER ICONS
+   ============================================ */
+.theme-food.result-screen--winner-blue .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 298px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 24px;
+  background-color: #f7e6d5 !important;
+}
+
+.theme-food.result-screen--winner-orange .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 298px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f7e6d5;
 }
 
 /* ============================================
@@ -1593,17 +1664,21 @@ body:has(#screen-settings.screen--active) {
 .preview--code {
   background: linear-gradient(to bottom, #303131 0%, #555656 100%);
 }
+
 .preview--code .preview__topbar {
   background: #303131;
 }
+
 .preview--code .preview__scores {
   background: rgba(54, 82, 77, 1);
 }
+
 .preview--code .preview-exit {
   border: 1px solid rgba(76, 213, 188, 1);
   background: rgba(54, 82, 77, 1);
   color: rgba(255, 255, 255, 0.92);
 }
+
 .preview--code .preview__img--main {
   width: 180px;
   height: 180px;
@@ -1611,6 +1686,7 @@ body:has(#screen-settings.screen--active) {
   top: 0;
   z-index: 2;
 }
+
 .preview--code .preview__img--sub {
   width: 180px;
   height: 180px;
@@ -1622,23 +1698,29 @@ body:has(#screen-settings.screen--active) {
 .preview--games {
   background: linear-gradient(#303131, #2a5061);
 }
+
 .preview--games .preview__topbar {
   background: #535d75;
 }
+
 .preview--games .preview__scores {
   background: white;
 }
+
 .preview--games .preview-chip--blue {
   color: #097fc5 !important;
 }
+
 .preview--games .preview-chip--orange {
   color: #ea6a26 !important;
 }
+
 .preview--games .preview-exit {
   border: 3px solid rgba(176, 59, 94, 1);
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.92);
 }
+
 .preview--games .preview__img--main {
   width: 170px;
   height: 220px;
@@ -1646,6 +1728,7 @@ body:has(#screen-settings.screen--active) {
   left: 28px;
   z-index: 2;
 }
+
 .preview--games .preview__img--sub {
   width: 170px;
   height: 220px;
@@ -1658,26 +1741,33 @@ body:has(#screen-settings.screen--active) {
 .preview--da {
   background: #bfe5f2;
 }
+
 .preview--da .preview__topbar {
   background: #f1f3f4;
 }
+
 .preview--da .preview__scores {
   background: white;
 }
+
 .preview--da .preview-chip--blue {
   color: #2aa8ff !important;
 }
+
 .preview--da .preview-chip--orange {
   color: #ff8c42 !important;
 }
+
 .preview--da .preview__current {
   color: #0f2a35;
 }
+
 .preview--da .preview-exit {
   background: #bee5f3;
   border: none;
   color: #3283a0;
 }
+
 .preview--da .preview__img--main {
   width: 180px;
   height: 150px;
@@ -1685,6 +1775,7 @@ body:has(#screen-settings.screen--active) {
   left: 9.51px;
   z-index: 1;
 }
+
 .preview--da .preview__img--sub {
   width: 170px;
   height: 150px;
@@ -1695,26 +1786,33 @@ body:has(#screen-settings.screen--active) {
 .preview--food {
   background: #e8e2dc;
 }
+
 .preview--food .preview__topbar {
   background: #fff5ec;
 }
+
 .preview--food .preview__scores {
   background: rgba(255, 140, 66, 0.15);
 }
+
 .preview--food .preview-chip--blue {
   color: #2aa8ff !important;
 }
+
 .preview--food .preview-chip--orange {
   color: #ff8c42 !important;
 }
+
 .preview--food .preview__current {
   color: #2a1408;
 }
+
 .preview--food .preview-exit {
   background: rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(255, 140, 66, 0.3);
   color: #2a1408;
 }
+
 .preview--food .preview__img--main {
   width: 170px;
   height: 170px;
@@ -1722,11 +1820,200 @@ body:has(#screen-settings.screen--active) {
   left: 20px;
   z-index: 2;
 }
+
 .preview--food .preview__img--sub {
   width: 170px;
   height: 170px;
   top: 85px;
   left: 148px;
+}
+
+/* ============================================
+   WINNER ICONS - DEFAULT
+   ============================================ */
+.result-screen--winner-blue .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 250px;
+  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.result-screen--winner-orange .result-player-icon::before {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 250px;
+  background-image: url('./assets/game-hud/chess_pawn.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 980px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-preview {
+    justify-items: start;
+  }
+
+  .preview {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-hud {
+    padding: 12px 16px;
+  }
+
+  .score-compact__value {
+    font-size: 14px;
+  }
+
+  .score-compact__label {
+    font-size: 10px;
+  }
+
+  .current-player__label {
+    font-size: 11px;
+  }
+
+  .btn-exit {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --card-size: 76px;
+    --gap: 10px;
+  }
+
+  .app {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .settings-page__title {
+    font-size: 32px;
+  }
+
+  .game-hud {
+    border-radius: 40px;
+  }
+
+  .score-compact {
+    gap: 4px;
+  }
+
+  .current-player__dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .preview__stage {
+    height: 100%;
+  }
+
+  .preview--code .preview__img--main {
+    width: 110px;
+    height: 110px;
+    left: 30px;
+    top: 70px;
+  }
+
+  .preview--code .preview__img--sub {
+    width: 110px;
+    height: 110px;
+    left: 120px;
+    top: 85px;
+  }
+
+  .preview--games .preview__img--main {
+    width: 100px;
+    height: 130px;
+    left: 30px;
+    top: 60px;
+  }
+
+  .preview--games .preview__img--sub {
+    width: 100px;
+    height: 130px;
+    left: 130px;
+    top: 75px;
+  }
+
+  .preview--da .preview__img--main {
+    width: 110px;
+    height: 90px;
+    left: 35px;
+    top: 70px;
+  }
+
+  .preview--da .preview__img--sub {
+    width: 110px;
+    height: 90px;
+    left: 140px;
+    top: 110px;
+  }
+
+  .preview--food .preview__img--main {
+    width: 100px;
+    height: 100px;
+    left: 65px;
+    top: 110px;
+  }
+
+  .preview--food .preview__img--sub {
+    width: 100px;
+    height: 100px;
+    left: 145px;
+    top: 160px;
+  }
+
+  .result-gameover__title {
+    font-size: 48px;
+  }
+
+  .result-winner-title {
+    font-size: 40px;
+  }
+
+  .result-draw-title {
+    font-size: 48px;
+  }
+
+  .result-score {
+    gap: 20px;
+    font-size: 16px;
+  }
+
+  .result-score strong {
+    font-size: 24px;
+  }
+
+  .result-player-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+
+  .result-player-icon::before {
+    font-size: 40px !important;
+  }
 }
 
 /* ============================================
@@ -1753,148 +2040,13 @@ body:has(#screen-settings.screen--active) {
   color: #2aa8ff;
   text-shadow: 0 0 20px rgba(42, 168, 255, 0.5);
   white-space: nowrap;
+  /* Verhindert Text-Umbruch */
+
 }
 
 .result-screen--winner-orange .result-winner-title {
   color: #a45218;
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
   white-space: nowrap;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 980px) {
-  .settings-layout {
-    grid-template-columns: 1fr;
-  }
-  .settings-preview {
-    justify-items: start;
-  }
-  .preview {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .game-hud {
-    padding: 12px 16px;
-  }
-  .score-compact__value {
-    font-size: 14px;
-  }
-  .score-compact__label {
-    font-size: 10px;
-  }
-  .current-player__label {
-    font-size: 11px;
-  }
-  .btn-exit {
-    padding: 6px 14px;
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 560px) {
-  :root {
-    --card-size: 76px;
-    --gap: 10px;
-  }
-
-  .app {
-    padding: 12px;
-  }
-  .title {
-    font-size: 32px;
-  }
-  .settings-page__title {
-    font-size: 32px;
-  }
-  .game-hud {
-    border-radius: 40px;
-  }
-  .score-compact {
-    gap: 4px;
-  }
-  .current-player__dot {
-    width: 12px;
-    height: 12px;
-  }
-
-  .preview__stage {
-    height: 100%;
-  }
-  .preview--code .preview__img--main {
-    width: 110px;
-    height: 110px;
-    left: 30px;
-    top: 70px;
-  }
-  .preview--code .preview__img--sub {
-    width: 110px;
-    height: 110px;
-    left: 120px;
-    top: 85px;
-  }
-  .preview--games .preview__img--main {
-    width: 100px;
-    height: 130px;
-    left: 30px;
-    top: 60px;
-  }
-  .preview--games .preview__img--sub {
-    width: 100px;
-    height: 130px;
-    left: 130px;
-    top: 75px;
-  }
-  .preview--da .preview__img--main {
-    width: 110px;
-    height: 90px;
-    left: 35px;
-    top: 70px;
-  }
-  .preview--da .preview__img--sub {
-    width: 110px;
-    height: 90px;
-    left: 140px;
-    top: 110px;
-  }
-  .preview--food .preview__img--main {
-    width: 100px;
-    height: 100px;
-    left: 65px;
-    top: 110px;
-  }
-  .preview--food .preview__img--sub {
-    width: 100px;
-    height: 100px;
-    left: 145px;
-    top: 160px;
-  }
-
-  .result-gameover__title {
-    font-size: 48px;
-  }
-  .result-winner-title {
-    font-size: 40px;
-  }
-  .result-draw-title {
-    font-size: 48px;
-  }
-  .result-score {
-    gap: 20px;
-    font-size: 16px;
-  }
-  .result-score strong {
-    font-size: 24px;
-  }
-  .result-player-icon {
-    width: 80px;
-    height: 80px;
-    font-size: 40px;
-  }
-  .result-player-icon::before {
-    font-size: 40px !important;
-  }
+  /* Verhindert Text-Umbruch */
 }

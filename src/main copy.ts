@@ -62,6 +62,13 @@ const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
   },
 };
 
+const RESULT_BACK_TEXTS: Record<ThemeId, string> = {
+  code: 'Back to start',
+  games: 'Home',
+  da: 'Home',
+  food: 'Home',
+};
+
 const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
 const VALID_GRID_SIZES: GridSize[] = [16, 24, 36];
 const VALID_PLAYERS: PlayerColor[] = ['blue', 'orange'];
@@ -92,6 +99,133 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result'): void {
   if (target) {
     target.classList.add('screen--active');
   }
+}
+
+/** Setzt das Spiel komplett zurück und startet neu */
+function resetAndRestartGame(
+  game: GameController,
+  renderer: Renderer,
+  selectedTheme: ThemeId,
+  selectedGrid: GridSize,
+  selectedPlayer: PlayerColor
+): void {
+  // Board leeren
+  const field = document.getElementById('field');
+  if (field) {
+    field.innerHTML = '';
+  }
+
+  // Theme zurücksetzen auf Code (Standard)
+  const defaultTheme: ThemeId = 'code';
+
+  // Alle Theme-Klassen von Body entfernen
+  document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+
+  // Alle Theme-Klassen von Game Screen entfernen
+  const gameScreen = document.getElementById('screen-game');
+  if (gameScreen) {
+    gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+  }
+
+  // Theme-Klasse von Result Screen entfernen
+  const resultScreen = document.getElementById('screen-result');
+  if (resultScreen) {
+    resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+  }
+
+  // Renderer auf Standard-Theme setzen
+  renderer.setTheme(defaultTheme);
+
+  // Game-Konfiguration zurücksetzen
+  game.updateConfig({
+    theme: defaultTheme,
+    gridSize: selectedGrid,
+    startingPlayer: selectedPlayer,
+    pairs: pairsFromGrid(selectedGrid),
+    flipBackDelayMs: 700,
+  });
+
+  // Neues Spiel starten (im Hintergrund)
+  game.startNewGame();
+
+  // UI zurücksetzen
+  const blueScoreEl = document.getElementById('blueScore');
+  const orangeScoreEl = document.getElementById('orangeScore');
+
+  if (blueScoreEl && orangeScoreEl) {
+    blueScoreEl.textContent = 'Blue 0';
+    orangeScoreEl.textContent = 'Orange 0';
+  }
+
+  // Current Player Icon zurücksetzen
+  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
+  if (currentPlayerImg) {
+    currentPlayerImg.src = 'public/assets/Settings/topbar/label-blue.svg';
+    currentPlayerImg.classList.remove('player-blue', 'player-orange');
+    currentPlayerImg.classList.add('player-blue');
+  }
+
+  // Result Screen zurücksetzen
+  if (resultScreen) {
+    resultScreen.classList.remove(
+      'result-screen--winner-blue',
+      'result-screen--winner-orange',
+      'result-screen--draw',
+      'result-screen--gameover'
+    );
+  }
+
+  // Result Back Button Texte zurücksetzen
+  const resultBackText = document.getElementById('result-back-text');
+  const drawBackText = document.getElementById('draw-back-text');
+  if (resultBackText) {
+    resultBackText.textContent = 'Back to start';
+  }
+  if (drawBackText) {
+    drawBackText.textContent = 'Back to start';
+  }
+
+  // Exit Game Icon zurücksetzen
+  const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
+  if (exitGameIcon) {
+    exitGameIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+  }
+
+  // Preview Exit Icon zurücksetzen
+  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+  if (previewExitIcon) {
+    previewExitIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+  }
+
+  // Preview Bilder zurücksetzen
+  const previewImgMain = document.getElementById('preview-img-main') as HTMLImageElement;
+  const previewImgSub = document.getElementById('preview-img-sub') as HTMLImageElement;
+  if (previewImgMain) {
+    previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
+  }
+  if (previewImgSub) {
+    previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
+  }
+
+  // Preview Root zurücksetzen
+  const previewRoot = document.getElementById('theme-preview');
+  if (previewRoot) {
+    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+    previewRoot.classList.add('preview--code');
+  }
+
+  // Exit Popup Texte zurücksetzen
+  const backToGameText = document.getElementById('back-to-game-text');
+  const confirmExitText = document.getElementById('confirm-exit-text');
+  if (backToGameText) {
+    backToGameText.textContent = 'Back to game';
+  }
+  if (confirmExitText) {
+    confirmExitText.textContent = 'Exit game';
+  }
+
+  // Zur Home-Screen navigieren
+  showScreen('home');
 }
 
 // ============================================
@@ -140,6 +274,13 @@ function init(): void {
   ) as HTMLSpanElement;
   const confirmExitText = document.getElementById(
     'confirm-exit-text'
+  ) as HTMLSpanElement;
+
+  const resultBackText = document.getElementById(
+    'result-back-text'
+  ) as HTMLSpanElement;
+  const drawBackText = document.getElementById(
+    'draw-back-text'
   ) as HTMLSpanElement;
 
   const exitModal = assertEl(
@@ -232,6 +373,69 @@ function init(): void {
   });
 
   // ============================================
+  // TEST FUNKTION FÜR RESULT SCREENS (global verfügbar)
+  // ============================================
+
+  /** Testet die verschiedenen Result-Screen-Zustände */
+  function testResultScreen(
+    winner: 'blue' | 'orange' | 'tie' | 'gameover',
+    blueScore: number = 3,
+    orangeScore: number = 2
+  ): void {
+    const resultScreen = document.getElementById('screen-result');
+    const resultBlueScore = document.getElementById('result-blue-score');
+    const resultOrangeScore = document.getElementById('result-orange-score');
+    const resultWinnerTitle = document.getElementById('result-winner-title');
+    const resultGameover = document.getElementById('result-gameover');
+    const resultWinner = document.getElementById('result-winner');
+    const resultDraw = document.getElementById('result-draw');
+
+    if (!resultScreen || !resultBlueScore || !resultOrangeScore) {
+      console.error('Result Screen Elemente nicht gefunden!');
+      return;
+    }
+
+    // Scores setzen
+    resultBlueScore.textContent = String(blueScore);
+    resultOrangeScore.textContent = String(orangeScore);
+
+    // Alle Klassen entfernen
+    resultScreen.classList.remove(
+      'result-screen--winner-blue',
+      'result-screen--winner-orange',
+      'result-screen--draw',
+      'result-screen--gameover'
+    );
+
+    // Alle Blocks ausblenden
+    if (resultGameover) resultGameover.style.display = 'none';
+    if (resultWinner) resultWinner.style.display = 'none';
+    if (resultDraw) resultDraw.style.display = 'none';
+
+    // Je nach Winner-Typ die richtige Klasse und Block anzeigen
+    if (winner === 'gameover') {
+      resultScreen.classList.add('result-screen--gameover');
+      if (resultGameover) resultGameover.style.display = 'block';
+      console.log('🟡 Game Over Screen angezeigt');
+    } else if (winner === 'tie') {
+      resultScreen.classList.add('result-screen--draw');
+      if (resultDraw) resultDraw.style.display = 'block';
+      console.log('🟡 Draw Screen angezeigt');
+    } else {
+      resultScreen.classList.add(`result-screen--winner-${winner}`);
+      if (resultWinner) resultWinner.style.display = 'flex';
+      if (resultWinnerTitle) {
+        resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
+        resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
+      }
+      console.log(`🟡 Winner Screen angezeigt: ${winner.toUpperCase()} gewinnt!`);
+    }
+
+    // Result Screen anzeigen
+    showScreen('result');
+  }
+
+  // ============================================
   // UI UPDATE FUNCTIONS
   // ============================================
 
@@ -258,6 +462,19 @@ function init(): void {
     }
     if (confirmExitText) {
       confirmExitText.textContent = texts.confirm;
+    }
+  }
+
+  /** Aktualisiert die Result-Back-Button-Texte basierend auf dem Theme */
+  function updateResultBackText(theme: ThemeId): void {
+    const text = RESULT_BACK_TEXTS[theme];
+    if (!text) return;
+
+    if (resultBackText) {
+      resultBackText.textContent = text;
+    }
+    if (drawBackText) {
+      drawBackText.textContent = text;
     }
   }
 
@@ -383,7 +600,14 @@ function init(): void {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
+    // Theme-Klasse auf Result Screen für Food-Theme setzen
+    resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+    if (selectedTheme === 'food') {
+      resultScreen.classList.add('theme-food');
+    }
+
     updateHudIcons(selectedTheme);
+    updateResultBackText(selectedTheme);
 
     const themeToShow = hoveredTheme || selectedTheme;
 
@@ -433,7 +657,14 @@ function init(): void {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
+    // Theme-Klasse auf Result Screen für Food-Theme setzen
+    resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+    if (selectedTheme === 'food') {
+      resultScreen.classList.add('theme-food');
+    }
+
     updateHudIcons(selectedTheme);
+    updateResultBackText(selectedTheme);
 
     if (previewExitIcon) {
       previewExitIcon.src = EXIT_ICONS[selectedTheme];
@@ -493,13 +724,13 @@ function init(): void {
   // EVENT LISTENERS
   // ============================================
 
-  // Result Screen Back Buttons
+  // Result Screen Back Buttons - Spiel komplett zurücksetzen
   btnResultBack.addEventListener('click', () => {
-    showScreen('home');
+    resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
   });
 
   btnDrawBack.addEventListener('click', () => {
-    showScreen('home');
+    resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
   });
 
   // Popup Buttons
@@ -595,6 +826,32 @@ function init(): void {
   });
 
   // ============================================
+  // KEYBOARD SHORTCUTS FÜR TESTING
+  // ============================================
+  document.addEventListener('keydown', (e) => {
+    // Alt + 1 = Blue gewinnt
+    if (e.altKey && e.key === '1') {
+      e.preventDefault();
+      testResultScreen('blue', 5, 3);
+    }
+    // Alt + 2 = Orange gewinnt
+    if (e.altKey && e.key === '2') {
+      e.preventDefault();
+      testResultScreen('orange', 2, 4);
+    }
+    // Alt + 3 = Draw
+    if (e.altKey && e.key === '3') {
+      e.preventDefault();
+      testResultScreen('tie', 3, 3);
+    }
+    // Alt + 4 = Game Over
+    if (e.altKey && e.key === '4') {
+      e.preventDefault();
+      testResultScreen('gameover', 4, 2);
+    }
+  });
+
+  // ============================================
   // INIT
   // ============================================
 
@@ -604,7 +861,8 @@ function init(): void {
 
   showScreen('home');
 
-  // Debugging
+  // Debugging - Test-Funktion global verfügbar machen
+  (window as any).testResultScreen = testResultScreen;
   (window as any).game = game;
 }
 
