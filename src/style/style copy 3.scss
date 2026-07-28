@@ -111,7 +111,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   HOME PANEL - FULLSCREEN
+   HOME SCREEN
    ============================================ */
 #screen-home {
   display: none;
@@ -145,7 +145,6 @@ body:has(#screen-settings.screen--active) {
   position: relative;
 }
 
-/* "It's play time" */
 #screen-home .muted {
   margin: 0;
   opacity: 0.75;
@@ -156,7 +155,6 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: 0.5px;
 }
 
-/* "Ready to play?" */
 #screen-home .title {
   margin: 0;
   font-size: 140px;
@@ -168,7 +166,6 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: -1px;
 }
 
-/* Play Button */
 #screen-home #btn-go-settings {
   background: transparent;
   border: none;
@@ -197,7 +194,6 @@ body:has(#screen-settings.screen--active) {
   transform: scale(0.95);
 }
 
-/* Home Screen Controller Icon - links unten */
 #screen-home .home-controller {
   position: absolute;
   bottom: 0px;
@@ -211,10 +207,8 @@ body:has(#screen-settings.screen--active) {
 .home-content {
   display: flex;
   flex-direction: column;
-
 }
 
-/* Stelle sicher, dass der Inhalt über dem Controller liegt */
 #screen-home .muted,
 #screen-home .title,
 #screen-home #btn-go-settings {
@@ -301,7 +295,6 @@ body:has(#screen-settings.screen--active) {
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
-
 }
 
 .settings-page__title::before {
@@ -372,10 +365,8 @@ body:has(#screen-settings.screen--active) {
   font-weight: 700;
   font-style: Bold;
   font-size: 24px;
-  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
-
 }
 
 .radio-list {
@@ -400,10 +391,10 @@ body:has(#screen-settings.screen--active) {
   font-weight: 400;
   font-style: Regular;
   font-size: 20px;
-  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
-
+  position: relative;
+  transition: background-color 0.2s ease;
 }
 
 .radio-item:hover {
@@ -430,6 +421,17 @@ body:has(#screen-settings.screen--active) {
   box-shadow: inset 0 0 0 3px #fff;
 }
 
+.radio-arrow {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.radio-item:hover .radio-arrow,
+.radio-item:has(.radio-input:checked) .radio-arrow {
+  opacity: 1;
+}
+
 .settings-actions {
   margin-top: 46px;
   display: flex;
@@ -449,35 +451,22 @@ body:has(#screen-settings.screen--active) {
 .settings-actions__tabs {
   display: flex;
   align-items: center;
-  font-weight: 700;
+  font-weight: 400;
   color: rgba(0, 0, 0, 0.75);
   font-family: Almarai;
-  font-weight: 400;
   font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  padding-left: 20px;
+  padding: 14px 0 14px 20px;
   gap: 16px;
   flex: 1;
   flex-wrap: nowrap;
-  /* KEIN Umbruch */
   min-width: 0;
-  /* Verhindert Overflow */
   white-space: nowrap;
-  /* Verhindert Text-Umbruch */
-}
-
-.settings-actions__tabs .sep {
-  color: #ffd23f;
-  font-size: 18px;
-  font-weight: 800;
 }
 
 .settings-actions__tabs span {
   white-space: nowrap;
-  /* Verhindert Umbruch der Text-Elemente */
 }
 
 .btn-start {
@@ -486,43 +475,11 @@ body:has(#screen-settings.screen--active) {
   padding: 0;
   margin: 0;
   flex-shrink: 0;
-  /* Button nicht schrumpfen lassen */
   margin-left: auto;
-  /* Button nach rechts schieben */
 }
 
 /* ============================================
-   RADIO ITEM - ARROW ICON
-   ============================================ */
-.radio-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  user-select: none;
-}
-
-.radio-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-.radio-arrow {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  flex-shrink: 0;
-}
-
-.radio-item:hover .radio-arrow,
-.radio-item:has(.radio-input:checked) .radio-arrow {
-  opacity: 1;
-}
-
-/* ============================================
-   SETTINGS PREVIEW - BASE
+   SETTINGS PREVIEW
    ============================================ */
 .settings-preview {
   display: grid;
@@ -637,7 +594,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   GAME HUD - BASE
+   GAME HUD (BASE)
    ============================================ */
 .game-hud--preview-style {
   display: flex;
@@ -761,7 +718,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   RESULT SCREEN - BASE
+   RESULT SCREEN
    ============================================ */
 .result-screen {
   display: none;
@@ -791,7 +748,6 @@ body:has(#screen-settings.screen--active) {
   background: linear-gradient(135deg, #1a3a3a 0%, #0f2424 100%);
 }
 
-
 @keyframes confettiFloat {
   0% {
     background-position: 0 0, 0 0, 0 0, 0 0;
@@ -812,9 +768,6 @@ body:has(#screen-settings.screen--active) {
   margin-bottom: 40px;
 }
 
-/* ============================================
-   RESULT SCREEN - GAME OVER BLOCK
-   ============================================ */
 .result-gameover__title {
   font-size: 72px;
   font-weight: 800;
@@ -852,9 +805,6 @@ body:has(#screen-settings.screen--active) {
   margin-top: 8px;
 }
 
-/* ============================================
-   RESULT SCREEN - WINNER BLOCK
-   ============================================ */
 .result-kicker {
   font-size: 40px;
   text-transform: uppercase;
@@ -875,21 +825,20 @@ body:has(#screen-settings.screen--active) {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  height: auto;
-  margin: 0 auto 15px auto;
-  width: 200px;
-  height: 250px;
+  width: 260px;
+  height: 298px;
 }
 
 .result-player-icon::before {
-  font-size: 110px;
-  line-height: 1;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* ============================================
-   RESULT SCREEN - DRAW BLOCK
-   ============================================ */
 .result-draw-title {
   font-size: 128px;
   font-weight: 800;
@@ -924,9 +873,6 @@ body:has(#screen-settings.screen--active) {
   }
 }
 
-/* ============================================
-   RESULT SCREEN - VISIBILITY LOGIC
-   ============================================ */
 .result-block,
 #result-gameover,
 #result-winner,
@@ -952,9 +898,6 @@ body:has(#screen-settings.screen--active) {
   display: block !important;
 }
 
-/* ============================================
-   RESULT SCREEN - BACK BUTTON (BASE)
-   ============================================ */
 .result-back-btn {
   margin-top: 50px;
   background: rgba(255, 255, 255, 0.1);
@@ -973,7 +916,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   EXIT MODAL - BASE
+   EXIT MODAL
    ============================================ */
 .exit-modal {
   position: fixed;
@@ -1039,6 +982,21 @@ body:has(#screen-settings.screen--active) {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ============================================
+   WINNER ICONS - DEFAULT
+   ============================================ */
+.result-screen--winner-blue .result-player-icon::before {
+  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
+  width: 200px;
+  height: 250px;
+}
+
+.result-screen--winner-orange .result-player-icon::before {
+  background-image: url('./assets/game-hud/chess_pawn.svg');
+  width: 200px;
+  height: 250px;
 }
 
 /* ============================================
@@ -1119,11 +1077,7 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: 1px;
   border-radius: unset;
   gap: 10px;
-  padding-top: 16px;
-  padding-right: 24px;
-  padding-bottom: 16px;
-  padding-left: 24px;
-
+  padding: 16px 24px;
 }
 
 .theme-code .result-back-btn:hover {
@@ -1561,10 +1515,9 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-gameover__title,
-.theme-food .result-winner-title,
-{
-color: #a45218 !important;
-font-size: 80px !important;
+.theme-food .result-winner-title {
+  color: #a45218 !important;
+  font-size: 80px !important;
 }
 
 .theme-food .result-kicker {
@@ -1598,6 +1551,30 @@ font-size: 80px !important;
   box-shadow: 0 0 20px rgba(255, 140, 66, 0.2);
 }
 
+/* ============================================
+   THEME: FOOD - WINNER ICONS
+   ============================================ */
+/* ============================================
+   THEME: FOOD - WINNER ICONS
+   ============================================ */
+.theme-food.result-screen--winner-blue .result-player-icon {
+  background-color: #f7e6d5 !important;
+  width: 260px;
+  height: 298px;
+}
+
+.theme-food.result-screen--winner-orange .result-player-icon {
+  background-color: #f7e6d5 !important;
+  width: 260px;
+  height: 298px;
+}
+
+.theme-food.result-screen--winner-blue .result-player-icon::before,
+.theme-food.result-screen--winner-orange .result-player-icon::before {
+  width: 200px;
+  height: 250px;
+}
+
 .theme-food .exit-modal__content {
   background: white;
   color: #a95d20;
@@ -1610,7 +1587,7 @@ font-size: 80px !important;
   background: white;
   color: #ff8c42;
   border-radius: 10px;
-  border: 3px solid #F3832D
+  border: 3px solid #F3832D;
 }
 
 .theme-food .exit-modal__btn--primary:hover {
@@ -1622,40 +1599,12 @@ font-size: 80px !important;
 .theme-food .exit-modal__btn--secondary {
   background: #fbaa3e;
   color: white;
-  border: 2px solid rgba(255, 140, 66, 0.3);
+  border: 3px solid #F3832D;
   border-radius: 10px;
-  border: 3px solid #F3832D
 }
 
 .theme-food .exit-modal__btn--secondary:hover {
   background: #ff8c42;
-
-}
-
-/* ============================================
-   THEME: FOOD - WINNER ICONS
-   ============================================ */
-.theme-food.result-screen--winner-blue .result-player-icon::before {
-  content: "";
-  display: block;
-  width: 260px;
-  height: 298px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 24px;
-  background-color: #f7e6d5 !important;
-}
-
-.theme-food.result-screen--winner-orange .result-player-icon::before {
-  content: "";
-  display: block;
-  width: 260px;
-  height: 298px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #f7e6d5;
 }
 
 /* ============================================
@@ -1829,28 +1778,35 @@ font-size: 80px !important;
 }
 
 /* ============================================
-   WINNER ICONS - DEFAULT
+   DEFAULT / FALLBACK
    ============================================ */
-.result-screen--winner-blue .result-player-icon::before {
-  content: "";
-  display: block;
-  width: 200px;
-  height: 250px;
-  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+.draw-icon-img {
+  background-image: url('./assets/game-hud/draw_default.svg');
 }
 
-.result-screen--winner-orange .result-player-icon::before {
-  content: "";
-  display: block;
-  width: 200px;
-  height: 250px;
-  background-image: url('./assets/game-hud/chess_pawn.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+.result-draw-title {
+  color: #2ed3b7;
+  text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
+}
+
+.result-gameover__title {
+  background: linear-gradient(135deg, #2ed3b7, #1a9e8a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 30px rgba(46, 211, 183, 0.3);
+}
+
+.result-screen--winner-blue .result-winner-title {
+  color: #2aa8ff;
+  text-shadow: 0 0 20px rgba(42, 168, 255, 0.5);
+  white-space: nowrap;
+}
+
+.result-screen--winner-orange .result-winner-title {
+  color: #a45218;
+  text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
+  white-space: nowrap;
 }
 
 /* ============================================
@@ -2014,39 +1970,4 @@ font-size: 80px !important;
   .result-player-icon::before {
     font-size: 40px !important;
   }
-}
-
-/* ============================================
-   DEFAULT / FALLBACK
-   ============================================ */
-.draw-icon-img {
-  background-image: url('./assets/game-hud/draw_default.svg');
-}
-
-.result-draw-title {
-  color: #2ed3b7;
-  text-shadow: 0 0 20px rgba(46, 211, 183, 0.5);
-}
-
-.result-gameover__title {
-  background: linear-gradient(135deg, #2ed3b7, #1a9e8a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 30px rgba(46, 211, 183, 0.3);
-}
-
-.result-screen--winner-blue .result-winner-title {
-  color: #2aa8ff;
-  text-shadow: 0 0 20px rgba(42, 168, 255, 0.5);
-  white-space: nowrap;
-  /* Verhindert Text-Umbruch */
-
-}
-
-.result-screen--winner-orange .result-winner-title {
-  color: #a45218;
-  text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
-  white-space: nowrap;
-  /* Verhindert Text-Umbruch */
 }

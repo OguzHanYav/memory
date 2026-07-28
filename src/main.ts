@@ -127,10 +127,16 @@ function resetAndRestartGame(
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
   }
 
-  // Theme-Klasse von Result Screen entfernen
+  // Alle Theme-Klassen von Result Screen entfernen
   const resultScreen = document.getElementById('screen-result');
   if (resultScreen) {
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+    resultScreen.classList.remove(
+      'result-screen--winner-blue',
+      'result-screen--winner-orange',
+      'result-screen--draw',
+      'result-screen--gameover'
+    );
   }
 
   // Renderer auf Standard-Theme setzen
@@ -163,16 +169,6 @@ function resetAndRestartGame(
     currentPlayerImg.src = 'public/assets/Settings/topbar/label-blue.svg';
     currentPlayerImg.classList.remove('player-blue', 'player-orange');
     currentPlayerImg.classList.add('player-blue');
-  }
-
-  // Result Screen zurücksetzen
-  if (resultScreen) {
-    resultScreen.classList.remove(
-      'result-screen--winner-blue',
-      'result-screen--winner-orange',
-      'result-screen--draw',
-      'result-screen--gameover'
-    );
   }
 
   // Result Back Button Texte zurücksetzen
@@ -600,11 +596,9 @@ function init(): void {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
-    // Theme-Klasse auf Result Screen für Food-Theme setzen
+    // Theme-Klasse auf Result Screen für ALLE Themes setzen
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    if (selectedTheme === 'food') {
-      resultScreen.classList.add('theme-food');
-    }
+    resultScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
     updateResultBackText(selectedTheme);
@@ -657,11 +651,9 @@ function init(): void {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
-    // Theme-Klasse auf Result Screen für Food-Theme setzen
+    // Theme-Klasse auf Result Screen für ALLE Themes setzen
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    if (selectedTheme === 'food') {
-      resultScreen.classList.add('theme-food');
-    }
+    resultScreen.classList.add(`theme-${selectedTheme}`);
 
     updateHudIcons(selectedTheme);
     updateResultBackText(selectedTheme);
