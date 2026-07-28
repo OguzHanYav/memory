@@ -174,11 +174,15 @@ function resetAndRestartGame(
   // Result Back Button Texte zurücksetzen
   const resultBackText = document.getElementById('result-back-text');
   const drawBackText = document.getElementById('draw-back-text');
+  const gameoverBackText = document.getElementById('gameover-back-text');
   if (resultBackText) {
     resultBackText.textContent = 'Back to start';
   }
   if (drawBackText) {
     drawBackText.textContent = 'Back to start';
+  }
+  if (gameoverBackText) {
+    gameoverBackText.textContent = 'Back to start';
   }
 
   // Exit Game Icon zurücksetzen
@@ -278,6 +282,9 @@ function init(): void {
   const drawBackText = document.getElementById(
     'draw-back-text'
   ) as HTMLSpanElement;
+  const gameoverBackText = document.getElementById(
+    'gameover-back-text'
+  ) as HTMLSpanElement;
 
   const exitModal = assertEl(
     document.getElementById('modal-exit'),
@@ -331,6 +338,10 @@ function init(): void {
   const btnDrawBack = assertEl(
     document.getElementById('btn-draw-back'),
     'Missing #btn-draw-back'
+  );
+  const btnGameoverBack = assertEl(
+    document.getElementById('btn-gameover-back'),
+    'Missing #btn-gameover-back'
   );
 
   const previewRoot = assertEl(
@@ -471,6 +482,9 @@ function init(): void {
     }
     if (drawBackText) {
       drawBackText.textContent = text;
+    }
+    if (gameoverBackText) {
+      gameoverBackText.textContent = text;
     }
   }
 
@@ -694,17 +708,27 @@ function init(): void {
       'result-screen--gameover'
     );
 
-    if (winner === 'tie') {
+    // Prüfen ob der aktuelle Spieler verloren hat
+    const currentPlayer = game.state.currentPlayer;
+    const isGameOver = winner !== 'tie' && winner !== currentPlayer;
+
+    if (isGameOver) {
+      // Spieler hat verloren -> Game Over Screen
+      resultScreen.classList.add('result-screen--gameover');
+      resultGameover.style.display = 'block';
+      resultWinner.style.display = 'none';
+      resultDraw.style.display = 'none';
+      console.log('🟡 Game Over Screen angezeigt - Spieler hat verloren!');
+    } else if (winner === 'tie') {
       resultScreen.classList.add('result-screen--draw');
+      resultDraw.style.display = 'block';
+      resultWinner.style.display = 'none';
+      resultGameover.style.display = 'none';
     } else {
       resultScreen.classList.add(`result-screen--winner-${winner}`);
-    }
-
-    resultGameover.style.display = '';
-    resultWinner.style.display = '';
-    resultDraw.style.display = '';
-
-    if (winner !== 'tie') {
+      resultWinner.style.display = 'flex';
+      resultGameover.style.display = 'none';
+      resultDraw.style.display = 'none';
       resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
       resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
     }
@@ -722,6 +746,10 @@ function init(): void {
   });
 
   btnDrawBack.addEventListener('click', () => {
+    resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
+  });
+
+  btnGameoverBack.addEventListener('click', () => {
     resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
   });
 
