@@ -252,23 +252,20 @@
         <h1 class="result-gameover__title">Game over</h1>
         <p class="result-score-label">Final score</p>
 
-        <dl class="result-score">
-          <div>
-            <dt class="result-score__blue">Blue</dt>
-            <dd><strong id="result-blue-score">0</strong></dd>
-          </div>
-          <div>
-            <dt class="result-score__orange">Orange</dt>
-            <dd><strong id="result-orange-score">0</strong></dd>
-          </div>
-        </dl>
+        <!-- Game Over Score - 1:1 wie im HUD -->
+        <div class="preview__scores gameover-score">
+          <img src="public/assets/Settings/topbar/label.svg" alt="Blue score" width="24" height="20" />
+          <span id="result-blue-score" class="preview-chip preview-chip--blue">Blue 0</span>
+
+          <img src="public/assets/Settings/topbar/label-orange.svg" alt="Orange score" width="24" height="20" />
+          <span id="result-orange-score" class="preview-chip preview-chip--orange">Orange 0</span>
+        </div>
 
         <!-- Home Button für Game Over -->
         <button id="btn-gameover-back" class="btn result-back-btn" type="button" aria-label="Back to home screen">
           <span id="gameover-back-text">Back to start</span>
         </button>
       </div>
-
       <!-- Winner Block -->
       <div id="result-winner" class="result-block result-block--winner" style="display: none;">
         <!-- Confetti über allem -->
