@@ -898,29 +898,7 @@ body:has(#screen-settings.screen--active) {
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
-
-}
-
-.result-score {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.result-score__blue {
-  color: #2aa8ff;
-}
-
-.result-score__orange {
-  color: #ff8c42;
-}
-
-.result-score strong {
-  font-size: 32px;
-  display: block;
-  margin-top: 8px;
+  color: white;
 }
 
 .result-kicker {
@@ -1139,8 +1117,8 @@ body:has(#screen-settings.screen--active) {
   background-image: url('./assets/game-hud/trophy_orange.svg');
 }
 
-/* THEME: CODE */
-.theme-code .result-player-icon {
+/* THEME: DA */
+.theme-da .result-player-icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1149,22 +1127,19 @@ body:has(#screen-settings.screen--active) {
   margin: 0 auto 15px auto;
 }
 
-.theme-code .result-player-icon::before {
+.theme-da .result-player-icon::before {
   content: "";
   display: block;
   width: 100%;
   height: 100%;
+  background-image: url('public/assets/game-hud/DA-Theme/chess_pawn.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.theme-code.result-screen--winner-blue .result-player-icon::before {
-  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
-}
-
-.theme-code.result-screen--winner-orange .result-player-icon::before {
-  background-image: url('./assets/game-hud/chess_pawn.svg');
+.theme-da.result-screen--winner-orange .result-player-icon::before {
+  background-image: url('public/assets/game-hud/DA-Theme/chess_pawn_orange.svg');
 }
 
 /* THEME: FOOD */
@@ -1183,14 +1158,14 @@ body:has(#screen-settings.screen--active) {
   display: block;
   width: 200px;
   height: 250px;
-  background-image: url('./assets/game-hud/chess_pawn_blue.svg');
+  background-image: url('public/assets/game-hud/FOOD-Theme/chess_pawn_blue.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .theme-food.result-screen--winner-orange .result-player-icon::before {
-  background-image: url('./assets/game-hud/chess_pawn.svg');
+  background-image: url('public/assets/game-hud/FOOD-Theme/chess_pawn.svg');
 }
 
 /* ============================================
@@ -1258,7 +1233,6 @@ body:has(#screen-settings.screen--active) {
   white-space: nowrap;
 }
 
-
 .theme-code .draw-icon-img {
   background-image: url('./assets/game-hud/draw_code.svg');
 }
@@ -1318,20 +1292,48 @@ body:has(#screen-settings.screen--active) {
   background: #94ddd0;
   border: 2px solid #25b89f;
 }
+
 /* ============================================
-   THEME: CODE - GAME OVER SCORE
+   GAME OVER SCORE - BASE STYLES
    ============================================ */
-.theme-code .gameover-score {
+.gameover-score {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 4px 8px;
   width: auto;
-  min-width: 292px;
   height: 62px;
-  background: rgba(54, 82, 77, 1);
   border-radius: 12px;
+}
+
+.gameover-score .preview-chip {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  opacity: 1;
+}
+
+.gameover-score .preview-chip--blue {
+  color: #2aa8ff;
+}
+
+.gameover-score .preview-chip--orange {
+  color: #ff8c42;
+}
+
+.gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ============================================
+   THEME: CODE - GAME OVER SCORE
+   ============================================ */
+.theme-code .gameover-score {
+  background: rgba(54, 82, 77, 1);
+  min-width: 292px;
 }
 
 .theme-code .gameover-score .preview-chip {
@@ -1354,10 +1356,89 @@ body:has(#screen-settings.screen--active) {
   height: 20px;
   object-fit: contain;
 }
-/* Entferne das dt/dd Layout für Game Over Score */
-.theme-code .result-score div {
-  display: contents;
+
+/* ============================================
+   THEME: GAMES - GAME OVER SCORE
+   ============================================ */
+.theme-games .gameover-score {
+  background: white;
 }
+
+.theme-games .gameover-score .preview-chip {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-games .gameover-score .preview-chip--blue {
+  color: #097fc5 !important;
+}
+
+.theme-games .gameover-score .preview-chip--orange {
+  color: #ea6a26 !important;
+}
+
+.theme-games .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ============================================
+   THEME: DA - GAME OVER SCORE
+   ============================================ */
+.theme-da .gameover-score {
+  background: white;
+}
+
+.theme-da .gameover-score .preview-chip--blue {
+  color: #2aa8ff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-da .gameover-score .preview-chip--orange {
+  color: #ff8c42 !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-da .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ============================================
+   THEME: FOOD - GAME OVER SCORE
+   ============================================ */
+.theme-food .gameover-score {
+  background: rgba(255, 140, 66, 0.15);
+}
+
+.theme-food .gameover-score .preview-chip--blue {
+  color: #2aa8ff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-food .gameover-score .preview-chip--orange {
+  color: #ff8c42 !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-food .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
+}
+
 /* ============================================
    THEME: GAMES
    ============================================ */
@@ -1446,6 +1527,11 @@ body:has(#screen-settings.screen--active) {
 
 .theme-games .result-gameover__title {
   color: #ff2f8b !important;
+  font-weight: 900;
+  font-size: 124px;
+  line-height: 100%;
+  letter-spacing: 7%;
+  white-space: nowrap;
 }
 
 .theme-games .result-kicker {
@@ -1510,6 +1596,42 @@ body:has(#screen-settings.screen--active) {
   background-color: white;
   border: 2px solid #ff2f8b;
   color: #ff2f8b;
+}
+
+/* ============================================
+   THEME: GAMES - GAME OVER SCORE
+   ============================================ */
+.theme-games .gameover-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 8px;
+  width: auto;
+  height: 62px;
+  background: white;
+  border-radius: 12px;
+}
+
+.theme-games .gameover-score .preview-chip {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-games .gameover-score .preview-chip--blue {
+  color: #097fc5 !important;
+}
+
+.theme-games .gameover-score .preview-chip--orange {
+  color: #ea6a26 !important;
+}
+
+.theme-games .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
 }
 
 /* ============================================
@@ -1592,7 +1714,16 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-da .result-gameover__title {
-  color: #0f2a35 !important;
+  color: #f58981 !important;
+  line-height: 100%;
+  white-space: nowrap;
+  font-family: Figtree;
+  font-weight: 800;
+  font-size: 130px;
+  letter-spacing: 0%;
+  text-align: center;
+  text-transform: uppercase;
+
 }
 
 .theme-da .result-winner-title {
@@ -1665,6 +1796,41 @@ body:has(#screen-settings.screen--active) {
   background: #2f7fa6;
   border: 2px solid #2f7fa6;
   color: white;
+}
+
+/* ============================================
+   THEME: DA - GAME OVER SCORE
+   ============================================ */
+.theme-da .gameover-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 8px;
+  width: auto;
+  height: 62px;
+  background: white;
+  border-radius: 12px;
+}
+
+.theme-da .gameover-score .preview-chip--blue {
+  color: #2aa8ff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-da .gameover-score .preview-chip--orange {
+  color: #ff8c42 !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-da .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
 }
 
 /* ============================================
@@ -1746,14 +1912,24 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-screen {
-  background: white !important;
+  background: #f3832d !important;
   width: 100%;
 }
 
 .theme-food .result-gameover__title,
 .theme-food .result-winner-title {
-  color: #a45218 !important;
-  font-size: 80px !important;
+  color: white !important;
+  font-family: Figtree;
+font-weight: 800;
+font-style: ExtraBold;
+font-size: 130px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+  text-transform: uppercase;
+    white-space: nowrap;
+
 }
 
 .theme-food .result-kicker {
@@ -1771,9 +1947,9 @@ body:has(#screen-settings.screen--active) {
 }
 
 .theme-food .result-back-btn {
-  background: #ff8c42;
+  background: white;
   border: 2px solid rgba(255, 140, 66, 0.4);
-  color: white;
+  color: #ff8c42;
   font-family: 'Klee One', cursive;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -1817,6 +1993,41 @@ body:has(#screen-settings.screen--active) {
 
 .theme-food .exit-modal__btn--secondary:hover {
   background: #ff8c42;
+}
+
+/* ============================================
+   THEME: FOOD - GAME OVER SCORE
+   ============================================ */
+.theme-food .gameover-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 22px;
+  width: auto;
+  height: 62px;
+  background: white;
+  border-radius: unset;
+}
+
+.theme-food .gameover-score .preview-chip--blue {
+  color: #2aa8ff !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-food .gameover-score .preview-chip--orange {
+  color: #ff8c42 !important;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+}
+
+.theme-food .gameover-score img {
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
 }
 
 /* ============================================
@@ -2162,15 +2373,6 @@ body:has(#screen-settings.screen--active) {
 
   .result-draw-title {
     font-size: 48px;
-  }
-
-  .result-score {
-    gap: 20px;
-    font-size: 16px;
-  }
-
-  .result-score strong {
-    font-size: 24px;
   }
 
   /* Responsive Winner Icons */

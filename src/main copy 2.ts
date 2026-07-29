@@ -1,3 +1,4 @@
+
 import './style/style.scss';
 
 import { assertEl } from './app/utils/dom';
@@ -159,8 +160,14 @@ function resetAndRestartGame(
   const orangeScoreEl = document.getElementById('orangeScore');
 
   if (blueScoreEl && orangeScoreEl) {
-    blueScoreEl.textContent = 'Blue 0';
-    orangeScoreEl.textContent = 'Orange 0';
+    const isCodeTheme = selectedTheme === 'code';
+    if (isCodeTheme) {
+      blueScoreEl.textContent = 'Blue 0';
+      orangeScoreEl.textContent = 'Orange 0';
+    } else {
+      blueScoreEl.textContent = '0';
+      orangeScoreEl.textContent = '0';
+    }
   }
 
   // Current Player Icon zurücksetzen
@@ -403,8 +410,14 @@ function init(): void {
     }
 
     // Scores setzen
-    resultBlueScore.textContent = String(blueScore);
-    resultOrangeScore.textContent = String(orangeScore);
+    const isCodeTheme = selectedTheme === 'code';
+    if (isCodeTheme) {
+      resultBlueScore.textContent = `Blue ${blueScore}`;
+      resultOrangeScore.textContent = `Orange ${orangeScore}`;
+    } else {
+      resultBlueScore.textContent = String(blueScore);
+      resultOrangeScore.textContent = String(orangeScore);
+    }
 
     // Alle Klassen entfernen
     resultScreen.classList.remove(
@@ -698,8 +711,17 @@ function init(): void {
   });
 
   game.onWin(({ blueMatches, orangeMatches, winner }) => {
-    resultBlueScore.textContent = String(blueMatches);
-    resultOrangeScore.textContent = String(orangeMatches);
+    // Prüfen ob wir das Code-Theme haben
+    const isCodeTheme = selectedTheme === 'code';
+    
+    // Scores setzen - mit oder ohne Text je nach Theme
+    if (isCodeTheme) {
+      resultBlueScore.textContent = `Blue ${blueMatches}`;
+      resultOrangeScore.textContent = `Orange ${orangeMatches}`;
+    } else {
+      resultBlueScore.textContent = String(blueMatches);
+      resultOrangeScore.textContent = String(orangeMatches);
+    }
 
     resultScreen.classList.remove(
       'result-screen--winner-blue',

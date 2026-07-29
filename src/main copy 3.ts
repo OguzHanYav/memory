@@ -91,8 +91,10 @@ function showScreen(id: 'home' | 'settings' | 'game' | 'result'): void {
     result: document.getElementById('screen-result'),
   };
 
+  // Alle Screens ausblenden
   Object.values(screens).forEach((el) => el?.classList.remove('screen--active'));
 
+  // Nur den gewünschten Screen anzeigen
   const target = screens[id];
   if (target) {
     target.classList.add('screen--active');
@@ -107,20 +109,25 @@ function resetAndRestartGame(
   selectedGrid: GridSize,
   selectedPlayer: PlayerColor
 ): void {
+  // Board leeren
   const field = document.getElementById('field');
   if (field) {
     field.innerHTML = '';
   }
 
-  const DEFAULT_THEME: ThemeId = 'code';
+  // Theme zurücksetzen auf Code (Standard)
+  const defaultTheme: ThemeId = 'code';
 
+  // Alle Theme-Klassen von Body entfernen
   document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
 
+  // Alle Theme-Klassen von Game Screen entfernen
   const gameScreen = document.getElementById('screen-game');
   if (gameScreen) {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
   }
 
+  // Alle Theme-Klassen von Result Screen entfernen
   const resultScreen = document.getElementById('screen-result');
   if (resultScreen) {
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
@@ -132,18 +139,22 @@ function resetAndRestartGame(
     );
   }
 
-  renderer.setTheme(DEFAULT_THEME);
+  // Renderer auf Standard-Theme setzen
+  renderer.setTheme(defaultTheme);
 
+  // Game-Konfiguration zurücksetzen
   game.updateConfig({
-    theme: DEFAULT_THEME,
+    theme: defaultTheme,
     gridSize: selectedGrid,
     startingPlayer: selectedPlayer,
     pairs: pairsFromGrid(selectedGrid),
     flipBackDelayMs: 700,
   });
 
+  // Neues Spiel starten (im Hintergrund)
   game.startNewGame();
 
+  // UI zurücksetzen
   const blueScoreEl = document.getElementById('blueScore');
   const orangeScoreEl = document.getElementById('orangeScore');
 
@@ -158,6 +169,7 @@ function resetAndRestartGame(
     }
   }
 
+  // Result Scores zurücksetzen
   const resultBlueScore = document.getElementById('result-blue-score');
   const resultOrangeScore = document.getElementById('result-orange-score');
   if (resultBlueScore && resultOrangeScore) {
@@ -165,6 +177,7 @@ function resetAndRestartGame(
     resultOrangeScore.textContent = 'Orange 0';
   }
 
+  // Current Player Icon zurücksetzen
   const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
   if (currentPlayerImg) {
     currentPlayerImg.src = 'public/assets/Settings/topbar/label-blue.svg';
@@ -172,6 +185,7 @@ function resetAndRestartGame(
     currentPlayerImg.classList.add('player-blue');
   }
 
+  // Result Back Button Texte zurücksetzen
   const resultBackText = document.getElementById('result-back-text');
   const drawBackText = document.getElementById('draw-back-text');
   const gameoverBackText = document.getElementById('gameover-back-text');
@@ -185,16 +199,19 @@ function resetAndRestartGame(
     gameoverBackText.textContent = 'Back to start';
   }
 
+  // Exit Game Icon zurücksetzen
   const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
   if (exitGameIcon) {
     exitGameIcon.src = 'public/assets/Settings/topbar/move_item.svg';
   }
 
+  // Preview Exit Icon zurücksetzen
   const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
   if (previewExitIcon) {
     previewExitIcon.src = 'public/assets/Settings/topbar/move_item.svg';
   }
 
+  // Preview Bilder zurücksetzen
   const previewImgMain = document.getElementById('preview-img-main') as HTMLImageElement;
   const previewImgSub = document.getElementById('preview-img-sub') as HTMLImageElement;
   if (previewImgMain) {
@@ -204,12 +221,14 @@ function resetAndRestartGame(
     previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
   }
 
+  // Preview Root zurücksetzen
   const previewRoot = document.getElementById('theme-preview');
   if (previewRoot) {
     previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
     previewRoot.classList.add('preview--code');
   }
 
+  // Exit Popup Texte zurücksetzen
   const backToGameText = document.getElementById('back-to-game-text');
   const confirmExitText = document.getElementById('confirm-exit-text');
   if (backToGameText) {
@@ -219,6 +238,7 @@ function resetAndRestartGame(
     confirmExitText.textContent = 'Exit game';
   }
 
+  // Zur Home-Screen navigieren
   showScreen('home');
 }
 
@@ -396,6 +416,7 @@ function init(): void {
       return;
     }
 
+    // Scores setzen - mit oder ohne Text je nach Theme
     const isCodeTheme = selectedTheme === 'code';
     if (isCodeTheme) {
       resultBlueScore.textContent = `Blue ${blueScore}`;
@@ -405,6 +426,7 @@ function init(): void {
       resultOrangeScore.textContent = String(orangeScore);
     }
 
+    // Alle Klassen entfernen
     resultScreen.classList.remove(
       'result-screen--winner-blue',
       'result-screen--winner-orange',
@@ -412,16 +434,20 @@ function init(): void {
       'result-screen--gameover'
     );
 
+    // Alle Blocks ausblenden
     if (resultGameover) resultGameover.style.display = 'none';
     if (resultWinner) resultWinner.style.display = 'none';
     if (resultDraw) resultDraw.style.display = 'none';
 
+    // Je nach Winner-Typ die richtige Klasse und Block anzeigen
     if (winner === 'gameover') {
       resultScreen.classList.add('result-screen--gameover');
       if (resultGameover) resultGameover.style.display = 'block';
+      console.log('🟡 Game Over Screen (Test)');
     } else if (winner === 'tie') {
       resultScreen.classList.add('result-screen--draw');
       if (resultDraw) resultDraw.style.display = 'block';
+      console.log('🟡 Draw Screen (Test)');
     } else {
       resultScreen.classList.add(`result-screen--winner-${winner}`);
       if (resultWinner) resultWinner.style.display = 'flex';
@@ -429,8 +455,10 @@ function init(): void {
         resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
         resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
       }
+      console.log(`🟡 Winner Screen (Test): ${winner.toUpperCase()} gewinnt!`);
     }
 
+    // Result Screen anzeigen
     showScreen('result');
   }
 
@@ -487,12 +515,14 @@ function init(): void {
 
     if (!exitBtn || !exitIcon) return;
 
+    // Alte Event-Listener entfernen (durch Klonen)
     const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
     exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
 
     const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
     if (!newExitIcon) return;
 
+    // Hover Events für Game Button
     newExitBtn.addEventListener('mouseenter', () => {
       const hoverIcon = EXIT_ICONS_HOVER[theme];
       if (hoverIcon) {
@@ -507,10 +537,12 @@ function init(): void {
       }
     });
 
+    // Click Event wieder hinzufügen
     newExitBtn.addEventListener('click', () => {
       exitModal.style.display = 'flex';
     });
 
+    // Preview Button Hover (Settings)
     const previewBtn = document.querySelector('.preview-exit');
     const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
 
@@ -594,9 +626,11 @@ function init(): void {
 
   /** Aktualisiert die Theme-Preview im Settings-Bereich */
   function updateThemePreview(): void {
+    // Theme-Klassen auf Game Screen aktualisieren
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
+    // Theme-Klasse auf Result Screen für ALLE Themes setzen
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     resultScreen.classList.add(`theme-${selectedTheme}`);
 
@@ -608,7 +642,8 @@ function init(): void {
     previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
     previewRoot.classList.add(`preview--${themeToShow}`);
 
-    const PREVIEW_CONFIG = {
+    // Preview-Bilder basierend auf Theme setzen
+    const previewConfig = {
       code: {
         main: './assets/Settings/Cards 5/Cards 5_2.svg',
         sub: './assets/Settings/Cards 5/Cards 5.svg',
@@ -627,7 +662,7 @@ function init(): void {
       },
     };
 
-    const config = PREVIEW_CONFIG[themeToShow];
+    const config = previewConfig[themeToShow];
     if (config) {
       previewImgMain.src = config.main;
       previewImgSub.src = config.sub;
@@ -650,6 +685,7 @@ function init(): void {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${selectedTheme}`);
 
+    // Theme-Klasse auf Result Screen für ALLE Themes setzen
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     resultScreen.classList.add(`theme-${selectedTheme}`);
 
@@ -682,8 +718,10 @@ function init(): void {
   });
 
   game.onWin(({ blueMatches, orangeMatches, winner }) => {
+    // Prüfen ob wir das Code-Theme haben
     const isCodeTheme = selectedTheme === 'code';
-
+    
+    // Scores setzen - mit oder ohne Text je nach Theme
     if (isCodeTheme) {
       resultBlueScore.textContent = `Blue ${blueMatches}`;
       resultOrangeScore.textContent = `Orange ${orangeMatches}`;
@@ -703,22 +741,28 @@ function init(): void {
     const isGameOver = winner !== 'tie' && winner !== playerWhoPlayed;
 
     if (isGameOver) {
+      // Spieler hat verloren -> Game Over Screen
       resultScreen.classList.add('result-screen--gameover');
       resultGameover.style.display = 'block';
       resultWinner.style.display = 'none';
       resultDraw.style.display = 'none';
+      console.log(`🟡 Game Over - ${playerWhoPlayed.toUpperCase()} hat verloren!`);
     } else if (winner === 'tie') {
+      // Unentschieden
       resultScreen.classList.add('result-screen--draw');
       resultDraw.style.display = 'block';
       resultWinner.style.display = 'none';
       resultGameover.style.display = 'none';
+      console.log('🟡 Draw - Unentschieden!');
     } else {
+      // Spieler hat gewonnen -> Winner Screen
       resultScreen.classList.add(`result-screen--winner-${winner}`);
       resultWinner.style.display = 'flex';
       resultGameover.style.display = 'none';
       resultDraw.style.display = 'none';
       resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
       resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
+      console.log(`🟡 ${winner.toUpperCase()} hat gewonnen!`);
     }
 
     showScreen('result');
@@ -728,6 +772,7 @@ function init(): void {
   // EVENT LISTENERS
   // ============================================
 
+  // Result Screen Back Buttons - Spiel komplett zurücksetzen
   btnResultBack.addEventListener('click', () => {
     resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
   });
@@ -740,6 +785,7 @@ function init(): void {
     resetAndRestartGame(game, renderer, selectedTheme, selectedGrid, selectedPlayer);
   });
 
+  // Popup Buttons
   btnBackToGame.addEventListener('click', () => {
     exitModal.style.display = 'none';
   });
@@ -750,12 +796,14 @@ function init(): void {
     document.body.classList.remove('modal-open');
   });
 
+  // Navigation
   btnGoSettings.addEventListener('click', () => {
     showScreen('settings');
   });
 
   btnStartGame.addEventListener('click', startGameFromSettings);
 
+  // Theme radios
   document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       const theme = radio.value as ThemeId;
@@ -768,6 +816,7 @@ function init(): void {
     });
   });
 
+  // Player radios
   document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       const player = radio.value as PlayerColor;
@@ -777,6 +826,7 @@ function init(): void {
     });
   });
 
+  // Grid radios
   document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       const grid = Number(radio.value) as GridSize;
@@ -787,10 +837,15 @@ function init(): void {
     });
   });
 
+  // ============================================
+  // SETTINGS PREVIEW HOVER EFFECT
+  // ============================================
+
   document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
     const radio = label.querySelector<HTMLInputElement>('.radio-input');
     if (!radio) return;
 
+    // Nur für Theme-Radios (nicht für Player oder Grid)
     const isThemeRadio = radio.name === 'theme';
     if (!isThemeRadio) return;
 
@@ -808,6 +863,10 @@ function init(): void {
     });
   });
 
+  // ============================================
+  // BOARD CLICK DELEGATION
+  // ============================================
+
   field.addEventListener('click', (e: MouseEvent) => {
     const cardEl = (e.target as HTMLElement).closest<HTMLButtonElement>('.card');
     if (!cardEl) return;
@@ -818,19 +877,26 @@ function init(): void {
     game.handleCardClick(cardId);
   });
 
+  // ============================================
+  // KEYBOARD SHORTCUTS FÜR TESTING
+  // ============================================
   document.addEventListener('keydown', (e) => {
+    // Alt + 1 = Blue gewinnt
     if (e.altKey && e.key === '1') {
       e.preventDefault();
       testResultScreen('blue', 5, 3);
     }
+    // Alt + 2 = Orange gewinnt
     if (e.altKey && e.key === '2') {
       e.preventDefault();
       testResultScreen('orange', 2, 4);
     }
+    // Alt + 3 = Draw
     if (e.altKey && e.key === '3') {
       e.preventDefault();
       testResultScreen('tie', 3, 3);
     }
+    // Alt + 4 = Game Over
     if (e.altKey && e.key === '4') {
       e.preventDefault();
       testResultScreen('gameover', 4, 2);
@@ -847,6 +913,7 @@ function init(): void {
 
   showScreen('home');
 
+  // Debugging - Test-Funktion global verfügbar machen
   (window as any).testResultScreen = testResultScreen;
   (window as any).game = game;
 }
