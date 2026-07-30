@@ -1,0 +1,128 @@
+import { GameController } from '../app/controllers/GameController';
+import { Renderer } from '../app/ui/Renderer';
+import { state } from './state';
+import { updateThemePreview } from './theme';
+import { startGameFromSettings } from './game';
+import { resetAndRestartGame } from './reset';
+import { testResultScreen } from './test';
+import { EXIT_ICONS_HOVER, EXIT_ICONS, VALID_THEMES, VALID_PLAYERS, VALID_GRID_SIZES } from './constants';
+import type { ThemeId, GridSize, PlayerColor } from '../app/core/types';
+
+export function setupExitButtonEvents(exitBtn: HTMLButtonElement, exitModal: HTMLElement, theme: ThemeId): void {
+  const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
+  exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
+  const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
+  if (!newExitIcon) return;
+
+  newExitBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newExitIcon.src = hoverIcon;
+  });
+  newExitBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newExitIcon.src = defaultIcon;
+  });
+  newExitBtn.addEventListener('click', () => { exitModal.style.display = 'flex'; });
+}
+
+export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLImageElement, theme: ThemeId): void {
+  const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
+  previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
+  const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
+  if (!newPreviewIcon) return;
+
+  newPreviewBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newPreviewIcon.src = hoverIcon;
+  });
+  newPreviewBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newPreviewIcon.src = defaultIcon;
+  });
+}
+
+export function setupExitButtonHover(theme: ThemeId): void {
+  const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
+  const exitModal = document.getElementById('modal-exit') as HTMLElement;
+  if (!exitBtn || !exitModal) return;
+
+  setupExitButtonEvents(exitBtn, exitModal, theme);
+
+  const previewBtn = document.querySelector('.preview-exit');
+  const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+  if (previewBtn && previewIcon) {
+    setupPreviewExitEvents(previewBtn, previewIcon, theme);
+  }
+}
+
+export function setupThemeRadios(renderer: Renderer): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const theme = radio.value as ThemeId;
+      if (!VALID_THEMES.includes(theme)) return;
+      state.selectedTheme = theme;
+      renderer.setTheme(theme);
+      updateThemePreview();
+    });
+  });
+}
+
+export function setupPlayerRadios(): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const player = radio.value as PlayerColor;
+      if (!VALID_PLAYERS.includes(player)) return;
+      state.selectedPlayer = player;
+    });
+  });
+}
+
+export function setupGridRadios(renderer: Renderer): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const grid = Number(radio.value) as GridSize;
+      if (!VALID_GRID_SIZES.includes(grid)) return;
+      state.selectedGrid = grid;
+      renderer.setGrid(grid);
+    });
+  });
+}
+
+export function setupPreviewHover(): void {
+  document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
+    const radio = label.querySelector<HTMLInputElement>('.radio-input');
+    if (!radio || radio.name !== 'theme') return;
+    label.addEventListener('mouseenter', () => {
+      const themeValue = radio.value as ThemeId;
+      if (VALID_THEMES.includes(themeValue)) {
+        state.hoveredTheme = themeValue;
+        updateThemePreview();
+      }
+    });
+    label.addEventListener('mouseleave', () => {
+      state.hoveredTheme = null;
+      updateThemePreview();
+    });
+  });
+}
+
+export function setupBoardClick(game: GameController): void {
+  const field = document.getElementById('field') as HTMLElement;
+  if (!field) return;
+  field.addEventListener('click', (e: MouseEvent) => {
+    const cardEl = (e.target as HTMLElement).closest<HTMLButtonElement>('.card');
+    if (!cardEl) return;
+    const cardId = cardEl.dataset.id;
+    if (!cardId) return;
+    game.handleCardClick(cardId);
+  });
+}
+
+export function setupKeyboardShortcuts(): void {
+  document.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key === '1') { e.preventDefault(); testResultScreen('blue', 5, 3); }
+    if (e.altKey && e.key === '2') { e.preventDefault(); testResultScreen('orange', 2, 4); }
+    if (e.altKey && e.key === '3') { e.preventDefault(); testResultScreen('tie', 3, 3); }
+    if (e.altKey && e.key === '4') { e.preventDefault(); testResultScreen('gameover', 4, 2); }
+  });
+}
