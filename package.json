@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "vite build",
+    "build:ftp": "vite build --mode ftp",
+    "build:vercel": "vite build --mode vercel",
     "preview": "vite preview"
   },
   "keywords": [],

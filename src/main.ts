@@ -12,35 +12,35 @@ import type { GridSize, ThemeId, PlayerColor } from './app/core/types';
 
 const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
   code: {
-    blue: 'public/assets/Settings/topbar/label.svg',
-    orange: 'public/assets/Settings/topbar/label-orange.svg',
+    blue: '/Memory/assets/Settings/topbar/label.svg',
+    orange: '/Memory/assets/Settings/topbar/label-orange.svg',
   },
   games: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
+    blue: '/Memory/assets/game-hud/chess_pawn_blue.svg',
+    orange: '/Memory/assets/game-hud/chess_pawn.svg',
   },
   da: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
+    blue: '/Memory/assets/game-hud/chess_pawn_blue.svg',
+    orange: '/Memory/assets/game-hud/chess_pawn.svg',
   },
   food: {
-    blue: 'public/assets/game-hud/chess_pawn_blue.svg',
-    orange: 'public/assets/game-hud/chess_pawn.svg',
+    blue: '/Memory/assets/game-hud/chess_pawn_blue.svg',
+    orange: '/Memory/assets/game-hud/chess_pawn.svg',
   },
 };
 
 const EXIT_ICONS: Record<ThemeId, string> = {
-  code: 'public/assets/Settings/topbar/move_item.svg',
-  games: 'public/assets/Settings/topbar/move_item.svg',
-  da: 'public/assets/game-hud/DA-Theme/move_item.svg',
-  food: 'public/assets/game-hud/FOOD-Theme/move_item.svg',
+  code: '/Memory/assets/Settings/topbar/move_item.svg',
+  games: '/Memory/assets/Settings/topbar/move_item.svg',
+  da: '/Memory/assets/game-hud/DA-Theme/move_item.svg',
+  food: '/Memory/assets/game-hud/FOOD-Theme/move_item.svg',
 };
 
 const EXIT_ICONS_HOVER: Record<ThemeId, string> = {
   code: '',
-  games: 'public/assets/game-hud/GAME-Theme/move_item.svg',
-  da: 'public/assets/Settings/topbar/move_item.svg',
-  food: 'public/assets/Settings/topbar/move_item.svg',
+  games: '/Memory/assets/game-hud/GAME-Theme/move_item.svg',
+  da: '/Memory/assets/Settings/topbar/move_item.svg',
+  food: '/Memory/assets/Settings/topbar/move_item.svg',
 };
 
 const EXIT_TEXTS: Record<ThemeId, { back: string; confirm: string }> = {
@@ -167,7 +167,7 @@ function resetAndRestartGame(
 
   const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
   if (currentPlayerImg) {
-    currentPlayerImg.src = 'public/assets/Settings/topbar/label-blue.svg';
+    currentPlayerImg.src = '/Memory/assets/Settings/topbar/label-blue.svg';
     currentPlayerImg.classList.remove('player-blue', 'player-orange');
     currentPlayerImg.classList.add('player-blue');
   }
@@ -187,21 +187,21 @@ function resetAndRestartGame(
 
   const exitGameIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
   if (exitGameIcon) {
-    exitGameIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+    exitGameIcon.src = '/Memory/assets/Settings/topbar/move_item.svg';
   }
 
   const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
   if (previewExitIcon) {
-    previewExitIcon.src = 'public/assets/Settings/topbar/move_item.svg';
+    previewExitIcon.src = '/Memory/assets/Settings/topbar/move_item.svg';
   }
 
   const previewImgMain = document.getElementById('preview-img-main') as HTMLImageElement;
   const previewImgSub = document.getElementById('preview-img-sub') as HTMLImageElement;
   if (previewImgMain) {
-    previewImgMain.src = './assets/Settings/Cards 5/Cards 5_2.svg';
+    previewImgMain.src = '/Memory/assets/Settings/Cards 5/Cards 5_2.svg';
   }
   if (previewImgSub) {
-    previewImgSub.src = './assets/Settings/Cards 5/Cards 5.svg';
+    previewImgSub.src = '/Memory/assets/Settings/Cards 5/Cards 5.svg';
   }
 
   const previewRoot = document.getElementById('theme-preview');
@@ -444,11 +444,11 @@ function init(): void {
 
     if (isCodeTheme) {
       return player === 'blue'
-        ? 'public/assets/Settings/topbar/label.svg'
-        : 'public/assets/Settings/topbar/label-orange.svg';
+        ? '/Memory/assets/Settings/topbar/label.svg'
+        : '/Memory/assets/Settings/topbar/label-orange.svg';
     }
 
-    return 'public/assets/game-hud/chess_pawn_current_player.svg';
+    return '/Memory/assets/game-hud/chess_pawn_current_player.svg';
   }
 
   /** Aktualisiert die Exit-Popup-Texte basierend auf dem Theme */
@@ -610,20 +610,20 @@ function init(): void {
 
     const PREVIEW_CONFIG = {
       code: {
-        main: './assets/Settings/Cards 5/Cards 5_2.svg',
-        sub: './assets/Settings/Cards 5/Cards 5.svg',
+        main: '/Memory/assets/Settings/Cards 5/Cards 5_2.svg',
+        sub: '/Memory/assets/Settings/Cards 5/Cards 5.svg',
       },
       games: {
-        main: './assets/Settings/Cards 5/Rectangle 40.svg',
-        sub: './assets/Settings/Cards 5/Front.svg',
+        main: '/Memory/assets/Settings/Cards 5/Rectangle 40.svg',
+        sub: '/Memory/assets/Settings/Cards 5/Front.svg',
       },
       da: {
-        main: './assets/Settings/Cards 5/Frame 727.svg',
-        sub: './assets/Settings/Cards 5/Frame 728.svg',
+        main: '/Memory/assets/Settings/Cards 5/Frame 727.svg',
+        sub: '/Memory/assets/Settings/Cards 5/Frame 728.svg',
       },
       food: {
-        main: './assets/Settings/Cards 5/frond.svg',
-        sub: './assets/Settings/Cards 5/frond_foods.svg',
+        main: '/Memory/assets/Settings/Cards 5/frond.svg',
+        sub: '/Memory/assets/Settings/Cards 5/frond_foods.svg',
       },
     };
 
