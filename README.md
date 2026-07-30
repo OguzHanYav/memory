@@ -27,3 +27,54 @@ Ein interaktives Memory-Spiel mit vier verschiedenen Themes, entwickelt mit Type
 - **HTML5** - Semantische Struktur
 
 ## 📁 Projektstruktur
+
+src/
+├── main.ts # Einstiegspunkt
+├── modules/
+│ ├── constants.ts # Alle Konstanten
+│ ├── state.ts # Globaler State
+│ ├── helpers.ts # Hilfsfunktionen
+│ ├── reset.ts # Reset-Funktionen
+│ ├── test.ts # Test-Result-Screen
+│ ├── hud.ts # HUD-Updates
+│ ├── theme.ts # Theme-Preview
+│ ├── game.ts # Game-Start
+│ ├── win.ts # Game-Win-Handling
+│ ├── events.ts # Event-Listener
+│ └── init.ts # Initialisierung
+├── app/
+│ ├── controllers/ # GameController
+│ ├── core/ # Types & Config
+│ ├── models/ # Card & GameState
+│ ├── ui/ # Renderer
+│ └── utils/ # DOM & Shuffle
+├── assets/ # Bilder & Icons
+└── style/ # SCSS Styles
+
+## 🎯 Gameplay
+
+Startseite: Klicke auf "Play" um zu den Einstellungen zu gelangen
+
+Einstellungen:
+
+Wähle ein Theme (Code, Gaming, DA Projects, Food)
+
+Wähle den Startspieler (Blau oder Orange)
+
+Wähle die Board-Größe (16, 24 oder 36 Karten)
+
+Spiel:
+
+Klicke auf Karten, um sie umzudrehen
+
+Finde Paare, um Punkte zu sammeln
+
+Der Spieler mit den meisten Paaren gewinnt
+
+Ergebnis:
+
+Sieger-Bildschirm mit Konfetti
+
+Unentschieden-Bildschirm
+
+Game Over Bildschirm
