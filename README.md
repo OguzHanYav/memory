@@ -7,7 +7,6 @@ Ein interaktives Memory-Spiel mit vier verschiedenen Themes, entwickelt mit Type
 ## 🚀 Live Demo
 
 - **Vercel**: [https://memory-blond-gamma.vercel.app](https://memory-blond-gamma.vercel.app)
-- **FTP**: [https://oguz-han.developerakademie.net/Memory/](https://oguz-han.developerakademie.net/Memory/)
 
 ## ✨ Features
 
