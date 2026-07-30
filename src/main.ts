@@ -293,11 +293,11 @@ function updateResultBackText(theme: ThemeId): void {
   if (gameoverEl) gameoverEl.textContent = text;
 }
 
-function setupExitButtonHover(theme: ThemeId): void {
-  const exitBtn = document.getElementById('btn-exit-game');
-  const exitModal = document.getElementById('modal-exit') as HTMLElement;
-  if (!exitBtn || !exitModal) return;
+// ============================================
+// EXIT BUTTON HOVER - HELPER FUNCTIONS
+// ============================================
 
+function setupExitButtonEvents(exitBtn: HTMLButtonElement, exitModal: HTMLElement, theme: ThemeId): void {
   const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
   exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
   const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
@@ -312,47 +312,74 @@ function setupExitButtonHover(theme: ThemeId): void {
     if (defaultIcon) newExitIcon.src = defaultIcon;
   });
   newExitBtn.addEventListener('click', () => { exitModal.style.display = 'flex'; });
+}
+
+function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLImageElement, theme: ThemeId): void {
+  const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
+  previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
+  const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
+  if (!newPreviewIcon) return;
+
+  newPreviewBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newPreviewIcon.src = hoverIcon;
+  });
+  newPreviewBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newPreviewIcon.src = defaultIcon;
+  });
+}
+
+function setupExitButtonHover(theme: ThemeId): void {
+  const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
+  const exitModal = document.getElementById('modal-exit') as HTMLElement;
+  if (!exitBtn || !exitModal) return;
+
+  setupExitButtonEvents(exitBtn, exitModal, theme);
 
   const previewBtn = document.querySelector('.preview-exit');
   const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
   if (previewBtn && previewIcon) {
-    const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
-    previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
-    const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
-    if (newPreviewIcon) {
-      newPreviewBtn.addEventListener('mouseenter', () => {
-        const hoverIcon = EXIT_ICONS_HOVER[theme];
-        if (hoverIcon) newPreviewIcon.src = hoverIcon;
-      });
-      newPreviewBtn.addEventListener('mouseleave', () => {
-        const defaultIcon = EXIT_ICONS[theme];
-        if (defaultIcon) newPreviewIcon.src = defaultIcon;
-      });
-    }
+    setupPreviewExitEvents(previewBtn, previewIcon, theme);
+  }
+}
+
+// ============================================
+// HUD ICONS - HELPER FUNCTIONS
+// ============================================
+
+function getHudIcons() {
+  return {
+    blueIcon: document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement,
+    orangeIcon: document.querySelector('.game-hud--preview-style .preview__scores img:last-of-type') as HTMLImageElement,
+    exitIcon: document.getElementById('exitGameIcon') as HTMLImageElement,
+    currentPlayerImg: document.getElementById('currentPlayerImg') as HTMLImageElement,
+  };
+}
+
+function setHudIconSources(theme: ThemeId, icons: ReturnType<typeof getHudIcons>): void {
+  const themeIcons = THEME_ICONS[theme];
+  if (!themeIcons) return;
+  if (icons.blueIcon) icons.blueIcon.src = themeIcons.blue;
+  if (icons.orangeIcon) icons.orangeIcon.src = themeIcons.orange;
+  if (icons.exitIcon) icons.exitIcon.src = EXIT_ICONS[theme];
+}
+
+function updateHudPlayerIcon(theme: ThemeId, img: HTMLImageElement): void {
+  const currentPlayer = (window as any).game?.state?.currentPlayer || state.selectedPlayer;
+  if (img) {
+    img.src = getCurrentPlayerIcon(theme, currentPlayer);
+    img.classList.remove('player-blue', 'player-orange');
+    img.classList.add(`player-${currentPlayer}`);
   }
 }
 
 function updateHudIcons(theme: ThemeId): void {
-  const icons = THEME_ICONS[theme];
-  if (!icons) return;
-  const blueIcon = document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement;
-  const orangeIcon = document.querySelector('.game-hud--preview-style .preview__scores img:last-of-type') as HTMLImageElement;
-  const exitIcon = document.getElementById('exitGameIcon') as HTMLImageElement;
-  const currentPlayerImg = document.getElementById('currentPlayerImg') as HTMLImageElement;
-  
-  if (blueIcon) blueIcon.src = icons.blue;
-  if (orangeIcon) orangeIcon.src = icons.orange;
-  if (exitIcon) exitIcon.src = EXIT_ICONS[theme];
-  
+  const icons = getHudIcons();
+  setHudIconSources(theme, icons);
   updateExitTexts(theme);
   setupExitButtonHover(theme);
-
-  const currentPlayer = (window as any).game?.state?.currentPlayer || state.selectedPlayer;
-  if (currentPlayerImg) {
-    currentPlayerImg.src = getCurrentPlayerIcon(theme, currentPlayer);
-    currentPlayerImg.classList.remove('player-blue', 'player-orange');
-    currentPlayerImg.classList.add(`player-${currentPlayer}`);
-  }
+  updateHudPlayerIcon(theme, icons.currentPlayerImg);
 }
 
 function updateCurrentPlayer(player: 'blue' | 'orange'): void {
@@ -376,30 +403,36 @@ function renderGameUi(gameInstance: GameController): void {
   updateCurrentPlayer(gameInstance.state.currentPlayer);
 }
 
-function updateThemePreview(): void {
-  const gameScreen = document.getElementById('screen-game') as HTMLElement;
-  const resultScreen = document.getElementById('screen-result') as HTMLElement;
-  const previewRoot = document.getElementById('theme-preview') as HTMLElement;
-  const previewImgMain = document.getElementById('preview-img-main') as HTMLImageElement;
-  const previewImgSub = document.getElementById('preview-img-sub') as HTMLImageElement;
-  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
-  
-  const theme = state.selectedTheme;
-  const hovered = state.hoveredTheme;
-  const themeToShow = hovered || theme;
+// ============================================
+// THEME PREVIEW - HELPER FUNCTIONS
+// ============================================
 
-  if (gameScreen) {
-    gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    gameScreen.classList.add(`theme-${theme}`);
-  }
-  if (resultScreen) {
-    resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
-    resultScreen.classList.add(`theme-${theme}`);
-  }
+function getThemeElements() {
+  return {
+    gameScreen: document.getElementById('screen-game') as HTMLElement,
+    resultScreen: document.getElementById('screen-result') as HTMLElement,
+    previewRoot: document.getElementById('theme-preview') as HTMLElement,
+    previewImgMain: document.getElementById('preview-img-main') as HTMLImageElement,
+    previewImgSub: document.getElementById('preview-img-sub') as HTMLImageElement,
+    previewExitIcon: document.getElementById('previewExitIcon') as HTMLImageElement,
+  };
+}
 
-  if (previewRoot) {
-    previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
-    previewRoot.classList.add(`preview--${themeToShow}`);
+function applyThemeClasses(elements: ReturnType<typeof getThemeElements>, theme: ThemeId): void {
+  if (elements.gameScreen) {
+    elements.gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+    elements.gameScreen.classList.add(`theme-${theme}`);
+  }
+  if (elements.resultScreen) {
+    elements.resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
+    elements.resultScreen.classList.add(`theme-${theme}`);
+  }
+}
+
+function applyPreviewTheme(elements: ReturnType<typeof getThemeElements>, themeToShow: ThemeId): void {
+  if (elements.previewRoot) {
+    elements.previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
+    elements.previewRoot.classList.add(`preview--${themeToShow}`);
   }
 
   const PREVIEW_CONFIG = {
@@ -410,31 +443,32 @@ function updateThemePreview(): void {
   };
   const config = PREVIEW_CONFIG[themeToShow];
   if (config) {
-    if (previewImgMain) previewImgMain.src = config.main;
-    if (previewImgSub) previewImgSub.src = config.sub;
+    if (elements.previewImgMain) elements.previewImgMain.src = config.main;
+    if (elements.previewImgSub) elements.previewImgSub.src = config.sub;
   }
-  if (previewExitIcon) previewExitIcon.src = EXIT_ICONS[themeToShow];
+  if (elements.previewExitIcon) elements.previewExitIcon.src = EXIT_ICONS[themeToShow];
+}
+
+function updateThemePreview(): void {
+  const elements = getThemeElements();
+  const theme = state.selectedTheme;
+  const hovered = state.hoveredTheme;
+  const themeToShow = hovered || theme;
+
+  applyThemeClasses(elements, theme);
+  applyPreviewTheme(elements, themeToShow);
   
   updateHudIcons(theme);
   updateResultBackText(theme);
 }
 
 // ============================================
-// GAME START
+// GAME START - HELPER FUNCTIONS
 // ============================================
 
-function startGameFromSettings(renderer: Renderer, game: GameController): void {
-  const theme = state.selectedTheme;
-  const grid = state.selectedGrid;
-  const player = state.selectedPlayer;
-
-  renderer.setTheme(theme);
-  renderer.setGrid(grid);
-
+function applyGameThemeClasses(theme: ThemeId): void {
   const gameScreen = document.getElementById('screen-game') as HTMLElement;
   const resultScreen = document.getElementById('screen-result') as HTMLElement;
-  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
-
   if (gameScreen) {
     gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     gameScreen.classList.add(`theme-${theme}`);
@@ -443,10 +477,17 @@ function startGameFromSettings(renderer: Renderer, game: GameController): void {
     resultScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     resultScreen.classList.add(`theme-${theme}`);
   }
+}
 
-  updateHudIcons(theme);
-  updateResultBackText(theme);
+function updateGamePreviewIcon(theme: ThemeId): void {
+  const previewExitIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
   if (previewExitIcon) previewExitIcon.src = EXIT_ICONS[theme];
+}
+
+function configureAndStartGame(renderer: Renderer, game: GameController): void {
+  const theme = state.selectedTheme;
+  const grid = state.selectedGrid;
+  const player = state.selectedPlayer;
 
   game.updateConfig({
     theme: theme,
@@ -460,51 +501,84 @@ function startGameFromSettings(renderer: Renderer, game: GameController): void {
   showScreen('game');
 }
 
+function startGameFromSettings(renderer: Renderer, game: GameController): void {
+  const theme = state.selectedTheme;
+  const grid = state.selectedGrid;
+
+  renderer.setTheme(theme);
+  renderer.setGrid(grid);
+
+  applyGameThemeClasses(theme);
+  updateHudIcons(theme);
+  updateResultBackText(theme);
+  updateGamePreviewIcon(theme);
+
+  configureAndStartGame(renderer, game);
+}
+
 // ============================================
-// GAME CALLBACKS
+// GAME WIN - HELPER FUNCTIONS
 // ============================================
+
+function getResultElements() {
+  return {
+    resultScreen: document.getElementById('screen-result') as HTMLElement,
+    resultGameover: document.getElementById('result-gameover') as HTMLElement,
+    resultWinner: document.getElementById('result-winner') as HTMLElement,
+    resultDraw: document.getElementById('result-draw') as HTMLElement,
+    resultBlueScore: document.getElementById('result-blue-score') as HTMLElement,
+    resultOrangeScore: document.getElementById('result-orange-score') as HTMLElement,
+    resultWinnerTitle: document.getElementById('result-winner-title') as HTMLElement,
+  };
+}
+
+function setResultScores(elements: ReturnType<typeof getResultElements>, blueMatches: number, orangeMatches: number): void {
+  const isCodeTheme = state.selectedTheme === 'code';
+  elements.resultBlueScore.textContent = isCodeTheme ? `Blue ${blueMatches}` : String(blueMatches);
+  elements.resultOrangeScore.textContent = isCodeTheme ? `Orange ${orangeMatches}` : String(orangeMatches);
+}
+
+function showGameOverScreen(elements: ReturnType<typeof getResultElements>): void {
+  elements.resultScreen.classList.add('result-screen--gameover');
+  elements.resultGameover.style.display = 'block';
+  elements.resultWinner.style.display = 'none';
+  elements.resultDraw.style.display = 'none';
+}
+
+function showDrawScreen(elements: ReturnType<typeof getResultElements>): void {
+  elements.resultScreen.classList.add('result-screen--draw');
+  elements.resultDraw.style.display = 'block';
+  elements.resultWinner.style.display = 'none';
+  elements.resultGameover.style.display = 'none';
+}
+
+function showWinnerScreen(elements: ReturnType<typeof getResultElements>, winner: 'blue' | 'orange'): void {
+  elements.resultScreen.classList.add(`result-screen--winner-${winner}`);
+  elements.resultWinner.style.display = 'flex';
+  elements.resultGameover.style.display = 'none';
+  elements.resultDraw.style.display = 'none';
+  elements.resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
+  elements.resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
+}
 
 function handleGameWin(
   { blueMatches, orangeMatches, winner }: { blueMatches: number; orangeMatches: number; winner: 'blue' | 'orange' | 'tie' }
 ): void {
-  const resultScreen = document.getElementById('screen-result') as HTMLElement;
-  const resultGameover = document.getElementById('result-gameover') as HTMLElement;
-  const resultWinner = document.getElementById('result-winner') as HTMLElement;
-  const resultDraw = document.getElementById('result-draw') as HTMLElement;
-  const resultBlueScore = document.getElementById('result-blue-score') as HTMLElement;
-  const resultOrangeScore = document.getElementById('result-orange-score') as HTMLElement;
-  const resultWinnerTitle = document.getElementById('result-winner-title') as HTMLElement;
-
-  const isCodeTheme = state.selectedTheme === 'code';
-  resultBlueScore.textContent = isCodeTheme ? `Blue ${blueMatches}` : String(blueMatches);
-  resultOrangeScore.textContent = isCodeTheme ? `Orange ${orangeMatches}` : String(orangeMatches);
-
-  resultScreen.classList.remove(
+  const elements = getResultElements();
+  elements.resultScreen.classList.remove(
     'result-screen--winner-blue',
     'result-screen--winner-orange',
     'result-screen--draw',
     'result-screen--gameover'
   );
-
+  setResultScores(elements, blueMatches, orangeMatches);
   const isGameOver = winner !== 'tie' && winner !== state.selectedPlayer;
-
   if (isGameOver) {
-    resultScreen.classList.add('result-screen--gameover');
-    resultGameover.style.display = 'block';
-    resultWinner.style.display = 'none';
-    resultDraw.style.display = 'none';
+    showGameOverScreen(elements);
   } else if (winner === 'tie') {
-    resultScreen.classList.add('result-screen--draw');
-    resultDraw.style.display = 'block';
-    resultWinner.style.display = 'none';
-    resultGameover.style.display = 'none';
+    showDrawScreen(elements);
   } else {
-    resultScreen.classList.add(`result-screen--winner-${winner}`);
-    resultWinner.style.display = 'flex';
-    resultGameover.style.display = 'none';
-    resultDraw.style.display = 'none';
-    resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
-    resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
+    showWinnerScreen(elements, winner);
   }
   showScreen('result');
 }
@@ -586,44 +660,21 @@ function setupKeyboardShortcuts(): void {
 }
 
 // ============================================
-// MAIN INIT FUNCTION
+// INIT - HELPER FUNCTIONS
 // ============================================
 
-function init(): void {
-  const field = assertEl(document.getElementById('field'), 'Missing #field');
-  const renderer = new Renderer(field);
-
-  const game = new GameController(renderer, {
-    theme: state.selectedTheme,
-    gridSize: state.selectedGrid,
-    startingPlayer: state.selectedPlayer,
-    pairs: pairsFromGrid(state.selectedGrid),
-    flipBackDelayMs: 700,
-  });
-
-  // Make game globally available
-  (window as any).game = game;
-
-  // Game Callbacks
-  game.onStateChange(() => renderGameUi(game));
-  game.onWin((payload) => handleGameWin(payload));
-
-  // Setup UI
-  updateThemePreview();
-  renderer.setTheme(state.selectedTheme);
-  renderer.setGrid(state.selectedGrid);
-  showScreen('home');
-
-  // Setup Event Listeners
-  const btnGoSettings = assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings');
-  const btnStartGame = assertEl(document.getElementById('btn-start-game'), 'Missing #btn-start-game');
-  const btnBackToGame = assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game');
-  const btnConfirmExit = assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit');
-  const btnResultBack = assertEl(document.getElementById('btn-result-back'), 'Missing #btn-result-back');
-  const btnDrawBack = assertEl(document.getElementById('btn-draw-back'), 'Missing #btn-draw-back');
-  const btnGameoverBack = assertEl(document.getElementById('btn-gameover-back'), 'Missing #btn-gameover-back');
-  const exitModal = assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit');
-
+function setupMainEventListeners(
+  renderer: Renderer,
+  game: GameController,
+  btnGoSettings: HTMLButtonElement,
+  btnStartGame: HTMLButtonElement,
+  btnBackToGame: HTMLButtonElement,
+  btnConfirmExit: HTMLButtonElement,
+  btnResultBack: HTMLButtonElement,
+  btnDrawBack: HTMLButtonElement,
+  btnGameoverBack: HTMLButtonElement,
+  exitModal: HTMLElement
+): void {
   btnGoSettings.addEventListener('click', () => showScreen('settings'));
   btnStartGame.addEventListener('click', () => startGameFromSettings(renderer, game));
   btnBackToGame.addEventListener('click', () => { exitModal.style.display = 'none'; });
@@ -635,14 +686,69 @@ function init(): void {
   btnResultBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
   btnDrawBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
   btnGameoverBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
+}
 
+function setupGameCallbacks(game: GameController): void {
+  game.onStateChange(() => renderGameUi(game));
+  game.onWin((payload) => handleGameWin(payload));
+}
+
+function initializeRendererAndUI(renderer: Renderer): void {
+  updateThemePreview();
+  renderer.setTheme(state.selectedTheme);
+  renderer.setGrid(state.selectedGrid);
+  showScreen('home');
+}
+
+function getMainButtons() {
+  return {
+    btnGoSettings: assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings') as HTMLButtonElement,
+    btnStartGame: assertEl(document.getElementById('btn-start-game'), 'Missing #btn-start-game') as HTMLButtonElement,
+    btnBackToGame: assertEl(document.getElementById('btn-back-to-game'), 'Missing #btn-back-to-game') as HTMLButtonElement,
+    btnConfirmExit: assertEl(document.getElementById('btn-confirm-exit'), 'Missing #btn-confirm-exit') as HTMLButtonElement,
+    btnResultBack: assertEl(document.getElementById('btn-result-back'), 'Missing #btn-result-back') as HTMLButtonElement,
+    btnDrawBack: assertEl(document.getElementById('btn-draw-back'), 'Missing #btn-draw-back') as HTMLButtonElement,
+    btnGameoverBack: assertEl(document.getElementById('btn-gameover-back'), 'Missing #btn-gameover-back') as HTMLButtonElement,
+    exitModal: assertEl(document.getElementById('modal-exit'), 'Missing #modal-exit') as HTMLElement,
+  };
+}
+
+// ============================================
+// MAIN INIT FUNCTION
+// ============================================
+
+function init(): void {
+  const field = assertEl(document.getElementById('field'), 'Missing #field');
+  const renderer = new Renderer(field);
+  const game = new GameController(renderer, {
+    theme: state.selectedTheme,
+    gridSize: state.selectedGrid,
+    startingPlayer: state.selectedPlayer,
+    pairs: pairsFromGrid(state.selectedGrid),
+    flipBackDelayMs: 700,
+  });
+  (window as any).game = game;
+  setupGameCallbacks(game);
+  initializeRendererAndUI(renderer);
+  const buttons = getMainButtons();
+  setupMainEventListeners(
+    renderer,
+    game,
+    buttons.btnGoSettings,
+    buttons.btnStartGame,
+    buttons.btnBackToGame,
+    buttons.btnConfirmExit,
+    buttons.btnResultBack,
+    buttons.btnDrawBack,
+    buttons.btnGameoverBack,
+    buttons.exitModal
+  );
   setupThemeRadios(renderer);
   setupPlayerRadios();
   setupGridRadios(renderer);
   setupPreviewHover();
   setupBoardClick(game);
   setupKeyboardShortcuts();
-
   (window as any).testResultScreen = testResultScreen;
 }
 
