@@ -273,7 +273,8 @@ export class GameController {
 
     if (isGameComplete) {
       this.state.status = 'won';
-      this.finishGame();
+      // WICHTIG: Spiel beenden mit Verzögerung, damit die letzte Karte sichtbar bleibt
+      this.finishGameWithDelay();
     }
   }
 
@@ -293,6 +294,16 @@ export class GameController {
       this.emitStateChange();
       this.state.lockInput = false;
     }, delay);
+  }
+
+  /** Beendet das Spiel mit einer Verzögerung, damit die letzte Karte sichtbar bleibt */
+  private finishGameWithDelay(): void {
+    // 1 Sekunde Verzögerung, damit der Spieler die letzte Karte sehen kann
+    const RESULT_DELAY_MS = 1000;
+
+    window.setTimeout(() => {
+      this.finishGame();
+    }, RESULT_DELAY_MS);
   }
 
   /** Beendet das Spiel und triggert den Win-Callback */

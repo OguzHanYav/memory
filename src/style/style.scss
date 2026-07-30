@@ -398,7 +398,6 @@ body:has(#screen-settings.screen--active) { background: white; }
   opacity: 0;
   transition: opacity 0.2s ease;
   flex-shrink: 0;
-  margin-left: auto;
 }
 
 .radio-item:hover .radio-arrow,

@@ -6,12 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memory Game</title>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="./assets/Favicon/stadia_controller.svg" />
+  <link rel="shortcut icon" href="./assets/Favicon/stadia_controller.svg" />
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
@@ -34,7 +38,8 @@
           </div>
         </div>
 
-        <img class="home-controller" src="./assets/Home-screen/stadia_controller.svg" alt="Game controller decoration" aria-hidden="true" />
+        <img class="home-controller" src="./assets/Home-screen/stadia_controller.svg" alt="Game controller decoration"
+          aria-hidden="true" />
       </div>
     </section>
 
@@ -59,28 +64,32 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Game themes">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="code" checked role="radio" aria-label="Code vibes theme" />
+                  <input class="radio-input" type="radio" name="theme" value="code" checked role="radio"
+                    aria-label="Code vibes theme" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Code vibes theme</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="games" role="radio" aria-label="Gaming theme" />
+                  <input class="radio-input" type="radio" name="theme" value="games" role="radio"
+                    aria-label="Gaming theme" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Gaming theme</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="da" role="radio" aria-label="DA Projects theme" />
+                  <input class="radio-input" type="radio" name="theme" value="da" role="radio"
+                    aria-label="DA Projects theme" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>DA Projects theme</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="food" role="radio" aria-label="Foods theme" />
+                  <input class="radio-input" type="radio" name="theme" value="food" role="radio"
+                    aria-label="Foods theme" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Foods theme</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
@@ -97,14 +106,16 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Starting player">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked role="radio" aria-label="Blue player starts" />
+                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked role="radio"
+                    aria-label="Blue player starts" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Blue</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
                 </label>
 
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="startingPlayer" value="orange" role="radio" aria-label="Orange player starts" />
+                  <input class="radio-input" type="radio" name="startingPlayer" value="orange" role="radio"
+                    aria-label="Orange player starts" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Orange</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
@@ -121,7 +132,8 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Board size">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="grid" value="16" checked role="radio" aria-label="16 cards" />
+                  <input class="radio-input" type="radio" name="grid" value="16" checked role="radio"
+                    aria-label="16 cards" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>16 cards</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
@@ -158,18 +170,22 @@
 
                 <div class="preview__current">
                   <span>Current player:</span>
-                  <img class="preview-dot" src="./assets/Settings/topbar/label-orange.svg" alt="Current player indicator" />
+                  <img class="preview-dot" src="./assets/Settings/topbar/label-orange.svg"
+                    alt="Current player indicator" />
                 </div>
 
                 <button class="preview-exit" type="button" disabled aria-label="Exit game (preview)">
-                  <img id="previewExitIcon" src="./assets/Settings/topbar/move_item.svg" alt="" width="12" height="12" aria-hidden="true" />
+                  <img id="previewExitIcon" src="./assets/Settings/topbar/move_item.svg" alt="" width="12" height="12"
+                    aria-hidden="true" />
                   Exit game
                 </button>
               </header>
 
               <div class="preview__stage">
-                <img id="preview-img-main" class="preview__img preview__img--main" src="" alt="Theme preview main card" />
-                <img id="preview-img-sub" class="preview__img preview__img--sub" src="" alt="Theme preview secondary card" />
+                <img id="preview-img-main" class="preview__img preview__img--main" src=""
+                  alt="Theme preview main card" />
+                <img id="preview-img-sub" class="preview__img preview__img--sub" src=""
+                  alt="Theme preview secondary card" />
               </div>
             </div>
 
@@ -181,7 +197,8 @@
                 <span>Player</span>
                 <img src="./assets/Settings/Line 6.svg" alt="" aria-hidden="true">
                 <span>Board size</span>
-                <button id="btn-start-game" class="btn-start" type="button" aria-label="Start game with current settings">
+                <button id="btn-start-game" class="btn-start" type="button"
+                  aria-label="Start game with current settings">
                   <img src="./assets/Settings/small button.svg" alt="Start game">
                 </button>
               </nav>
@@ -208,11 +225,13 @@
 
           <div class="preview__current">
             <span>Current player:</span>
-            <img id="currentPlayerImg" class="preview-dot" src="./assets/Settings/topbar/label-blue.svg" alt="Current player indicator" />
+            <img id="currentPlayerImg" class="preview-dot" src="./assets/Settings/topbar/label-blue.svg"
+              alt="Current player indicator" />
           </div>
 
           <button id="btn-exit-game" class="preview-exit" type="button" aria-label="Exit game">
-            <img id="exitGameIcon" src="./assets/Settings/topbar/move_item.svg" alt="" width="30" height="30" aria-hidden="true" />
+            <img id="exitGameIcon" src="./assets/Settings/topbar/move_item.svg" alt="" width="30" height="30"
+              aria-hidden="true" />
             Exit game
           </button>
         </header>
@@ -271,7 +290,8 @@
     <!-- ============================================
     EXIT CONFIRMATION POPUP
     ============================================ -->
-    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title" style="display: none;">
+    <div id="modal-exit" class="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title"
+      style="display: none;">
       <div class="exit-modal__overlay" aria-hidden="true"></div>
 
       <div class="exit-modal__content">
@@ -280,11 +300,13 @@
         </h2>
 
         <div class="exit-modal__actions">
-          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button" aria-label="Return to game">
+          <button id="btn-back-to-game" class="exit-modal__btn exit-modal__btn--secondary" type="button"
+            aria-label="Return to game">
             <span id="back-to-game-text">Back to game</span>
           </button>
 
-          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button" aria-label="Confirm exit game">
+          <button id="btn-confirm-exit" class="exit-modal__btn exit-modal__btn--primary" type="button"
+            aria-label="Confirm exit game">
             <span id="confirm-exit-text">Exit game</span>
           </button>
         </div>
