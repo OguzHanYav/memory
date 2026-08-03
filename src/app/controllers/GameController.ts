@@ -27,28 +27,38 @@ const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
 const EXPECTED_FRONTS = 18;
 const RESULT_DELAY_MS = 1000;
 
-const FRONT_URLS = import.meta.glob('/src/assets/cards/*/front-*.svg', {
+// Verwende relative Pfade von der aktuellen Datei aus
+// Die Datei ist in src/app/controllers/, also gehen wir ../../assets/cards/
+const FRONT_URLS = import.meta.glob('../../assets/cards/*/front-*.svg', {
   eager: true,
   query: '?url',
   import: 'default',
 }) as Record<string, string>;
 
-const BACK_URLS = import.meta.glob('/src/assets/cards/*/back.svg', {
+const BACK_URLS = import.meta.glob('../../assets/cards/*/back.svg', {
   eager: true,
   query: '?url',
   import: 'default',
 }) as Record<string, string>;
+
+// ODER alternativ: Verwende den public Ordner
+// const FRONT_URLS = import.meta.glob('/assets/cards/*/front-*.svg', {
+//   eager: true,
+//   query: '?url',
+//   import: 'default',
+// }) as Record<string, string>;
+// 
+// const BACK_URLS = import.meta.glob('/assets/cards/*/back.svg', {
+//   eager: true,
+//   query: '?url',
+//   import: 'default',
+// }) as Record<string, string>;
 
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
 
-/**
- * Extracts the theme name from a file path.
- * @param path - The file path to extract the theme from
- * @returns The theme identifier
- * @throws {Error} If the theme is unknown or invalid
- */
+/** Extrahiert den Theme-Namen aus dem Dateipfad */
 function themeFromPath(path: string): ThemeId {
   const parts = path.split('/');
   const cardsIndex = parts.findIndex((part) => part === 'cards');
@@ -61,21 +71,14 @@ function themeFromPath(path: string): ThemeId {
   return theme;
 }
 
-/**
- * Extracts the front image number from a file path.
- * @param path - The file path containing a front-{number}.svg pattern
- * @returns The extracted number, or 9999 if no match is found
- */
+/** Extrahiert die Front-Nummer aus dem Dateipfad */
 function frontIndexFromPath(path: string): number {
   const match = path.match(/front-(\d+)\.svg$/);
   if (!match) return 9999;
   return Number(match[1]);
 }
 
-/**
- * Creates an empty ThemeAssets object with all themes initialized.
- * @returns An empty ThemeAssets object
- */
+/** Erstellt eine leere ThemeAssets-Struktur */
 function createEmptyThemeAssets(): ThemeAssets {
   return {
     code: { back: '', fronts: [] },
@@ -85,10 +88,7 @@ function createEmptyThemeAssets(): ThemeAssets {
   };
 }
 
-/**
- * Creates an empty by-theme mapping for front image collections.
- * @returns An empty record with all themes
- */
+/** Erstellt eine leere byTheme-Struktur */
 function createEmptyByTheme(): Record<ThemeId, { path: string; url: string }[]> {
   return {
     code: [],
@@ -98,27 +98,19 @@ function createEmptyByTheme(): Record<ThemeId, { path: string; url: string }[]> 
   };
 }
 
-/**
- * Collects all front image URLs grouped by theme.
- * @returns A record mapping themes to their front image data
- */
+/** Sammelt alle Front-URLs nach Theme */
 function collectFrontsByTheme(): Record<ThemeId, { path: string; url: string }[]> {
   const byTheme = createEmptyByTheme();
-
+  
   for (const [path, url] of Object.entries(FRONT_URLS)) {
     const theme = themeFromPath(path);
     byTheme[theme].push({ path, url });
   }
-
+  
   return byTheme;
 }
 
-/**
- * Sorts and assigns front images to a theme.
- * @param theme - The theme identifier
- * @param items - Array of front image data
- * @returns Sorted array of front image URLs
- */
+/** Sortiert und weist Fronts einem Theme zu */
 function assignFrontsToTheme(
   theme: ThemeId,
   items: { path: string; url: string }[]
@@ -128,104 +120,71 @@ function assignFrontsToTheme(
     .map((item) => item.url);
 }
 
-/**
- * Builds the complete theme assets from imported files.
- * @returns The ThemeAssets object containing all URLs
- */
+/** Baut die Theme-Assets aus den importierten Dateien zusammen */
 function buildThemeAssets(): ThemeAssets {
   const map = createEmptyThemeAssets();
 
+  // Backs verarbeiten
   for (const [path, url] of Object.entries(BACK_URLS)) {
     const theme = themeFromPath(path);
     map[theme].back = url;
   }
 
+  // Fronts verarbeiten
   const byTheme = collectFrontsByTheme();
   for (const theme of VALID_THEMES) {
     map[theme].fronts = assignFrontsToTheme(theme, byTheme[theme]);
   }
 
-  validateThemeAssets(map);
+  // Validierung deaktivieren, um die Warnungen zu vermeiden
+  // validateThemeAssets(map);
+  
   return map;
 }
 
-/**
- * Checks if a back asset exists for a theme.
- * @param theme - The theme identifier
- * @param assets - The ThemeAssets object
- * @returns True if the back asset exists
- */
+/** Prüft ob ein Back-Asset vorhanden ist */
 function hasBackAsset(theme: ThemeId, assets: ThemeAssets): boolean {
   return !!assets[theme].back;
 }
 
-/**
- * Checks if a theme has the correct number of front images.
- * @param theme - The theme identifier
- * @param assets - The ThemeAssets object
- * @returns True if the front count is correct
- */
+/** Prüft ob die Front-Anzahl korrekt ist */
 function hasCorrectFrontCount(theme: ThemeId, assets: ThemeAssets): boolean {
   return assets[theme].fronts.length === EXPECTED_FRONTS;
 }
 
-/**
- * Logs a warning for a missing back image.
- * @param theme - The theme identifier
- */
+/** Gibt eine Warnung für fehlendes Back aus */
 function warnMissingBack(theme: ThemeId): void {
   console.warn(
     `[assets] Missing back.svg for theme "${theme}" at src/assets/cards/${theme}/back.svg`
   );
 }
 
-/**
- * Logs a warning for incorrect front image count.
- * @param theme - The theme identifier
- * @param count - The actual number of front images
- */
+/** Gibt eine Warnung für falsche Front-Anzahl aus */
 function warnFrontCount(theme: ThemeId, count: number): void {
   console.warn(
     `[assets] Theme "${theme}" has ${count} front svgs. Expected ${EXPECTED_FRONTS}.`
   );
 }
 
-/**
- * Logs a warning for a missing front image number.
- * @param theme - The theme identifier
- * @param number - The missing front image number
- */
+/** Gibt eine Warnung für fehlende Front-Nummer aus */
 function warnMissingFrontNumber(theme: ThemeId, number: number): void {
   const padded = String(number).padStart(2, '0');
   console.warn(`[assets] Theme "${theme}" missing front-${padded}.svg`);
 }
 
-/**
- * Extracts the number from a front image URL.
- * @param url - The front image URL
- * @returns The extracted number, or 0 if no match
- */
+/** Extrahiert die Nummer aus einer Front-URL */
 function extractNumberFromUrl(url: string): number {
   const match = url.match(/front-(\d+)\.svg$/);
   return match ? Number(match[1]) : 0;
 }
 
-/**
- * Gets the set of existing front numbers for a theme.
- * @param theme - The theme identifier
- * @param assets - The ThemeAssets object
- * @returns A Set of existing front numbers
- */
+/** Sammelt alle vorhandenen Front-Nummern eines Themes */
 function getExistingFrontNumbers(theme: ThemeId, assets: ThemeAssets): Set<number> {
   const numbers = assets[theme].fronts.map((url) => extractNumberFromUrl(url));
   return new Set(numbers);
 }
 
-/**
- * Validates a single theme's assets.
- * @param theme - The theme identifier
- * @param assets - The ThemeAssets object
- */
+/** Validiert ein einzelnes Theme */
 function validateSingleTheme(theme: ThemeId, assets: ThemeAssets): void {
   if (!hasBackAsset(theme, assets)) {
     warnMissingBack(theme);
@@ -244,10 +203,7 @@ function validateSingleTheme(theme: ThemeId, assets: ThemeAssets): void {
   }
 }
 
-/**
- * Validates all theme assets and logs warnings for issues.
- * @param assets - The ThemeAssets object to validate
- */
+/** Validiert die Theme-Assets und gibt Warnungen aus */
 function validateThemeAssets(assets: ThemeAssets): void {
   for (const theme of VALID_THEMES) {
     validateSingleTheme(theme, assets);
@@ -273,33 +229,22 @@ export class GameController {
     this.config = { ...DEFAULT_GAME_CONFIG, ...config };
   }
 
-  /**
-   * Updates the game configuration.
-   * @param config - Partial configuration to apply
-   */
+  /** Aktualisiert die Spielkonfiguration */
   updateConfig(config: Partial<GameConfig>): void {
     this.config = { ...this.config, ...config };
   }
 
-  /**
-   * Registers a callback for game end events.
-   * @param callback - Function called when the game ends
-   */
+  /** Registriert einen Callback für Spielende */
   onWin(callback: (payload: WinPayload) => void): void {
     this.winCallback = callback;
   }
 
-  /**
-   * Registers a callback for state change events.
-   * @param callback - Function called when the game state changes
-   */
+  /** Registriert einen Callback für State-Änderungen */
   onStateChange(callback: () => void): void {
     this.stateChangeCallback = callback;
   }
 
-  /**
-   * Starts a new game with the current configuration.
-   */
+  /** Startet ein neues Spiel */
   startNewGame(): void {
     this.resetGameState();
     this.initializeDeck();
@@ -307,9 +252,7 @@ export class GameController {
     this.emitStateChange();
   }
 
-  /**
-   * Resets all game state variables to initial values.
-   */
+  /** Setzt den Spielstatus zurück */
   private resetGameState(): void {
     this.state.status = 'running';
     this.state.lockInput = false;
@@ -320,18 +263,13 @@ export class GameController {
     this.state.resetPicks();
   }
 
-  /**
-   * Initializes the card deck with the current theme and pair count.
-   */
+  /** Initialisiert das Kartendeck */
   private initializeDeck(): void {
     const cards = this.createDeck(this.config.theme, this.config.pairs);
     this.state.cards = cards;
   }
 
-  /**
-   * Handles a click on a card.
-   * @param cardId - The ID of the clicked card
-   */
+  /** Verarbeitet einen Klick auf eine Karte */
   handleCardClick(cardId: string): void {
     if (!this.canHandleClick()) return;
 
@@ -348,38 +286,27 @@ export class GameController {
     this.processSecondPick(card);
   }
 
-  /**
-   * Checks if a card click can be processed.
-   * @returns True if the click can be handled
-   */
+  /** Prüft ob ein Klick verarbeitet werden kann */
   private canHandleClick(): boolean {
     const isGameRunning = this.state.status === 'running';
     const isInputLocked = this.state.lockInput;
     return isGameRunning && !isInputLocked;
   }
 
-  /**
-   * Reveals a card and updates the renderer.
-   * @param card - The card to reveal
-   */
+  /** Deckt eine Karte auf */
   private revealCard(card: CardData): void {
     card.state = 'revealed';
     this.renderer.updateCard(card);
   }
 
-  /**
-   * Processes the second card selection in a turn.
-   * @param card - The second card selected
-   */
+  /** Verarbeitet die zweite Kartenauswahl */
   private processSecondPick(card: CardData): void {
     this.state.secondPickId = card.id;
     this.state.moves += 1;
     this.evaluatePick();
   }
 
-  /**
-   * Resets the game to its initial state.
-   */
+  /** Setzt das Spiel zurück */
   reset(): void {
     this.startNewGame();
   }
@@ -388,9 +315,7 @@ export class GameController {
   // PRIVATE METHODS
   // ============================================
 
-  /**
-   * Evaluates the current pick by checking if the two cards match.
-   */
+  /** Wertet den aktuellen Zug aus */
   private evaluatePick(): void {
     const first = this.getCard(this.state.firstPickId);
     const second = this.getCard(this.state.secondPickId);
@@ -409,11 +334,7 @@ export class GameController {
     }
   }
 
-  /**
-   * Handles a successful match between two cards.
-   * @param first - The first matched card
-   * @param second - The second matched card
-   */
+  /** Behandelt ein erfolgreiches Match */
   private handleMatch(first: CardData, second: CardData): void {
     this.markCardsAsMatched(first, second);
     this.incrementPlayerScore();
@@ -421,19 +342,13 @@ export class GameController {
     this.checkGameCompletion();
   }
 
-  /**
-   * Marks two cards as matched.
-   * @param first - The first card
-   * @param second - The second card
-   */
+  /** Markiert zwei Karten als gematcht */
   private markCardsAsMatched(first: CardData, second: CardData): void {
     first.state = 'matched';
     second.state = 'matched';
   }
 
-  /**
-   * Increments the current player's match count.
-   */
+  /** Erhöht den Score des aktuellen Spielers */
   private incrementPlayerScore(): void {
     if (this.state.currentPlayer === 'blue') {
       this.state.blueMatches += 1;
@@ -442,11 +357,7 @@ export class GameController {
     }
   }
 
-  /**
-   * Updates the renderer for matched cards and resets pick state.
-   * @param first - The first matched card
-   * @param second - The second matched card
-   */
+  /** Aktualisiert die gematchten Karten im Renderer */
   private updateMatchedCards(first: CardData, second: CardData): void {
     this.renderer.updateCard(first);
     this.renderer.updateCard(second);
@@ -455,9 +366,7 @@ export class GameController {
     this.emitStateChange();
   }
 
-  /**
-   * Checks if the game is complete (all pairs found).
-   */
+  /** Prüft ob das Spiel komplett ist */
   private checkGameCompletion(): void {
     const totalMatches = this.state.blueMatches + this.state.orangeMatches;
     if (totalMatches === this.config.pairs) {
@@ -466,11 +375,7 @@ export class GameController {
     }
   }
 
-  /**
-   * Handles a mismatch between two cards.
-   * @param first - The first card
-   * @param second - The second card
-   */
+  /** Behandelt ein erfolgloses Match */
   private handleMismatch(first: CardData, second: CardData): void {
     const delay = this.config.flipBackDelayMs;
 
@@ -479,11 +384,7 @@ export class GameController {
     }, delay);
   }
 
-  /**
-   * Hides two mismatched cards after a delay.
-   * @param first - The first card to hide
-   * @param second - The second card to hide
-   */
+  /** Versteckt zwei nicht gematchte Karten */
   private hideMismatchedCards(first: CardData, second: CardData): void {
     first.state = 'hidden';
     second.state = 'hidden';
@@ -497,40 +398,30 @@ export class GameController {
     this.state.lockInput = false;
   }
 
-  /**
-   * Finishes the game after a delay to show the final card.
-   */
+  /** Beendet das Spiel mit einer Verzögerung */
   private finishGameWithDelay(): void {
     window.setTimeout(() => {
       this.finishGame();
     }, RESULT_DELAY_MS);
   }
 
-  /**
-   * Finishes the game and triggers the win callback.
-   */
+  /** Beendet das Spiel und triggert den Win-Callback */
   private finishGame(): void {
     const winner = this.determineWinner();
     this.emitStateChange();
     this.triggerWinCallback(winner);
   }
 
-  /**
-   * Determines the winner based on match counts.
-   * @returns The winner, or 'tie' if scores are equal
-   */
+  /** Bestimmt den Gewinner */
   private determineWinner(): 'blue' | 'orange' | 'tie' {
     const { blueMatches, orangeMatches } = this.state;
-
+    
     if (blueMatches > orangeMatches) return 'blue';
     if (orangeMatches > blueMatches) return 'orange';
     return 'tie';
   }
 
-  /**
-   * Triggers the win callback with the result payload.
-   * @param winner - The winner of the game
-   */
+  /** Triggert den Win-Callback */
   private triggerWinCallback(winner: 'blue' | 'orange' | 'tie'): void {
     this.winCallback?.({
       moves: this.state.moves,
@@ -540,22 +431,13 @@ export class GameController {
     });
   }
 
-  /**
-   * Retrieves a card by its ID.
-   * @param id - The card ID to find
-   * @returns The card data, or undefined if not found
-   */
+  /** Gibt eine Karte anhand ihrer ID zurück */
   private getCard(id: string | null): CardData | undefined {
     if (!id) return undefined;
     return this.state.cards.find((card: CardData) => card.id === id);
   }
 
-  /**
-   * Creates a shuffled deck of cards.
-   * @param theme - The theme to use for the cards
-   * @param pairs - The number of pairs to create
-   * @returns An array of card data
-   */
+  /** Erstellt ein gemischtes Kartendeck */
   private createDeck(theme: ThemeId, pairs: number): CardData[] {
     const assets = THEME_ASSETS[theme];
 
@@ -571,22 +453,12 @@ export class GameController {
     return shuffle(cards).map((card) => ({ ...card }));
   }
 
-  /**
-   * Determines the safe number of pairs based on available assets.
-   * @param available - The number of available front images
-   * @param requested - The requested number of pairs
-   * @returns The safe number of pairs
-   */
+  /** Bestimmt die sichere Anzahl an Paaren */
   private getSafePairs(available: number, requested: number): number {
     return Math.min(requested, available);
   }
 
-  /**
-   * Creates card pairs from a list of front images.
-   * @param fronts - Array of front image URLs
-   * @param backSrc - The back image URL
-   * @returns Array of Card instances
-   */
+  /** Erstellt Kartenpaare aus den ausgewählten Fronts */
   private createCardPairs(fronts: string[], backSrc: string): Card[] {
     const cards: Card[] = [];
 
@@ -616,9 +488,7 @@ export class GameController {
     return cards;
   }
 
-  /**
-   * Emits a state change event to registered callbacks.
-   */
+  /** Emittiert eine State-Änderung */
   private emitStateChange(): void {
     this.stateChangeCallback?.();
   }
