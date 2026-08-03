@@ -10,9 +10,6 @@ import type { CardData, GameConfig, ThemeId } from '../core/types';
 // TYPES
 // ============================================
 
-/**
- * Payload for the win callback event.
- */
 type WinPayload = {
   moves: number;
   blueMatches: number;
@@ -30,22 +27,12 @@ const VALID_THEMES: ThemeId[] = ['code', 'games', 'da', 'food'];
 const EXPECTED_FRONTS = 18;
 const RESULT_DELAY_MS = 1000;
 
-/**
- * Globally imported front SVG URLs from all theme folders.
- * @remarks
- * Uses Vite's import.meta.glob for dynamic asset loading.
- */
 const FRONT_URLS = import.meta.glob('/src/assets/cards/*/front-*.svg', {
   eager: true,
   query: '?url',
   import: 'default',
 }) as Record<string, string>;
 
-/**
- * Globally imported back SVG URLs from all theme folders.
- * @remarks
- * Uses Vite's import.meta.glob for dynamic asset loading.
- */
 const BACK_URLS = import.meta.glob('/src/assets/cards/*/back.svg', {
   eager: true,
   query: '?url',
@@ -61,10 +48,6 @@ const BACK_URLS = import.meta.glob('/src/assets/cards/*/back.svg', {
  * @param path - The file path to extract the theme from
  * @returns The theme identifier
  * @throws {Error} If the theme is unknown or invalid
- * @example
- * ```ts
- * themeFromPath('/src/assets/cards/code/front-01.svg'); // Returns 'code'
- * ```
  */
 function themeFromPath(path: string): ThemeId {
   const parts = path.split('/');
@@ -82,10 +65,6 @@ function themeFromPath(path: string): ThemeId {
  * Extracts the front image number from a file path.
  * @param path - The file path containing a front-{number}.svg pattern
  * @returns The extracted number, or 9999 if no match is found
- * @example
- * ```ts
- * frontIndexFromPath('/assets/cards/code/front-01.svg'); // Returns 1
- * ```
  */
 function frontIndexFromPath(path: string): number {
   const match = path.match(/front-(\d+)\.svg$/);
@@ -156,13 +135,11 @@ function assignFrontsToTheme(
 function buildThemeAssets(): ThemeAssets {
   const map = createEmptyThemeAssets();
 
-  // Process back images
   for (const [path, url] of Object.entries(BACK_URLS)) {
     const theme = themeFromPath(path);
     map[theme].back = url;
   }
 
-  // Process front images
   const byTheme = collectFrontsByTheme();
   for (const theme of VALID_THEMES) {
     map[theme].fronts = assignFrontsToTheme(theme, byTheme[theme]);
@@ -281,21 +258,9 @@ function validateThemeAssets(assets: ThemeAssets): void {
 // GAME CONTROLLER
 // ============================================
 
-/** Singleton instance of built theme assets */
 const THEME_ASSETS = buildThemeAssets();
 
-/**
- * Main game controller that manages the memory game logic.
- * @remarks
- * This class orchestrates the entire game flow including:
- * - Card deck creation and shuffling
- * - Player turn management
- * - Match evaluation
- * - Game state updates
- * - Win condition checking
- */
 export class GameController {
-  /** The current game state */
   readonly state = new GameState();
 
   private config: GameConfig;
@@ -303,11 +268,6 @@ export class GameController {
   private winCallback?: (payload: WinPayload) => void;
   private stateChangeCallback?: () => void;
 
-  /**
-   * Creates a new GameController instance.
-   * @param renderer - The renderer instance for UI updates
-   * @param config - Partial game configuration to override defaults
-   */
   constructor(renderer: Renderer, config: Partial<GameConfig> = {}) {
     this.renderer = renderer;
     this.config = { ...DEFAULT_GAME_CONFIG, ...config };

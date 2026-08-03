@@ -15,28 +15,35 @@ export class Renderer {
     this.gameScreen = document.getElementById('screen-game') as HTMLElement;
   }
 
-  /** Setzt die Grid-Größe */
+  /**
+   * Sets the grid size for the game board.
+   * @param grid - The grid size (16, 24, or 36)
+   */
   setGrid(grid: GridSize): void {
     this.grid = grid;
     this.applyBoardColumns(grid);
   }
 
-  /** Setzt das Theme */
+  /**
+   * Sets the theme and updates UI theme classes.
+   * @param theme - The theme identifier
+   */
   setTheme(theme: ThemeId): void {
     this.theme = theme;
 
-    // Theme-Klasse auf Body (für globale Styles)
     document.body.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
     document.body.classList.add(`theme-${theme}`);
 
-    // Theme-Klasse auf Game-Screen (für HUD-Styles)
     if (this.gameScreen) {
       this.gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
       this.gameScreen.classList.add(`theme-${theme}`);
     }
   }
 
-  /** Rendert das gesamte Board */
+  /**
+   * Renders the entire game board.
+   * @param cards - Array of card data to render
+   */
   renderBoard(cards: CardData[]): void {
     this.root.innerHTML = '';
     this.applyBoardColumns(cards.length);
@@ -46,7 +53,10 @@ export class Renderer {
     }
   }
 
-  /** Aktualisiert eine einzelne Karte */
+  /**
+   * Updates a single card in the DOM.
+   * @param card - The card data to update
+   */
   updateCard(card: CardData): void {
     const selector = `.card[data-id="${card.id}"]`;
     const element = this.root.querySelector<HTMLButtonElement>(selector);
@@ -64,7 +74,10 @@ export class Renderer {
   // PRIVATE METHODS
   // ============================================
 
-  /** Wendet die Grid-Columns basierend auf der Kartenzahl an */
+  /**
+   * Applies grid columns based on total card count.
+   * @param total - Total number of cards
+   */
   private applyBoardColumns(total: number): void {
     let columns = 4;
 
@@ -79,7 +92,11 @@ export class Renderer {
     this.root.style.gridTemplateColumns = `repeat(${columns}, var(--card-size))`;
   }
 
-  /** Wendet ein Hintergrundbild auf ein Element an */
+  /**
+   * Applies a background image to an element using CSS.
+   * @param element - The DOM element
+   * @param src - The image URL
+   */
   private applyCoverBackground(element: HTMLElement, src: string): void {
     element.style.backgroundImage = `url("${src}")`;
     element.style.backgroundSize = 'cover';
@@ -87,7 +104,11 @@ export class Renderer {
     element.style.backgroundRepeat = 'no-repeat';
   }
 
-  /** Erstellt ein DOM-Element für eine Karte */
+  /**
+   * Creates a DOM element for a card.
+   * @param card - The card data
+   * @returns A button element representing the card
+   */
   private createCardElement(card: CardData): HTMLButtonElement {
     const button = document.createElement('button');
     button.type = 'button';

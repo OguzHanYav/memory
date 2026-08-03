@@ -2,7 +2,10 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import fs from 'fs';
 
-// Plugin zum Kopieren der Karten-Assets
+/**
+ * Vite plugin that copies card assets to the build directory.
+ * @returns A Vite plugin object
+ */
 function copyCardAssets() {
   return {
     name: 'copy-card-assets',
@@ -12,7 +15,6 @@ function copyCardAssets() {
       
       if (!fs.existsSync(srcDir)) return;
       
-      // Kopiere alle Theme-Ordner (code, games, da, food)
       const themes = ['code', 'games', 'da', 'food'];
       for (const theme of themes) {
         const srcThemeDir = resolve(srcDir, theme);
@@ -31,6 +33,11 @@ function copyCardAssets() {
   };
 }
 
+/**
+ * Vite configuration for the Memory Game project.
+ * @param mode - The build mode ('development', 'production', 'ftp', 'vercel')
+ * @returns Vite configuration object
+ */
 export default defineConfig(({ mode }) => {
   const base = mode === 'ftp' ? '/Memory/' : '/';
   

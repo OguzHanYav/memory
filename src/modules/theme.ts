@@ -3,6 +3,10 @@ import { PREVIEW_CONFIG, EXIT_ICONS } from './constants';
 import { updateHudIcons, updateResultBackText } from './hud';
 import type { ThemeId } from '../app/core/types';
 
+/**
+ * Gets all theme-related DOM elements.
+ * @returns Object containing theme elements
+ */
 function getThemeElements() {
   return {
     gameScreen: document.getElementById('screen-game') as HTMLElement,
@@ -14,6 +18,11 @@ function getThemeElements() {
   };
 }
 
+/**
+ * Applies theme classes to game and result screens.
+ * @param elements - The theme elements
+ * @param theme - The theme to apply
+ */
 function applyThemeClasses(elements: ReturnType<typeof getThemeElements>, theme: ThemeId): void {
   if (elements.gameScreen) {
     elements.gameScreen.classList.remove('theme-code', 'theme-games', 'theme-da', 'theme-food');
@@ -25,6 +34,11 @@ function applyThemeClasses(elements: ReturnType<typeof getThemeElements>, theme:
   }
 }
 
+/**
+ * Applies preview theme to the preview section.
+ * @param elements - The theme elements
+ * @param themeToShow - The theme to display in preview
+ */
 function applyPreviewTheme(elements: ReturnType<typeof getThemeElements>, themeToShow: ThemeId): void {
   if (elements.previewRoot) {
     elements.previewRoot.classList.remove('preview--code', 'preview--games', 'preview--da', 'preview--food');
@@ -38,9 +52,12 @@ function applyPreviewTheme(elements: ReturnType<typeof getThemeElements>, themeT
   if (elements.previewExitIcon) elements.previewExitIcon.src = EXIT_ICONS[themeToShow];
 }
 
+/**
+ * Updates the theme preview based on selected and hovered themes.
+ */
 export function updateThemePreview(): void {
   const elements = getThemeElements();
-  const theme = state.selectedTheme;
+  const theme = state.selectedTheme || 'code';
   const hovered = state.hoveredTheme;
   const themeToShow = hovered || theme;
 

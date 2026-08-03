@@ -1,5 +1,8 @@
 import './style/style.scss';
 import { init } from './modules/init';
 
-// Start the application
+/**
+ * Entry point of the application.
+ * @remarks Initializes the memory game by importing styles and calling the init function.
+ */
 init();

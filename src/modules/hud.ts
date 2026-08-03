@@ -1,10 +1,14 @@
-import { GameController } from '../app/controllers/GameController';
+import { GameController } from '../app/controllers/gameController';
 import { state } from './state';
 import { getCurrentPlayerIcon } from './helpers';
 import { THEME_ICONS, EXIT_ICONS, EXIT_TEXTS, RESULT_BACK_TEXTS } from './constants';
 import { setupExitButtonHover } from './events';
 import type { ThemeId } from '../app/core/types';
 
+/**
+ * Updates exit popup texts based on the current theme.
+ * @param theme - The current theme
+ */
 export function updateExitTexts(theme: ThemeId): void {
   const texts = EXIT_TEXTS[theme];
   if (!texts) return;
@@ -14,6 +18,10 @@ export function updateExitTexts(theme: ThemeId): void {
   if (confirmEl) confirmEl.textContent = texts.confirm;
 }
 
+/**
+ * Updates result screen back button texts based on the current theme.
+ * @param theme - The current theme
+ */
 export function updateResultBackText(theme: ThemeId): void {
   const text = RESULT_BACK_TEXTS[theme];
   if (!text) return;
@@ -25,6 +33,10 @@ export function updateResultBackText(theme: ThemeId): void {
   if (gameoverEl) gameoverEl.textContent = text;
 }
 
+/**
+ * Gets all HUD icon elements.
+ * @returns Object containing HUD icon elements
+ */
 function getHudIcons() {
   return {
     blueIcon: document.querySelector('.game-hud--preview-style .preview__scores img:first-of-type') as HTMLImageElement,
@@ -34,6 +46,11 @@ function getHudIcons() {
   };
 }
 
+/**
+ * Sets HUD icon sources based on the current theme.
+ * @param theme - The current theme
+ * @param icons - The HUD icon elements
+ */
 function setHudIconSources(theme: ThemeId, icons: ReturnType<typeof getHudIcons>): void {
   const themeIcons = THEME_ICONS[theme];
   if (!themeIcons) return;
@@ -42,6 +59,11 @@ function setHudIconSources(theme: ThemeId, icons: ReturnType<typeof getHudIcons>
   if (icons.exitIcon) icons.exitIcon.src = EXIT_ICONS[theme];
 }
 
+/**
+ * Updates the current player icon in the HUD.
+ * @param theme - The current theme
+ * @param img - The player icon image element
+ */
 function updateHudPlayerIcon(theme: ThemeId, img: HTMLImageElement): void {
   const currentPlayer = (window as any).game?.state?.currentPlayer || state.selectedPlayer;
   if (img) {
@@ -51,6 +73,10 @@ function updateHudPlayerIcon(theme: ThemeId, img: HTMLImageElement): void {
   }
 }
 
+/**
+ * Updates all HUD icons and texts based on the current theme.
+ * @param theme - The current theme
+ */
 export function updateHudIcons(theme: ThemeId): void {
   const icons = getHudIcons();
   setHudIconSources(theme, icons);
@@ -59,6 +85,10 @@ export function updateHudIcons(theme: ThemeId): void {
   updateHudPlayerIcon(theme, icons.currentPlayerImg);
 }
 
+/**
+ * Updates the current player indicator in the HUD.
+ * @param player - The current player color
+ */
 export function updateCurrentPlayer(player: 'blue' | 'orange'): void {
   const img = document.getElementById('currentPlayerImg') as HTMLImageElement;
   if (!img) return;
@@ -68,6 +98,10 @@ export function updateCurrentPlayer(player: 'blue' | 'orange'): void {
   img.classList.add(`player-${player}`);
 }
 
+/**
+ * Renders the game UI with current scores and player.
+ * @param gameInstance - The game controller instance
+ */
 export function renderGameUi(gameInstance: GameController): void {
   const blueScoreEl = document.getElementById('blueScore') as HTMLElement;
   const orangeScoreEl = document.getElementById('orangeScore') as HTMLElement;

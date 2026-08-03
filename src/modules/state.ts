@@ -1,8 +1,8 @@
 import type { GridSize, ThemeId, PlayerColor } from '../app/core/types';
 
 export const state = {
-  selectedTheme: 'code' as ThemeId,
-  selectedGrid: 16 as GridSize,
-  selectedPlayer: 'blue' as PlayerColor,
+  selectedTheme: null as ThemeId | null,
+  selectedGrid: null as GridSize | null,
+  selectedPlayer: null as PlayerColor | null,
   hoveredTheme: null as ThemeId | null,
 };

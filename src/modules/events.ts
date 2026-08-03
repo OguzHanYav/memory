@@ -8,6 +8,122 @@ import { testResultScreen } from './test';
 import { EXIT_ICONS_HOVER, EXIT_ICONS, VALID_THEMES, VALID_PLAYERS, VALID_GRID_SIZES } from './constants';
 import type { ThemeId, GridSize, PlayerColor } from '../app/core/types';
 
+/**
+ * Validates if all settings are selected and updates the start button state.
+ */
+function validateSettings(): void {
+  const startBtn = document.getElementById('btn-start-game') as HTMLButtonElement;
+  if (!startBtn) return;
+  
+  const themeSelected = state.selectedTheme !== null;
+  const playerSelected = state.selectedPlayer !== null;
+  const gridSelected = state.selectedGrid !== null;
+  
+  startBtn.disabled = !(themeSelected && playerSelected && gridSelected);
+}
+
+/**
+ * Sets up hover events for radio items to show preview and activate radio dot.
+ */
+function setupRadioItemHover(): void {
+  document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
+    const radio = label.querySelector<HTMLInputElement>('.radio-input');
+    if (!radio) return;
+    
+    label.addEventListener('mouseenter', () => {
+      // For theme radios: update preview
+      if (radio.name === 'theme') {
+        const themeValue = radio.value as ThemeId;
+        if (VALID_THEMES.includes(themeValue)) {
+          state.hoveredTheme = themeValue;
+          updateThemePreview();
+        }
+      }
+      
+      // Activate radio dot on hover (add active class)
+      const dot = label.querySelector('.radio-dot');
+      if (dot) {
+        dot.classList.add('active');
+      }
+    });
+    
+    label.addEventListener('mouseleave', () => {
+      // For theme radios: clear hover preview
+      if (radio.name === 'theme') {
+        state.hoveredTheme = null;
+        updateThemePreview();
+      }
+      
+      // Remove active class from radio dot
+      const dot = label.querySelector('.radio-dot');
+      if (dot) {
+        dot.classList.remove('active');
+      }
+    });
+  });
+}
+
+/**
+ * Sets up change event listeners for theme radio buttons.
+ * @param renderer - The renderer instance
+ */
+export function setupThemeRadios(renderer: Renderer): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const theme = radio.value as ThemeId;
+      if (!VALID_THEMES.includes(theme)) return;
+      state.selectedTheme = theme;
+      renderer.setTheme(theme);
+      updateThemePreview();
+      validateSettings();
+    });
+  });
+}
+
+/**
+ * Sets up change event listeners for player radio buttons.
+ */
+export function setupPlayerRadios(): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const player = radio.value as PlayerColor;
+      if (!VALID_PLAYERS.includes(player)) return;
+      state.selectedPlayer = player;
+      validateSettings();
+    });
+  });
+}
+
+/**
+ * Sets up change event listeners for grid size radio buttons.
+ * @param renderer - The renderer instance
+ */
+export function setupGridRadios(renderer: Renderer): void {
+  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      const grid = Number(radio.value) as GridSize;
+      if (!VALID_GRID_SIZES.includes(grid)) return;
+      state.selectedGrid = grid;
+      renderer.setGrid(grid);
+      validateSettings();
+    });
+  });
+}
+
+/**
+ * Sets up hover events for theme preview labels.
+ * @deprecated Use setupRadioItemHover instead
+ */
+export function setupPreviewHover(): void {
+  setupRadioItemHover();
+}
+
+/**
+ * Sets up hover and click events for the exit button.
+ * @param exitBtn - The exit button element
+ * @param exitModal - The exit confirmation modal element
+ * @param theme - The current theme
+ */
 export function setupExitButtonEvents(exitBtn: HTMLButtonElement, exitModal: HTMLElement, theme: ThemeId): void {
   const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
   exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
@@ -25,6 +141,12 @@ export function setupExitButtonEvents(exitBtn: HTMLButtonElement, exitModal: HTM
   newExitBtn.addEventListener('click', () => { exitModal.style.display = 'flex'; });
 }
 
+/**
+ * Sets up hover events for the preview exit button.
+ * @param previewBtn - The preview exit button element
+ * @param previewIcon - The preview exit icon image element
+ * @param theme - The current theme
+ */
 export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLImageElement, theme: ThemeId): void {
   const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
   previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
@@ -41,6 +163,10 @@ export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLIma
   });
 }
 
+/**
+ * Sets up hover events for the exit button in the game screen.
+ * @param theme - The current theme
+ */
 export function setupExitButtonHover(theme: ThemeId): void {
   const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
   const exitModal = document.getElementById('modal-exit') as HTMLElement;
@@ -55,57 +181,10 @@ export function setupExitButtonHover(theme: ThemeId): void {
   }
 }
 
-export function setupThemeRadios(renderer: Renderer): void {
-  document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      const theme = radio.value as ThemeId;
-      if (!VALID_THEMES.includes(theme)) return;
-      state.selectedTheme = theme;
-      renderer.setTheme(theme);
-      updateThemePreview();
-    });
-  });
-}
-
-export function setupPlayerRadios(): void {
-  document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      const player = radio.value as PlayerColor;
-      if (!VALID_PLAYERS.includes(player)) return;
-      state.selectedPlayer = player;
-    });
-  });
-}
-
-export function setupGridRadios(renderer: Renderer): void {
-  document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      const grid = Number(radio.value) as GridSize;
-      if (!VALID_GRID_SIZES.includes(grid)) return;
-      state.selectedGrid = grid;
-      renderer.setGrid(grid);
-    });
-  });
-}
-
-export function setupPreviewHover(): void {
-  document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
-    const radio = label.querySelector<HTMLInputElement>('.radio-input');
-    if (!radio || radio.name !== 'theme') return;
-    label.addEventListener('mouseenter', () => {
-      const themeValue = radio.value as ThemeId;
-      if (VALID_THEMES.includes(themeValue)) {
-        state.hoveredTheme = themeValue;
-        updateThemePreview();
-      }
-    });
-    label.addEventListener('mouseleave', () => {
-      state.hoveredTheme = null;
-      updateThemePreview();
-    });
-  });
-}
-
+/**
+ * Sets up click event listener for the game board.
+ * @param game - The game controller instance
+ */
 export function setupBoardClick(game: GameController): void {
   const field = document.getElementById('field') as HTMLElement;
   if (!field) return;
@@ -118,6 +197,10 @@ export function setupBoardClick(game: GameController): void {
   });
 }
 
+/**
+ * Sets up keyboard shortcuts for testing.
+ * @remarks Alt+1: Blue win, Alt+2: Orange win, Alt+3: Tie, Alt+4: Game over
+ */
 export function setupKeyboardShortcuts(): void {
   document.addEventListener('keydown', (e) => {
     if (e.altKey && e.key === '1') { e.preventDefault(); testResultScreen('blue', 5, 3); }

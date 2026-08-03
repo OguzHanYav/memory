@@ -1,6 +1,12 @@
 import { state } from './state';
 import { showScreen } from './helpers';
 
+/**
+ * Displays the result screen with test data.
+ * @param winner - The winner type
+ * @param blueScore - Blue player's score
+ * @param orangeScore - Orange player's score
+ */
 export function testResultScreen(
   winner: 'blue' | 'orange' | 'tie' | 'gameover',
   blueScore: number = 3,

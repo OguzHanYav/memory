@@ -23,6 +23,10 @@ export class Card implements CardData {
   backSrc: string;
   state: CardState;
 
+  /**
+   * Creates a new Card instance.
+   * @param data - Configuration parameters for the card
+   */
   constructor(data: CardConstructor) {
     this.id = data.id;
     this.pairId = data.pairId;

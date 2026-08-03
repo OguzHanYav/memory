@@ -6,27 +6,30 @@ import type { CardData, GameStatus, PlayerColor } from '../core/types';
 
 export class GameState {
   cards: CardData[] = [];
-
   status: GameStatus = 'idle';
   lockInput = false;
-
   moves = 0;
-
   blueMatches = 0;
   orangeMatches = 0;
-
   currentPlayer: PlayerColor = 'blue';
-
   firstPickId: string | null = null;
   secondPickId: string | null = null;
 
-  /** Setzt die aktuellen Picks zurück */
+  /**
+   * Resets the current pick selections.
+   * @remarks
+   * Called after a match is evaluated or when a turn ends.
+   */
   resetPicks(): void {
     this.firstPickId = null;
     this.secondPickId = null;
   }
 
-  /** Wechselt den aktuellen Spieler */
+  /**
+   * Switches the current player to the other player.
+   * @remarks
+   * Called after a mismatch to give the turn to the other player.
+   */
   switchPlayer(): void {
     this.currentPlayer = this.currentPlayer === 'blue' ? 'orange' : 'blue';
   }
