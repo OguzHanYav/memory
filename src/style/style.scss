@@ -109,7 +109,6 @@ body:has(#screen-settings.screen--active) {
   gap: 16px;
   width: 100%;
 }
-
 /* ============================================
    HOME SCREEN
    ============================================ */
@@ -166,33 +165,6 @@ body:has(#screen-settings.screen--active) {
   letter-spacing: -1px;
 }
 
-#screen-home #btn-go-settings {
-  background: transparent;
-  border: none;
-  padding: 24px;
-  cursor: pointer;
-  display: inline-block;
-  width: 250px;
-  height: 98px;
-  margin-top: 10px;
-}
-
-#screen-home #btn-go-settings img {
-  display: block;
-  width: 250px;
-  height: 98px;
-  object-fit: contain;
-  transition: transform 0.2s ease;
-}
-
-#screen-home #btn-go-settings:hover img {
-  transform: scale(1.05);
-}
-
-#screen-home #btn-go-settings:active img {
-  transform: scale(0.95);
-}
-
 #screen-home .home-controller {
   position: absolute;
   bottom: 0px;
@@ -213,6 +185,58 @@ body:has(#screen-settings.screen--active) {
 #screen-home #btn-go-settings {
   position: relative;
   z-index: 1;
+}
+
+/* ============================================
+   HOME SCREEN - PLAY BUTTON
+   ============================================ */
+
+#screen-home #btn-go-settings {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.play-btn-wrapper {
+  position: relative;
+  width: 250px;
+  height: 98px;
+  display: inline-block;
+}
+
+.play-btn-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 98px;
+  object-fit: contain;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.play-btn-default {
+  opacity: 1;
+}
+
+.play-btn-hover {
+  opacity: 0;
+}
+
+#btn-go-settings:hover .play-btn-default {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+#btn-go-settings:hover .play-btn-hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+#btn-go-settings:active .play-btn-wrapper img {
+  transform: scale(0.95);
 }
 
 /* ============================================

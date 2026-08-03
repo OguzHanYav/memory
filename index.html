@@ -23,8 +23,8 @@
 <body>
   <main class="app">
     <!-- ============================================
-    HOME SCREEN
-    ============================================ -->
+HOME SCREEN
+============================================ -->
     <section id="screen-home" class="screen screen--active" aria-label="Home screen">
       <div class="panel panel--home">
         <div class="home-content">
@@ -33,7 +33,12 @@
 
           <div class="home-actions">
             <button id="btn-go-settings" class="btn btn--primary" type="button" aria-label="Open settings">
-              <img src="./assets/Home-screen/Frame 530.svg" alt="Play button" width="250" height="98" />
+              <div class="play-btn-wrapper">
+                <img class="play-btn-default" src="./assets/Home-screen/Frame 530.svg" alt="Play button" width="250"
+                  height="98" />
+                <img class="play-btn-hover" src="./assets/Home-screen/Frame530-hover.svg" alt="Play button hover"
+                  width="250" height="98" />
+              </div>
             </button>
           </div>
         </div>
@@ -42,7 +47,6 @@
           aria-hidden="true" />
       </div>
     </section>
-
     <!-- ============================================
 SETTINGS SCREEN
 ============================================ -->
