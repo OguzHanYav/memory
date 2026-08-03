@@ -1,6 +1,6 @@
 import { GameController } from '../app/controllers/gameController';
 import { Renderer } from '../app/ui/renderer';
-import { state } from './state';
+import { state, resetState } from './state';
 import { pairsFromGrid, showScreen } from './helpers';
 
 /**
@@ -31,21 +31,34 @@ function resetAllThemeClasses(): void {
 }
 
 /**
- * Resets the game configuration and starts a new game.
+ * Hides all result blocks.
+ */
+function hideResultBlocks(): void {
+  const resultGameover = document.getElementById('result-gameover');
+  const resultWinner = document.getElementById('result-winner');
+  const resultDraw = document.getElementById('result-draw');
+  if (resultGameover) resultGameover.style.display = 'none';
+  if (resultWinner) resultWinner.style.display = 'none';
+  if (resultDraw) resultDraw.style.display = 'none';
+}
+
+/**
+ * Resets the game configuration and starts a new game with default settings.
  * @param game - The game controller instance
  * @param renderer - The renderer instance
  */
 function resetGameConfig(game: GameController, renderer: Renderer): void {
   const DEFAULT_THEME = 'code';
-  const safeGrid = state.selectedGrid || 16;
-  const safePlayer = state.selectedPlayer || 'blue';
+  const DEFAULT_GRID = 16;
+  const DEFAULT_PLAYER = 'blue';
   
   renderer.setTheme(DEFAULT_THEME);
+  renderer.setGrid(DEFAULT_GRID);
   game.updateConfig({
     theme: DEFAULT_THEME,
-    gridSize: safeGrid,
-    startingPlayer: safePlayer,
-    pairs: pairsFromGrid(safeGrid),
+    gridSize: DEFAULT_GRID,
+    startingPlayer: DEFAULT_PLAYER,
+    pairs: pairsFromGrid(DEFAULT_GRID),
     flipBackDelayMs: 700,
   });
   game.startNewGame();
@@ -57,9 +70,8 @@ function resetGameConfig(game: GameController, renderer: Renderer): void {
 function resetScoreDisplay(): void {
   const blueScoreEl = document.getElementById('blueScore');
   const orangeScoreEl = document.getElementById('orangeScore');
-  const isCode = state.selectedTheme === 'code';
-  if (blueScoreEl) blueScoreEl.textContent = isCode ? 'Blue 0' : '0';
-  if (orangeScoreEl) orangeScoreEl.textContent = isCode ? 'Orange 0' : '0';
+  if (blueScoreEl) blueScoreEl.textContent = 'Blue 0';
+  if (orangeScoreEl) orangeScoreEl.textContent = 'Orange 0';
 }
 
 /**
@@ -137,14 +149,41 @@ function resetExitPopupTexts(): void {
 }
 
 /**
- * Resets the game and returns to the home screen.
+ * Unchecks all radio buttons in settings.
+ */
+function resetAllRadioButtons(): void {
+  document.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((radio) => {
+    radio.checked = false;
+  });
+}
+
+/**
+ * Disables the start button.
+ */
+function disableStartButton(): void {
+  const startBtn = document.getElementById('btn-start-game') as HTMLButtonElement;
+  if (startBtn) startBtn.disabled = true;
+}
+
+/**
+ * Resets everything and returns to the home screen.
  * @param game - The game controller instance
  * @param renderer - The renderer instance
  */
 export function resetAndRestartGame(game: GameController, renderer: Renderer): void {
+  // Reset board
   resetBoard();
+  
+  // Reset theme classes
   resetAllThemeClasses();
+  
+  // Hide result blocks
+  hideResultBlocks();
+  
+  // Reset game with default settings
   resetGameConfig(game, renderer);
+  
+  // Reset UI elements
   resetScoreDisplay();
   resetResultScores();
   resetCurrentPlayerIcon();
@@ -153,5 +192,53 @@ export function resetAndRestartGame(game: GameController, renderer: Renderer): v
   resetPreviewImages();
   resetPreviewThemeRoot();
   resetExitPopupTexts();
+  
+  // Reset state (remove all selections)
+  resetState();
+  
+  // Reset form elements
+  resetAllRadioButtons();
+  disableStartButton();
+  
+  // Navigate to home
   showScreen('home');
+}
+
+/**
+ * Resets everything and returns to settings screen (for exit during game).
+ * @param game - The game controller instance
+ * @param renderer - The renderer instance
+ */
+export function resetAndGoToSettings(game: GameController, renderer: Renderer): void {
+  // Reset board
+  resetBoard();
+  
+  // Reset theme classes
+  resetAllThemeClasses();
+  
+  // Hide result blocks
+  hideResultBlocks();
+  
+  // Reset game with default settings
+  resetGameConfig(game, renderer);
+  
+  // Reset UI elements
+  resetScoreDisplay();
+  resetResultScores();
+  resetCurrentPlayerIcon();
+  resetResultBackButtons();
+  resetExitIcons();
+  resetPreviewImages();
+  resetPreviewThemeRoot();
+  resetExitPopupTexts();
+  
+  // Reset state (remove all selections)
+  resetState();
+  
+  // Reset form elements
+  resetAllRadioButtons();
+  disableStartButton();
+  
+  // Navigate to settings
+  showScreen('settings');
 }

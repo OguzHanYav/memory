@@ -3,7 +3,7 @@ import { Renderer } from '../app/ui/renderer';
 import { state } from './state';
 import { updateThemePreview } from './theme';
 import { startGameFromSettings } from './game';
-import { resetAndRestartGame } from './reset';
+import { resetAndRestartGame, resetAndGoToSettings } from './reset';
 import { testResultScreen } from './test';
 import { EXIT_ICONS_HOVER, EXIT_ICONS, VALID_THEMES, VALID_PLAYERS, VALID_GRID_SIZES } from './constants';
 import type { ThemeId, GridSize, PlayerColor } from '../app/core/types';
@@ -64,17 +64,104 @@ function setupRadioItemHover(): void {
 }
 
 /**
- * Sets up change event listeners for theme radio buttons.
+ * Sets up hover and click events for the exit button.
+ * @param exitBtn - The exit button element
+ * @param exitModal - The exit confirmation modal element
+ * @param theme - The current theme
+ * @param game - The game controller instance
  * @param renderer - The renderer instance
  */
-export function setupThemeRadios(renderer: Renderer): void {
+export function setupExitButtonEvents(
+  exitBtn: HTMLButtonElement, 
+  exitModal: HTMLElement, 
+  theme: ThemeId,
+  game: GameController,
+  renderer: Renderer
+): void {
+  const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
+  exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
+  const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
+  if (!newExitIcon) return;
+
+  newExitBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newExitIcon.src = hoverIcon;
+  });
+  newExitBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newExitIcon.src = defaultIcon;
+  });
+  newExitBtn.addEventListener('click', () => { 
+    exitModal.style.display = 'flex'; 
+  });
+}
+
+/**
+ * Sets up hover events for the preview exit button.
+ * @param previewBtn - The preview exit button element
+ * @param previewIcon - The preview exit icon image element
+ * @param theme - The current theme
+ */
+export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLImageElement, theme: ThemeId): void {
+  const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
+  previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
+  const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
+  if (!newPreviewIcon) return;
+
+  newPreviewBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newPreviewIcon.src = hoverIcon;
+  });
+  newPreviewBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newPreviewIcon.src = defaultIcon;
+  });
+}
+
+/**
+ * Sets up hover events for the exit button in the game screen.
+ * @param theme - The current theme
+ * @param game - The game controller instance
+ * @param renderer - The renderer instance
+ */
+export function setupExitButtonHover(
+  theme: ThemeId, 
+  game: GameController, 
+  renderer: Renderer
+): void {
+  const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
+  const exitModal = document.getElementById('modal-exit') as HTMLElement;
+  if (!exitBtn || !exitModal) return;
+
+  setupExitButtonEvents(exitBtn, exitModal, theme, game, renderer);
+
+  const previewBtn = document.querySelector('.preview-exit');
+  const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
+  if (previewBtn && previewIcon) {
+    setupPreviewExitEvents(previewBtn, previewIcon, theme);
+  }
+}
+
+/**
+ * Sets up change event listeners for theme radio buttons.
+ * @param renderer - The renderer instance
+ * @param game - The game controller instance (optional)
+ */
+export function setupThemeRadios(renderer: Renderer, game?: GameController): void {
   document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       const theme = radio.value as ThemeId;
       if (!VALID_THEMES.includes(theme)) return;
       state.selectedTheme = theme;
       renderer.setTheme(theme);
-      updateThemePreview();
+      
+      // Update theme preview with game and renderer if provided
+      if (game) {
+        updateThemePreview(game, renderer);
+      } else {
+        updateThemePreview();
+      }
+      
       validateSettings();
     });
   });
@@ -112,73 +199,9 @@ export function setupGridRadios(renderer: Renderer): void {
 
 /**
  * Sets up hover events for theme preview labels.
- * @deprecated Use setupRadioItemHover instead
  */
 export function setupPreviewHover(): void {
   setupRadioItemHover();
-}
-
-/**
- * Sets up hover and click events for the exit button.
- * @param exitBtn - The exit button element
- * @param exitModal - The exit confirmation modal element
- * @param theme - The current theme
- */
-export function setupExitButtonEvents(exitBtn: HTMLButtonElement, exitModal: HTMLElement, theme: ThemeId): void {
-  const newExitBtn = exitBtn.cloneNode(true) as HTMLButtonElement;
-  exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
-  const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
-  if (!newExitIcon) return;
-
-  newExitBtn.addEventListener('mouseenter', () => {
-    const hoverIcon = EXIT_ICONS_HOVER[theme];
-    if (hoverIcon) newExitIcon.src = hoverIcon;
-  });
-  newExitBtn.addEventListener('mouseleave', () => {
-    const defaultIcon = EXIT_ICONS[theme];
-    if (defaultIcon) newExitIcon.src = defaultIcon;
-  });
-  newExitBtn.addEventListener('click', () => { exitModal.style.display = 'flex'; });
-}
-
-/**
- * Sets up hover events for the preview exit button.
- * @param previewBtn - The preview exit button element
- * @param previewIcon - The preview exit icon image element
- * @param theme - The current theme
- */
-export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLImageElement, theme: ThemeId): void {
-  const newPreviewBtn = previewBtn.cloneNode(true) as HTMLButtonElement;
-  previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
-  const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
-  if (!newPreviewIcon) return;
-
-  newPreviewBtn.addEventListener('mouseenter', () => {
-    const hoverIcon = EXIT_ICONS_HOVER[theme];
-    if (hoverIcon) newPreviewIcon.src = hoverIcon;
-  });
-  newPreviewBtn.addEventListener('mouseleave', () => {
-    const defaultIcon = EXIT_ICONS[theme];
-    if (defaultIcon) newPreviewIcon.src = defaultIcon;
-  });
-}
-
-/**
- * Sets up hover events for the exit button in the game screen.
- * @param theme - The current theme
- */
-export function setupExitButtonHover(theme: ThemeId): void {
-  const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
-  const exitModal = document.getElementById('modal-exit') as HTMLElement;
-  if (!exitBtn || !exitModal) return;
-
-  setupExitButtonEvents(exitBtn, exitModal, theme);
-
-  const previewBtn = document.querySelector('.preview-exit');
-  const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
-  if (previewBtn && previewIcon) {
-    setupPreviewExitEvents(previewBtn, previewIcon, theme);
-  }
 }
 
 /**

@@ -1,5 +1,6 @@
 import { GameController } from '../app/controllers/gameController';
 import { state } from './state';
+import { Renderer } from '../app/ui/renderer';
 import { getCurrentPlayerIcon } from './helpers';
 import { THEME_ICONS, EXIT_ICONS, EXIT_TEXTS, RESULT_BACK_TEXTS } from './constants';
 import { setupExitButtonHover } from './events';
@@ -65,9 +66,9 @@ function setHudIconSources(theme: ThemeId, icons: ReturnType<typeof getHudIcons>
  * @param img - The player icon image element
  */
 function updateHudPlayerIcon(theme: ThemeId, img: HTMLImageElement): void {
-  const currentPlayer = (window as any).game?.state?.currentPlayer || state.selectedPlayer;
+  const currentPlayer = (window as any).game?.state?.currentPlayer || state.selectedPlayer || 'blue';
   if (img) {
-    img.src = getCurrentPlayerIcon(theme, currentPlayer);
+    img.src = getCurrentPlayerIcon(theme, currentPlayer as 'blue' | 'orange');
     img.classList.remove('player-blue', 'player-orange');
     img.classList.add(`player-${currentPlayer}`);
   }
@@ -76,12 +77,23 @@ function updateHudPlayerIcon(theme: ThemeId, img: HTMLImageElement): void {
 /**
  * Updates all HUD icons and texts based on the current theme.
  * @param theme - The current theme
+ * @param game - The game controller instance (optional)
+ * @param renderer - The renderer instance (optional)
  */
-export function updateHudIcons(theme: ThemeId): void {
+export function updateHudIcons(
+  theme: ThemeId, 
+  game?: GameController, 
+  renderer?: Renderer
+): void {
   const icons = getHudIcons();
   setHudIconSources(theme, icons);
   updateExitTexts(theme);
-  setupExitButtonHover(theme);
+  
+  // Setup exit button hover with game and renderer if provided
+  if (game && renderer) {
+    setupExitButtonHover(theme, game, renderer);
+  }
+  
   updateHudPlayerIcon(theme, icons.currentPlayerImg);
 }
 
@@ -92,7 +104,7 @@ export function updateHudIcons(theme: ThemeId): void {
 export function updateCurrentPlayer(player: 'blue' | 'orange'): void {
   const img = document.getElementById('currentPlayerImg') as HTMLImageElement;
   if (!img) return;
-  img.src = getCurrentPlayerIcon(state.selectedTheme, player);
+  img.src = getCurrentPlayerIcon(state.selectedTheme || 'code', player);
   img.alt = player === 'blue' ? 'Blue Player' : 'Orange Player';
   img.classList.remove('player-blue', 'player-orange');
   img.classList.add(`player-${player}`);

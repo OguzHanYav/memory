@@ -54,8 +54,10 @@ function applyPreviewTheme(elements: ReturnType<typeof getThemeElements>, themeT
 
 /**
  * Updates the theme preview based on selected and hovered themes.
+ * @param game - The game controller instance (optional)
+ * @param renderer - The renderer instance (optional)
  */
-export function updateThemePreview(): void {
+export function updateThemePreview(game?: any, renderer?: any): void {
   const elements = getThemeElements();
   const theme = state.selectedTheme || 'code';
   const hovered = state.hoveredTheme;
@@ -63,6 +65,13 @@ export function updateThemePreview(): void {
 
   applyThemeClasses(elements, theme);
   applyPreviewTheme(elements, themeToShow);
-  updateHudIcons(theme);
+  
+  // Update HUD with game and renderer if provided
+  if (game && renderer) {
+    updateHudIcons(theme, game, renderer);
+  } else {
+    updateHudIcons(theme);
+  }
+  
   updateResultBackText(theme);
 }

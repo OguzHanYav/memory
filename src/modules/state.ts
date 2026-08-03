@@ -6,3 +6,13 @@ export const state = {
   selectedPlayer: null as PlayerColor | null,
   hoveredTheme: null as ThemeId | null,
 };
+
+/**
+ * Resets the entire state to null values.
+ */
+export function resetState(): void {
+  state.selectedTheme = null;
+  state.selectedGrid = null;
+  state.selectedPlayer = null;
+  state.hoveredTheme = null;
+}

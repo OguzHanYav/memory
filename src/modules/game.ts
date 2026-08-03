@@ -72,7 +72,7 @@ export function startGameFromSettings(renderer: Renderer, game: GameController):
   renderer.setGrid(grid);
 
   applyGameThemeClasses(theme);
-  updateHudIcons(theme);
+  updateHudIcons(theme, game, renderer);
   updateResultBackText(theme);
   updateGamePreviewIcon(theme);
 

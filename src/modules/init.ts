@@ -3,7 +3,7 @@ import { Renderer } from '../app/ui/renderer';
 import { GameController } from '../app/controllers/gameController';
 import { state } from './state';
 import { pairsFromGrid, showScreen } from './helpers';
-import { resetAndRestartGame } from './reset';
+import { resetAndRestartGame, resetAndGoToSettings } from './reset';
 import { startGameFromSettings } from './game';
 import { renderGameUi } from './hud';
 import { updateThemePreview } from './theme';
@@ -16,6 +16,7 @@ import {
   setupPreviewHover,
   setupBoardClick,
   setupKeyboardShortcuts,
+  setupExitButtonHover,
 } from './events';
 
 /**
@@ -45,11 +46,14 @@ function setupMainEventListeners(
 ): void {
   btnGoSettings.addEventListener('click', () => showScreen('settings'));
   btnStartGame.addEventListener('click', () => startGameFromSettings(renderer, game));
-  btnBackToGame.addEventListener('click', () => { exitModal.style.display = 'none'; });
+  btnBackToGame.addEventListener('click', () => { 
+    exitModal.style.display = 'none'; 
+  });
   btnConfirmExit.addEventListener('click', () => {
     exitModal.style.display = 'none';
-    showScreen('settings');
     document.body.classList.remove('modal-open');
+    // Reset everything and go to settings
+    resetAndGoToSettings(game, renderer);
   });
   btnResultBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
   btnDrawBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
@@ -71,8 +75,6 @@ function setupGameCallbacks(game: GameController): void {
  */
 function initializeRendererAndUI(renderer: Renderer): void {
   updateThemePreview();
-  // Don't set default theme - wait for user selection
-  // Don't set default grid - wait for user selection
   showScreen('home');
 }
 
@@ -101,7 +103,7 @@ export function init(): void {
   const field = assertEl(document.getElementById('field'), 'Missing #field');
   const renderer = new Renderer(field);
   
-  // Create game with fallback defaults (will be updated when user selects)
+  // Create game with default settings
   const game = new GameController(renderer, {
     theme: 'code',
     gridSize: 16,
@@ -113,6 +115,7 @@ export function init(): void {
   (window as any).game = game;
   setupGameCallbacks(game);
   initializeRendererAndUI(renderer);
+  
   const buttons = getMainButtons();
   setupMainEventListeners(
     renderer,
@@ -126,11 +129,16 @@ export function init(): void {
     buttons.btnGameoverBack,
     buttons.exitModal
   );
-  setupThemeRadios(renderer);
+  
+  setupThemeRadios(renderer, game);
   setupPlayerRadios();
   setupGridRadios(renderer);
   setupPreviewHover();
   setupBoardClick(game);
   setupKeyboardShortcuts();
+  
+  // Setup exit button hover with game and renderer
+  setupExitButtonHover('code', game, renderer);
+  
   (window as any).testResultScreen = testResultScreen;
 }
