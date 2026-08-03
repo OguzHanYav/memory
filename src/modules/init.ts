@@ -1,6 +1,6 @@
 import { assertEl } from '../app/utils/dom';
-import { Renderer } from '../app/ui/Renderer';
-import { GameController } from '../app/controllers/GameController';
+import { Renderer } from '../app/ui/renderer';
+import { GameController } from '../app/controllers/gameController';
 import { state } from './state';
 import { pairsFromGrid, showScreen } from './helpers';
 import { resetAndRestartGame } from './reset';

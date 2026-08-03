@@ -1,5 +1,5 @@
-import { GameController } from '../app/controllers/GameController';
-import { Renderer } from '../app/ui/Renderer';
+import { GameController } from '../app/controllers/gameController';
+import { Renderer } from '../app/ui/renderer';
 import { state } from './state';
 import { pairsFromGrid, showScreen } from './helpers';
 

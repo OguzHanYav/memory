@@ -1,10 +1,11 @@
 import { DEFAULT_GAME_CONFIG } from '../core/config';
-import { Card } from '../models/Card';
-import { GameState } from '../models/GameState';
-import { Renderer } from '../ui/Renderer';
+import { Card } from '../models/cards';
+import { GameState } from '../models/gameState';
+import { Renderer } from '../ui/renderer';
 import { shuffle } from '../utils/shuffle';
 
 import type { CardData, GameConfig, ThemeId } from '../core/types';
+
 
 // ============================================
 // TYPES
@@ -328,11 +329,10 @@ export class GameController {
   }
 
   /** Gibt eine Karte anhand ihrer ID zurück */
-  private getCard(id: string | null): CardData | undefined {
+private getCard(id: string | null): CardData | undefined {
     if (!id) return undefined;
-
-    return this.state.cards.find((card) => card.id === id);
-  }
+    return this.state.cards.find((card: CardData) => card.id === id);
+}
 
   /** Erstellt ein gemischtes Kartendeck */
   private createDeck(theme: ThemeId, pairs: number): CardData[] {
