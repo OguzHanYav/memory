@@ -109,6 +109,7 @@ body:has(#screen-settings.screen--active) {
   gap: 16px;
   width: 100%;
 }
+
 /* ============================================
    HOME SCREEN
    ============================================ */
@@ -188,7 +189,7 @@ body:has(#screen-settings.screen--active) {
 }
 
 /* ============================================
-   HOME SCREEN - PLAY BUTTON
+   HOME SCREEN - PLAY BUTTON WITH ROTATION ANIMATION
    ============================================ */
 
 #screen-home #btn-go-settings {
@@ -198,6 +199,7 @@ body:has(#screen-settings.screen--active) {
   cursor: pointer;
   display: inline-block;
   margin-top: 10px;
+  outline: none;
 }
 
 .play-btn-wrapper {
@@ -205,6 +207,7 @@ body:has(#screen-settings.screen--active) {
   width: 250px;
   height: 98px;
   display: inline-block;
+  overflow: visible;
 }
 
 .play-btn-wrapper img {
@@ -214,29 +217,47 @@ body:has(#screen-settings.screen--active) {
   width: 250px;
   height: 98px;
   object-fit: contain;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, opacity;
 }
 
+/* Default image - always visible initially */
 .play-btn-default {
   opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
+/* Hover image - hidden initially, rotates from left to right */
 .play-btn-hover {
   opacity: 0;
+  transform: rotate(-30deg) scale(0.8);
 }
 
+/* Hover state */
 #btn-go-settings:hover .play-btn-default {
   opacity: 0;
-  transform: scale(0.95);
+  transform: rotate(15deg) scale(0.9);
 }
 
 #btn-go-settings:hover .play-btn-hover {
   opacity: 1;
-  transform: scale(1.05);
+  transform: rotate(0deg) scale(1.05);
 }
 
+/* Active state (click) */
 #btn-go-settings:active .play-btn-wrapper img {
-  transform: scale(0.95);
+  transform: scale(0.92) !important;
+  transition-duration: 0.1s;
+}
+
+/* Optional: Add a subtle glow on hover */
+#btn-go-settings:hover .play-btn-hover {
+  filter: drop-shadow(0 0 20px rgba(255, 210, 63, 0.3));
+}
+
+#btn-go-settings:hover .play-btn-default {
+  filter: drop-shadow(0 0 20px rgba(255, 210, 63, 0.1));
 }
 
 /* ============================================
@@ -1139,7 +1160,7 @@ body:has(#screen-settings.screen--active) {
 /* ============================================
    WINNER ICONS
    ============================================ */
-   /* ============================================
+/* ============================================
    WINNER ICONS - mit img Tag
    ============================================ */
 
@@ -1181,6 +1202,7 @@ body:has(#screen-settings.screen--active) {
   background-color: #f7e6d5;
   border-radius: 20px;
 }
+
 .theme-code .result-player-icon {
   display: flex;
   justify-content: center;
@@ -2183,6 +2205,7 @@ body:has(#screen-settings.screen--active) {
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
   white-space: nowrap;
 }
+
 /* ============================================
    RESULT SCREEN ANIMATIONS
    ============================================ */
@@ -2193,6 +2216,7 @@ body:has(#screen-settings.screen--active) {
     transform: translateY(-100%);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -2205,6 +2229,7 @@ body:has(#screen-settings.screen--active) {
     transform: translateY(0);
     opacity: 1;
   }
+
   100% {
     transform: translateY(-100%);
     opacity: 0;
@@ -2302,6 +2327,7 @@ body:has(#screen-settings.screen--active) {
   transform: translate(-50%, -100%) !important;
   opacity: 0;
 }
+
 /* ============================================
    RESPONSIVE
    ============================================ */
