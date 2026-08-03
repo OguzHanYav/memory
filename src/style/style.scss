@@ -1115,6 +1115,48 @@ body:has(#screen-settings.screen--active) {
 /* ============================================
    WINNER ICONS
    ============================================ */
+   /* ============================================
+   WINNER ICONS - mit img Tag
+   ============================================ */
+
+.result-player-icon {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px auto;
+}
+
+.result-player-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// CODE THEME
+.theme-code .result-player-icon {
+  width: 200px;
+  height: 250px;
+}
+
+// GAMES THEME
+.theme-games .result-player-icon {
+  width: 288px;
+  height: 344px;
+}
+
+// DA THEME
+.theme-da .result-player-icon {
+  width: 200px;
+  height: 250px;
+}
+
+// FOOD THEME
+.theme-food .result-player-icon {
+  width: 260px;
+  height: 298px;
+  background-color: #f7e6d5;
+  border-radius: 20px;
+}
 .theme-code .result-player-icon {
   display: flex;
   justify-content: center;
@@ -2117,7 +2159,125 @@ body:has(#screen-settings.screen--active) {
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
   white-space: nowrap;
 }
+/* ============================================
+   RESULT SCREEN ANIMATIONS
+   ============================================ */
 
+// Slide-in Animation von OBEN nach UNTEN
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Slide-out Animation nach OBEN
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+// Result block animations
+#result-gameover.slide-in,
+#result-winner.slide-in,
+#result-draw.slide-in {
+  animation: slideInFromTop 0.5s ease-out forwards;
+}
+
+#result-gameover.slide-out,
+#result-winner.slide-out,
+#result-draw.slide-out {
+  animation: slideOutToTop 0.4s ease-in forwards;
+}
+
+// Result blocks default state (hidden above screen)
+#result-gameover,
+#result-winner,
+#result-draw {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+// When visible with slide-in from top
+#result-gameover.slide-in,
+#result-winner.slide-in,
+#result-draw.slide-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+// Game Over block - centered on screen
+#result-gameover {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#result-gameover.slide-in {
+  transform: translate(-50%, -50%) !important;
+  opacity: 1;
+}
+
+#result-gameover.slide-out {
+  transform: translate(-50%, -100%) !important;
+  opacity: 0;
+}
+
+// Winner block - centered on screen
+#result-winner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#result-winner.slide-in {
+  transform: translate(-50%, -50%) !important;
+  opacity: 1;
+}
+
+#result-winner.slide-out {
+  transform: translate(-50%, -100%) !important;
+  opacity: 0;
+}
+
+// Draw block - centered on screen
+#result-draw {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#result-draw.slide-in {
+  transform: translate(-50%, -50%) !important;
+  opacity: 1;
+}
+
+#result-draw.slide-out {
+  transform: translate(-50%, -100%) !important;
+  opacity: 0;
+}
 /* ============================================
    RESPONSIVE
    ============================================ */
