@@ -181,6 +181,11 @@ body:has(#screen-settings.screen--active) {
   flex-direction: column;
 }
 
+.home-actions {
+  display: flex;
+  justify-content: center;
+}
+
 #screen-home .muted,
 #screen-home .title,
 #screen-home #btn-go-settings {
