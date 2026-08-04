@@ -19,19 +19,6 @@ import {
   setupExitButtonHover,
 } from './events';
 
-/**
- * Sets up all main event listeners for the application.
- * @param renderer - The renderer instance
- * @param game - The game controller instance
- * @param btnGoSettings - Settings button
- * @param btnStartGame - Start game button
- * @param btnBackToGame - Back to game button (exit modal)
- * @param btnConfirmExit - Confirm exit button
- * @param btnResultBack - Result back button
- * @param btnDrawBack - Draw back button
- * @param btnGameoverBack - Game over back button
- * @param exitModal - Exit modal element
- */
 function setupMainEventListeners(
   renderer: Renderer,
   game: GameController,
@@ -46,13 +33,10 @@ function setupMainEventListeners(
 ): void {
   btnGoSettings.addEventListener('click', () => showScreen('settings'));
   btnStartGame.addEventListener('click', () => startGameFromSettings(renderer, game));
-  btnBackToGame.addEventListener('click', () => { 
-    exitModal.style.display = 'none'; 
-  });
+  btnBackToGame.addEventListener('click', () => { exitModal.style.display = 'none'; });
   btnConfirmExit.addEventListener('click', () => {
     exitModal.style.display = 'none';
     document.body.classList.remove('modal-open');
-    // Reset everything and go to settings
     resetAndGoToSettings(game, renderer);
   });
   btnResultBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
@@ -60,29 +44,16 @@ function setupMainEventListeners(
   btnGameoverBack.addEventListener('click', () => resetAndRestartGame(game, renderer));
 }
 
-/**
- * Sets up game callbacks for state changes and win events.
- * @param game - The game controller instance
- */
 function setupGameCallbacks(game: GameController): void {
   game.onStateChange(() => renderGameUi(game));
   game.onWin((payload) => handleGameWin(payload));
 }
 
-/**
- * Initializes the renderer and UI to their default states.
- * @param renderer - The renderer instance
- */
 function initializeRendererAndUI(renderer: Renderer): void {
   updateThemePreview();
   showScreen('home');
 }
 
-/**
- * Gets all main DOM button elements.
- * @returns Object containing all main buttons
- * @throws {Error} If any required element is missing
- */
 function getMainButtons() {
   return {
     btnGoSettings: assertEl(document.getElementById('btn-go-settings'), 'Missing #btn-go-settings') as HTMLButtonElement,
@@ -96,14 +67,9 @@ function getMainButtons() {
   };
 }
 
-/**
- * Initializes the entire application.
- */
 export function init(): void {
   const field = assertEl(document.getElementById('field'), 'Missing #field');
   const renderer = new Renderer(field);
-  
-  // Create game with default settings
   const game = new GameController(renderer, {
     theme: 'code',
     gridSize: 16,
@@ -111,11 +77,9 @@ export function init(): void {
     pairs: 8,
     flipBackDelayMs: 700,
   });
-  
   (window as any).game = game;
   setupGameCallbacks(game);
   initializeRendererAndUI(renderer);
-  
   const buttons = getMainButtons();
   setupMainEventListeners(
     renderer,
@@ -129,16 +93,12 @@ export function init(): void {
     buttons.btnGameoverBack,
     buttons.exitModal
   );
-  
   setupThemeRadios(renderer, game);
   setupPlayerRadios();
   setupGridRadios(renderer);
   setupPreviewHover();
   setupBoardClick(game);
   setupKeyboardShortcuts();
-  
-  // Setup exit button hover with game and renderer
   setupExitButtonHover('code', game, renderer);
-  
   (window as any).testResultScreen = testResultScreen;
 }

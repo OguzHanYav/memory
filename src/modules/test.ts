@@ -1,58 +1,83 @@
 import { state } from './state';
 import { showScreen } from './helpers';
 
-/**
- * Displays the result screen with test data.
- * @param winner - The winner type
- * @param blueScore - Blue player's score
- * @param orangeScore - Orange player's score
- */
+function getResultElements() {
+  return {
+    resultScreen: document.getElementById('screen-result'),
+    resultBlueScore: document.getElementById('result-blue-score'),
+    resultOrangeScore: document.getElementById('result-orange-score'),
+    resultWinnerTitle: document.getElementById('result-winner-title'),
+    resultGameover: document.getElementById('result-gameover'),
+    resultWinner: document.getElementById('result-winner'),
+    resultDraw: document.getElementById('result-draw'),
+  };
+}
+
+function setTestScores(elements: ReturnType<typeof getResultElements>, blueScore: number, orangeScore: number): void {
+  const isCodeTheme = state.selectedTheme === 'code';
+  if (elements.resultBlueScore) {
+    elements.resultBlueScore.textContent = isCodeTheme ? `Blue ${blueScore}` : String(blueScore);
+  }
+  if (elements.resultOrangeScore) {
+    elements.resultOrangeScore.textContent = isCodeTheme ? `Orange ${orangeScore}` : String(orangeScore);
+  }
+}
+
+function resetResultClasses(elements: ReturnType<typeof getResultElements>): void {
+  if (elements.resultScreen) {
+    elements.resultScreen.classList.remove(
+      'result-screen--winner-blue',
+      'result-screen--winner-orange',
+      'result-screen--draw',
+      'result-screen--gameover'
+    );
+  }
+}
+
+function hideAllResultBlocks(elements: ReturnType<typeof getResultElements>): void {
+  if (elements.resultGameover) elements.resultGameover.style.display = 'none';
+  if (elements.resultWinner) elements.resultWinner.style.display = 'none';
+  if (elements.resultDraw) elements.resultDraw.style.display = 'none';
+}
+
+function showTestGameOver(elements: ReturnType<typeof getResultElements>): void {
+  if (elements.resultScreen) elements.resultScreen.classList.add('result-screen--gameover');
+  if (elements.resultGameover) elements.resultGameover.style.display = 'block';
+}
+
+function showTestDraw(elements: ReturnType<typeof getResultElements>): void {
+  if (elements.resultScreen) elements.resultScreen.classList.add('result-screen--draw');
+  if (elements.resultDraw) elements.resultDraw.style.display = 'block';
+}
+
+function showTestWinner(elements: ReturnType<typeof getResultElements>, winner: 'blue' | 'orange'): void {
+  if (elements.resultScreen) elements.resultScreen.classList.add(`result-screen--winner-${winner}`);
+  if (elements.resultWinner) elements.resultWinner.style.display = 'flex';
+  if (elements.resultWinnerTitle) {
+    elements.resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
+    elements.resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
+  }
+}
+
 export function testResultScreen(
   winner: 'blue' | 'orange' | 'tie' | 'gameover',
   blueScore: number = 3,
   orangeScore: number = 2
 ): void {
-  const resultScreen = document.getElementById('screen-result');
-  const resultBlueScore = document.getElementById('result-blue-score');
-  const resultOrangeScore = document.getElementById('result-orange-score');
-  const resultWinnerTitle = document.getElementById('result-winner-title');
-  const resultGameover = document.getElementById('result-gameover');
-  const resultWinner = document.getElementById('result-winner');
-  const resultDraw = document.getElementById('result-draw');
-
-  if (!resultScreen || !resultBlueScore || !resultOrangeScore) {
+  const elements = getResultElements();
+  if (!elements.resultScreen || !elements.resultBlueScore || !elements.resultOrangeScore) {
     console.error('Result Screen Elemente nicht gefunden!');
     return;
   }
-
-  const isCodeTheme = state.selectedTheme === 'code';
-  resultBlueScore.textContent = isCodeTheme ? `Blue ${blueScore}` : String(blueScore);
-  resultOrangeScore.textContent = isCodeTheme ? `Orange ${orangeScore}` : String(orangeScore);
-
-  resultScreen.classList.remove(
-    'result-screen--winner-blue',
-    'result-screen--winner-orange',
-    'result-screen--draw',
-    'result-screen--gameover'
-  );
-
-  if (resultGameover) resultGameover.style.display = 'none';
-  if (resultWinner) resultWinner.style.display = 'none';
-  if (resultDraw) resultDraw.style.display = 'none';
-
+  setTestScores(elements, blueScore, orangeScore);
+  resetResultClasses(elements);
+  hideAllResultBlocks(elements);
   if (winner === 'gameover') {
-    resultScreen.classList.add('result-screen--gameover');
-    if (resultGameover) resultGameover.style.display = 'block';
+    showTestGameOver(elements);
   } else if (winner === 'tie') {
-    resultScreen.classList.add('result-screen--draw');
-    if (resultDraw) resultDraw.style.display = 'block';
+    showTestDraw(elements);
   } else {
-    resultScreen.classList.add(`result-screen--winner-${winner}`);
-    if (resultWinner) resultWinner.style.display = 'flex';
-    if (resultWinnerTitle) {
-      resultWinnerTitle.textContent = winner === 'blue' ? 'BLUE PLAYER' : 'ORANGE PLAYER';
-      resultWinnerTitle.style.color = winner === 'blue' ? '#2aa8ff' : '#ff8c42';
-    }
+    showTestWinner(elements, winner);
   }
   showScreen('result');
 }

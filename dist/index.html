@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memory Game</title>
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="./assets/Favicon/Asset 6@2x 1.svg" />
-<link rel="shortcut icon" href="./assets/Favicon/Asset 6@2x 1.svg" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="./assets/Favicon/Asset 6@2x 1.svg" />
+  <link rel="shortcut icon" href="./assets/Favicon/Asset 6@2x 1.svg" />
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,15 +18,15 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-CIQJoEmD.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-dw230pjd.css">
+  <script type="module" crossorigin src="/assets/index-BHYzHbya.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DqnHnXrd.css">
 </head>
 
 <body>
   <main class="app">
     <!-- ============================================
-    HOME SCREEN
-    ============================================ -->
+HOME SCREEN
+============================================ -->
     <section id="screen-home" class="screen screen--active" aria-label="Home screen">
       <div class="panel panel--home">
         <div class="home-content">
@@ -35,7 +35,12 @@
 
           <div class="home-actions">
             <button id="btn-go-settings" class="btn btn--primary" type="button" aria-label="Open settings">
-              <img src="./assets/Home-screen/Frame 530.svg" alt="Play button" width="250" height="98" />
+              <div class="play-btn-wrapper">
+                <img class="play-btn-default" src="./assets/Home-screen/Frame 530.svg" alt="Play button" width="250"
+                  height="98" />
+                <img class="play-btn-hover" src="./assets/Home-screen/Frame530-hover.svg" alt="Play button hover"
+                  width="250" height="98" />
+              </div>
             </button>
           </div>
         </div>
@@ -44,10 +49,9 @@
           aria-hidden="true" />
       </div>
     </section>
-
     <!-- ============================================
-    SETTINGS SCREEN
-    ============================================ -->
+SETTINGS SCREEN
+============================================ -->
     <section id="screen-settings" class="screen" aria-label="Settings screen">
       <div class="settings-page">
         <header class="settings-page__header">
@@ -66,7 +70,7 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Game themes">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="theme" value="code" checked role="radio"
+                  <input class="radio-input" type="radio" name="theme" value="code" role="radio"
                     aria-label="Code vibes theme" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Code vibes theme</span>
@@ -108,7 +112,7 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Starting player">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" checked role="radio"
+                  <input class="radio-input" type="radio" name="startingPlayer" value="blue" role="radio"
                     aria-label="Blue player starts" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>Blue</span>
@@ -134,8 +138,7 @@
 
               <div class="radio-list" role="radiogroup" aria-label="Board size">
                 <label class="radio-item">
-                  <input class="radio-input" type="radio" name="grid" value="16" checked role="radio"
-                    aria-label="16 cards" />
+                  <input class="radio-input" type="radio" name="grid" value="16" role="radio" aria-label="16 cards" />
                   <span class="radio-dot" aria-hidden="true"></span>
                   <span>16 cards</span>
                   <img class="radio-arrow" src="./assets/Settings/Line 3.svg" alt="" aria-hidden="true" />
@@ -199,7 +202,7 @@
                 <span>Player</span>
                 <img src="./assets/Settings/Line 6.svg" alt="" aria-hidden="true">
                 <span>Board size</span>
-                <button id="btn-start-game" class="btn-start" type="button"
+                <button id="btn-start-game" class="btn-start" type="button" disabled
                   aria-label="Start game with current settings">
                   <img src="./assets/Settings/small button.svg" alt="Start game">
                 </button>
@@ -270,8 +273,9 @@
 
         <p class="result-kicker">The winner is</p>
         <h1 id="result-winner-title" class="result-winner-title">BLUE PLAYER</h1>
-        <div id="result-player-icon" class="result-player-icon" aria-hidden="true"></div>
-
+        <div id="result-player-icon" class="result-player-icon" aria-hidden="true">
+          <img id="winner-icon-img" src="" alt="Winner icon" />
+        </div>
         <button id="btn-result-back" class="btn result-back-btn" type="button" aria-label="Back to home screen">
           <span id="result-back-text">Back to start</span>
         </button>
