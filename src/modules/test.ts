@@ -92,23 +92,44 @@ function showTestWinner(elements: ReturnType<typeof getResultElements>, winner: 
 
 /**
  * Displays the result screen with test data.
- * @param winner - The winner type
- * @param blueScore - Blue player's score
- * @param orangeScore - Orange player's score
+ * @param winner - The winner type: 'blue', 'orange', 'tie', or 'gameover'
+ * @param blueScore - Blue player's score (default: 3)
+ * @param orangeScore - Orange player's score (default: 2)
  */
 export function testResultScreen(
   winner: 'blue' | 'orange' | 'tie' | 'gameover',
   blueScore: number = 3,
   orangeScore: number = 2
 ): void {
+  // Get all elements
   const elements = getResultElements();
-  if (!elements.resultScreen || !elements.resultBlueScore || !elements.resultOrangeScore) {
-    console.error('Result Screen Elemente nicht gefunden!');
+  
+  // Validate required elements exist
+  if (!elements.resultScreen) {
+    console.error('Result Screen element (#screen-result) not found!');
     return;
   }
+  
+  if (!elements.resultBlueScore) {
+    console.error('Result Blue Score element (#result-blue-score) not found!');
+    return;
+  }
+  
+  if (!elements.resultOrangeScore) {
+    console.error('Result Orange Score element (#result-orange-score) not found!');
+    return;
+  }
+  
+  // Set scores
   setTestScores(elements, blueScore, orangeScore);
+  
+  // Reset all classes
   resetResultClasses(elements);
+  
+  // Hide all blocks
   hideAllResultBlocks(elements);
+  
+  // Show the appropriate screen based on winner type
   if (winner === 'gameover') {
     showTestGameOver(elements);
   } else if (winner === 'tie') {
@@ -116,5 +137,7 @@ export function testResultScreen(
   } else {
     showTestWinner(elements, winner);
   }
+  
+  // Show the result screen
   showScreen('result');
 }
