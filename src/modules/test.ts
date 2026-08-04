@@ -1,6 +1,10 @@
 import { state } from './state';
 import { showScreen } from './helpers';
 
+/**
+ * Gets all result screen DOM elements for testing.
+ * @returns Object containing result screen elements
+ */
 function getResultElements() {
   return {
     resultScreen: document.getElementById('screen-result'),
@@ -13,6 +17,12 @@ function getResultElements() {
   };
 }
 
+/**
+ * Sets test scores on the result screen.
+ * @param elements - The result screen elements
+ * @param blueScore - Blue player's score
+ * @param orangeScore - Orange player's score
+ */
 function setTestScores(elements: ReturnType<typeof getResultElements>, blueScore: number, orangeScore: number): void {
   const isCodeTheme = state.selectedTheme === 'code';
   if (elements.resultBlueScore) {
@@ -23,6 +33,10 @@ function setTestScores(elements: ReturnType<typeof getResultElements>, blueScore
   }
 }
 
+/**
+ * Resets all result screen classes.
+ * @param elements - The result screen elements
+ */
 function resetResultClasses(elements: ReturnType<typeof getResultElements>): void {
   if (elements.resultScreen) {
     elements.resultScreen.classList.remove(
@@ -34,22 +48,39 @@ function resetResultClasses(elements: ReturnType<typeof getResultElements>): voi
   }
 }
 
+/**
+ * Hides all result blocks.
+ * @param elements - The result screen elements
+ */
 function hideAllResultBlocks(elements: ReturnType<typeof getResultElements>): void {
   if (elements.resultGameover) elements.resultGameover.style.display = 'none';
   if (elements.resultWinner) elements.resultWinner.style.display = 'none';
   if (elements.resultDraw) elements.resultDraw.style.display = 'none';
 }
 
+/**
+ * Shows the game over test screen.
+ * @param elements - The result screen elements
+ */
 function showTestGameOver(elements: ReturnType<typeof getResultElements>): void {
   if (elements.resultScreen) elements.resultScreen.classList.add('result-screen--gameover');
   if (elements.resultGameover) elements.resultGameover.style.display = 'block';
 }
 
+/**
+ * Shows the draw test screen.
+ * @param elements - The result screen elements
+ */
 function showTestDraw(elements: ReturnType<typeof getResultElements>): void {
   if (elements.resultScreen) elements.resultScreen.classList.add('result-screen--draw');
   if (elements.resultDraw) elements.resultDraw.style.display = 'block';
 }
 
+/**
+ * Shows the winner test screen.
+ * @param elements - The result screen elements
+ * @param winner - The winning player
+ */
 function showTestWinner(elements: ReturnType<typeof getResultElements>, winner: 'blue' | 'orange'): void {
   if (elements.resultScreen) elements.resultScreen.classList.add(`result-screen--winner-${winner}`);
   if (elements.resultWinner) elements.resultWinner.style.display = 'flex';
@@ -59,6 +90,12 @@ function showTestWinner(elements: ReturnType<typeof getResultElements>, winner: 
   }
 }
 
+/**
+ * Displays the result screen with test data.
+ * @param winner - The winner type
+ * @param blueScore - Blue player's score
+ * @param orangeScore - Orange player's score
+ */
 export function testResultScreen(
   winner: 'blue' | 'orange' | 'tie' | 'gameover',
   blueScore: number = 3,
