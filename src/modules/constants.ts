@@ -19,6 +19,24 @@ export const THEME_ICONS: Record<ThemeId, { blue: string; orange: string }> = {
   },
 };
 
+export const THEME_NAMES: Record<ThemeId, string> = {
+  code: 'Code vibes theme',
+  games: 'Gaming theme',
+  da: 'DA Projects theme',
+  food: 'Foods theme',
+};
+
+export const PLAYER_NAMES: Record<string, string> = {
+  blue: 'Blue',
+  orange: 'Orange',
+};
+
+export const GRID_NAMES: Record<number, string> = {
+  16: '16 cards',
+  24: '24 cards',
+  36: '36 cards',
+};
+
 export const EXIT_ICONS: Record<ThemeId, string> = {
   code: './assets/Settings/topbar/move_item.svg',
   games: './assets/Settings/topbar/move_item.svg',

@@ -51,6 +51,7 @@ function resetGameConfig(game: GameController, renderer: Renderer): void {
   const DEFAULT_THEME = 'code';
   const DEFAULT_GRID = 16;
   const DEFAULT_PLAYER = 'blue';
+  
   renderer.setTheme(DEFAULT_THEME);
   renderer.setGrid(DEFAULT_GRID);
   game.updateConfig({
@@ -165,6 +166,19 @@ function disableStartButton(): void {
 }
 
 /**
+ * Resets the settings navigation display to default.
+ */
+function resetSettingsNavigation(): void {
+  const themeDisplay = document.getElementById('settings-theme-display');
+  const playerDisplay = document.getElementById('settings-player-display');
+  const gridDisplay = document.getElementById('settings-grid-display');
+  
+  if (themeDisplay) themeDisplay.textContent = 'Game theme';
+  if (playerDisplay) playerDisplay.textContent = 'Player';
+  if (gridDisplay) gridDisplay.textContent = 'Board size';
+}
+
+/**
  * Performs a full reset of the game and UI.
  * @param game - The game controller instance
  * @param renderer - The renderer instance
@@ -185,6 +199,7 @@ function performFullReset(game: GameController, renderer: Renderer): void {
   resetState();
   resetAllRadioButtons();
   disableStartButton();
+  resetSettingsNavigation();
 }
 
 /**

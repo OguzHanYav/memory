@@ -5,8 +5,29 @@ import { updateThemePreview } from './theme';
 import { startGameFromSettings } from './game';
 import { resetAndRestartGame, resetAndGoToSettings } from './reset';
 import { testResultScreen } from './test';
-import { EXIT_ICONS_HOVER, EXIT_ICONS, VALID_THEMES, VALID_PLAYERS, VALID_GRID_SIZES } from './constants';
+import { EXIT_ICONS_HOVER, EXIT_ICONS, VALID_THEMES, VALID_PLAYERS, VALID_GRID_SIZES, THEME_NAMES, PLAYER_NAMES, GRID_NAMES } from './constants';
 import type { ThemeId, GridSize, PlayerColor } from '../app/core/types';
+
+/**
+ * Updates the settings navigation with current selections.
+ */
+function updateSettingsNavigation(): void {
+  const themeDisplay = document.getElementById('settings-theme-display');
+  const playerDisplay = document.getElementById('settings-player-display');
+  const gridDisplay = document.getElementById('settings-grid-display');
+  
+  if (themeDisplay) {
+    themeDisplay.textContent = state.selectedTheme ? THEME_NAMES[state.selectedTheme] : 'Game theme';
+  }
+  
+  if (playerDisplay) {
+    playerDisplay.textContent = state.selectedPlayer ? PLAYER_NAMES[state.selectedPlayer] : 'Player';
+  }
+  
+  if (gridDisplay) {
+    gridDisplay.textContent = state.selectedGrid ? GRID_NAMES[state.selectedGrid] : 'Board size';
+  }
+}
 
 /**
  * Validates if all settings are selected and updates the start button state.
@@ -14,68 +35,56 @@ import type { ThemeId, GridSize, PlayerColor } from '../app/core/types';
 function validateSettings(): void {
   const startBtn = document.getElementById('btn-start-game') as HTMLButtonElement;
   if (!startBtn) return;
+  
   const themeSelected = state.selectedTheme !== null;
   const playerSelected = state.selectedPlayer !== null;
   const gridSelected = state.selectedGrid !== null;
+  
   startBtn.disabled = !(themeSelected && playerSelected && gridSelected);
+  
+  // Update navigation display
+  updateSettingsNavigation();
 }
 
 /**
- * Sets up hover events for radio items.
+ * Sets up hover events for radio items to show preview and activate radio dot.
  */
 function setupRadioItemHover(): void {
   document.querySelectorAll<HTMLLabelElement>('.radio-item').forEach((label) => {
     const radio = label.querySelector<HTMLInputElement>('.radio-input');
     if (!radio) return;
+    
     label.addEventListener('mouseenter', () => {
-      handleRadioMouseEnter(label, radio);
+      // For theme radios: update preview
+      if (radio.name === 'theme') {
+        const themeValue = radio.value as ThemeId;
+        if (VALID_THEMES.includes(themeValue)) {
+          state.hoveredTheme = themeValue;
+          updateThemePreview();
+        }
+      }
+      
+      // Activate radio dot on hover (add active class)
+      const dot = label.querySelector('.radio-dot');
+      if (dot) {
+        dot.classList.add('active');
+      }
     });
+    
     label.addEventListener('mouseleave', () => {
-      handleRadioMouseLeave(label, radio);
+      // For theme radios: clear hover preview
+      if (radio.name === 'theme') {
+        state.hoveredTheme = null;
+        updateThemePreview();
+      }
+      
+      // Remove active class from radio dot
+      const dot = label.querySelector('.radio-dot');
+      if (dot) {
+        dot.classList.remove('active');
+      }
     });
   });
-}
-
-/**
- * Handles mouse enter on a radio item.
- * @param label - The label element
- * @param radio - The radio input element
- */
-function handleRadioMouseEnter(label: HTMLLabelElement, radio: HTMLInputElement): void {
-  if (radio.name === 'theme') {
-    const themeValue = radio.value as ThemeId;
-    if (VALID_THEMES.includes(themeValue)) {
-      state.hoveredTheme = themeValue;
-      updateThemePreview();
-    }
-  }
-  const dot = label.querySelector('.radio-dot');
-  if (dot) dot.classList.add('active');
-}
-
-/**
- * Handles mouse leave on a radio item.
- * @param label - The label element
- * @param radio - The radio input element
- */
-function handleRadioMouseLeave(label: HTMLLabelElement, radio: HTMLInputElement): void {
-  if (radio.name === 'theme') {
-    state.hoveredTheme = null;
-    updateThemePreview();
-  }
-  const dot = label.querySelector('.radio-dot');
-  if (dot) dot.classList.remove('active');
-}
-
-/**
- * Updates the exit icon on hover.
- * @param icon - The icon image element
- * @param theme - The current theme
- * @param isHover - Whether the mouse is hovering
- */
-function updateExitIconOnHover(icon: HTMLImageElement, theme: ThemeId, isHover: boolean): void {
-  const iconSrc = isHover ? EXIT_ICONS_HOVER[theme] : EXIT_ICONS[theme];
-  if (iconSrc) icon.src = iconSrc;
 }
 
 /**
@@ -87,8 +96,8 @@ function updateExitIconOnHover(icon: HTMLImageElement, theme: ThemeId, isHover: 
  * @param renderer - The renderer instance
  */
 export function setupExitButtonEvents(
-  exitBtn: HTMLButtonElement,
-  exitModal: HTMLElement,
+  exitBtn: HTMLButtonElement, 
+  exitModal: HTMLElement, 
   theme: ThemeId,
   game: GameController,
   renderer: Renderer
@@ -97,9 +106,18 @@ export function setupExitButtonEvents(
   exitBtn.parentNode?.replaceChild(newExitBtn, exitBtn);
   const newExitIcon = newExitBtn.querySelector('#exitGameIcon') as HTMLImageElement;
   if (!newExitIcon) return;
-  newExitBtn.addEventListener('mouseenter', () => updateExitIconOnHover(newExitIcon, theme, true));
-  newExitBtn.addEventListener('mouseleave', () => updateExitIconOnHover(newExitIcon, theme, false));
-  newExitBtn.addEventListener('click', () => { exitModal.style.display = 'flex'; });
+
+  newExitBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newExitIcon.src = hoverIcon;
+  });
+  newExitBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newExitIcon.src = defaultIcon;
+  });
+  newExitBtn.addEventListener('click', () => { 
+    exitModal.style.display = 'flex'; 
+  });
 }
 
 /**
@@ -113,8 +131,15 @@ export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLIma
   previewBtn.parentNode?.replaceChild(newPreviewBtn, previewBtn);
   const newPreviewIcon = newPreviewBtn.querySelector('#previewExitIcon') as HTMLImageElement;
   if (!newPreviewIcon) return;
-  newPreviewBtn.addEventListener('mouseenter', () => updateExitIconOnHover(newPreviewIcon, theme, true));
-  newPreviewBtn.addEventListener('mouseleave', () => updateExitIconOnHover(newPreviewIcon, theme, false));
+
+  newPreviewBtn.addEventListener('mouseenter', () => {
+    const hoverIcon = EXIT_ICONS_HOVER[theme];
+    if (hoverIcon) newPreviewIcon.src = hoverIcon;
+  });
+  newPreviewBtn.addEventListener('mouseleave', () => {
+    const defaultIcon = EXIT_ICONS[theme];
+    if (defaultIcon) newPreviewIcon.src = defaultIcon;
+  });
 }
 
 /**
@@ -123,35 +148,22 @@ export function setupPreviewExitEvents(previewBtn: Element, previewIcon: HTMLIma
  * @param game - The game controller instance
  * @param renderer - The renderer instance
  */
-export function setupExitButtonHover(theme: ThemeId, game: GameController, renderer: Renderer): void {
+export function setupExitButtonHover(
+  theme: ThemeId, 
+  game: GameController, 
+  renderer: Renderer
+): void {
   const exitBtn = document.getElementById('btn-exit-game') as HTMLButtonElement;
   const exitModal = document.getElementById('modal-exit') as HTMLElement;
   if (!exitBtn || !exitModal) return;
+
   setupExitButtonEvents(exitBtn, exitModal, theme, game, renderer);
+
   const previewBtn = document.querySelector('.preview-exit');
   const previewIcon = document.getElementById('previewExitIcon') as HTMLImageElement;
   if (previewBtn && previewIcon) {
     setupPreviewExitEvents(previewBtn, previewIcon, theme);
   }
-}
-
-/**
- * Handles theme radio change event.
- * @param radio - The radio input element
- * @param renderer - The renderer instance
- * @param game - The game controller instance (optional)
- */
-function handleThemeChange(radio: HTMLInputElement, renderer: Renderer, game?: GameController): void {
-  const theme = radio.value as ThemeId;
-  if (!VALID_THEMES.includes(theme)) return;
-  state.selectedTheme = theme;
-  renderer.setTheme(theme);
-  if (game) {
-    updateThemePreview(game, renderer);
-  } else {
-    updateThemePreview();
-  }
-  validateSettings();
 }
 
 /**
@@ -161,19 +173,22 @@ function handleThemeChange(radio: HTMLInputElement, renderer: Renderer, game?: G
  */
 export function setupThemeRadios(renderer: Renderer, game?: GameController): void {
   document.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((radio) => {
-    radio.addEventListener('change', () => handleThemeChange(radio, renderer, game));
+    radio.addEventListener('change', () => {
+      const theme = radio.value as ThemeId;
+      if (!VALID_THEMES.includes(theme)) return;
+      state.selectedTheme = theme;
+      renderer.setTheme(theme);
+      
+      // Update theme preview with game and renderer if provided
+      if (game) {
+        updateThemePreview(game, renderer);
+      } else {
+        updateThemePreview();
+      }
+      
+      validateSettings();
+    });
   });
-}
-
-/**
- * Handles player radio change event.
- * @param radio - The radio input element
- */
-function handlePlayerChange(radio: HTMLInputElement): void {
-  const player = radio.value as PlayerColor;
-  if (!VALID_PLAYERS.includes(player)) return;
-  state.selectedPlayer = player;
-  validateSettings();
 }
 
 /**
@@ -181,21 +196,13 @@ function handlePlayerChange(radio: HTMLInputElement): void {
  */
 export function setupPlayerRadios(): void {
   document.querySelectorAll<HTMLInputElement>('input[name="startingPlayer"]').forEach((radio) => {
-    radio.addEventListener('change', () => handlePlayerChange(radio));
+    radio.addEventListener('change', () => {
+      const player = radio.value as PlayerColor;
+      if (!VALID_PLAYERS.includes(player)) return;
+      state.selectedPlayer = player;
+      validateSettings();
+    });
   });
-}
-
-/**
- * Handles grid radio change event.
- * @param radio - The radio input element
- * @param renderer - The renderer instance
- */
-function handleGridChange(radio: HTMLInputElement, renderer: Renderer): void {
-  const grid = Number(radio.value) as GridSize;
-  if (!VALID_GRID_SIZES.includes(grid)) return;
-  state.selectedGrid = grid;
-  renderer.setGrid(grid);
-  validateSettings();
 }
 
 /**
@@ -204,7 +211,13 @@ function handleGridChange(radio: HTMLInputElement, renderer: Renderer): void {
  */
 export function setupGridRadios(renderer: Renderer): void {
   document.querySelectorAll<HTMLInputElement>('input[name="grid"]').forEach((radio) => {
-    radio.addEventListener('change', () => handleGridChange(radio, renderer));
+    radio.addEventListener('change', () => {
+      const grid = Number(radio.value) as GridSize;
+      if (!VALID_GRID_SIZES.includes(grid)) return;
+      state.selectedGrid = grid;
+      renderer.setGrid(grid);
+      validateSettings();
+    });
   });
 }
 
@@ -226,20 +239,9 @@ export function setupBoardClick(game: GameController): void {
     const cardEl = (e.target as HTMLElement).closest<HTMLButtonElement>('.card');
     if (!cardEl) return;
     const cardId = cardEl.dataset.id;
-    if (cardId) game.handleCardClick(cardId);
+    if (!cardId) return;
+    game.handleCardClick(cardId);
   });
-}
-
-/**
- * Handles test keyboard shortcuts.
- * @param e - The keyboard event
- * @param winner - The winner type
- * @param blue - Blue player's score
- * @param orange - Orange player's score
- */
-function handleTestShortcut(e: KeyboardEvent, winner: 'blue' | 'orange' | 'tie' | 'gameover', blue: number, orange: number): void {
-  e.preventDefault();
-  testResultScreen(winner, blue, orange);
 }
 
 /**
@@ -248,9 +250,9 @@ function handleTestShortcut(e: KeyboardEvent, winner: 'blue' | 'orange' | 'tie' 
  */
 export function setupKeyboardShortcuts(): void {
   document.addEventListener('keydown', (e) => {
-    if (e.altKey && e.key === '1') handleTestShortcut(e, 'blue', 5, 3);
-    if (e.altKey && e.key === '2') handleTestShortcut(e, 'orange', 2, 4);
-    if (e.altKey && e.key === '3') handleTestShortcut(e, 'tie', 3, 3);
-    if (e.altKey && e.key === '4') handleTestShortcut(e, 'gameover', 4, 2);
+    if (e.altKey && e.key === '1') { e.preventDefault(); testResultScreen('blue', 5, 3); }
+    if (e.altKey && e.key === '2') { e.preventDefault(); testResultScreen('orange', 2, 4); }
+    if (e.altKey && e.key === '3') { e.preventDefault(); testResultScreen('tie', 3, 3); }
+    if (e.altKey && e.key === '4') { e.preventDefault(); testResultScreen('gameover', 4, 2); }
   });
 }
