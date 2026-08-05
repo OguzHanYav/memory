@@ -518,7 +518,9 @@ body:has(#screen-settings.screen--active) {
   padding-left: 0;
   gap: 16px;
   min-width: 0;
-  width: 546px;
+  width: 100%;
+  max-width: 546px;
+  overflow: hidden;
   max-height: 81px;
 }
 
@@ -536,8 +538,10 @@ body:has(#screen-settings.screen--active) {
   flex: 1;
   flex-wrap: nowrap;
   min-width: 0;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
-  overflow: visible;
   background-color: #f6f6f6;
   border-radius: 0;
 }
@@ -545,6 +549,9 @@ body:has(#screen-settings.screen--active) {
 .settings-actions__tabs span {
   white-space: nowrap;
   flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
 }
 
 .settings-actions__tabs img {
@@ -564,7 +571,9 @@ body:has(#screen-settings.screen--active) {
   background-color: #f6f6f6;
   padding-right: 20px;
   height: 100%;
-  width: 126px;
+  max-width: 126px;
+  width: auto;
+  min-width: 80px;
 }
 
 .btn-start img {
@@ -573,6 +582,7 @@ body:has(#screen-settings.screen--active) {
   height: auto;
   width: auto;
 }
+
 .start-btn-wrapper {
   position: relative;
   width: 100%;
@@ -1184,7 +1194,7 @@ body:has(#screen-settings.screen--active) {
 /* ============================================
    WINNER ICONS
    ============================================ */
-   /* ============================================
+/* ============================================
    WINNER ICONS - mit img Tag
    ============================================ */
 
@@ -1226,6 +1236,7 @@ body:has(#screen-settings.screen--active) {
   background-color: #f7e6d5;
   border-radius: 20px;
 }
+
 .theme-code .result-player-icon {
   display: flex;
   justify-content: center;
@@ -2228,6 +2239,7 @@ body:has(#screen-settings.screen--active) {
   text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
   white-space: nowrap;
 }
+
 /* ============================================
    RESULT SCREEN ANIMATIONS
    ============================================ */
@@ -2238,6 +2250,7 @@ body:has(#screen-settings.screen--active) {
     transform: translateY(-100%);
     opacity: 0;
   }
+
   100% {
     transform: translateY(0);
     opacity: 1;
@@ -2250,6 +2263,7 @@ body:has(#screen-settings.screen--active) {
     transform: translateY(0);
     opacity: 1;
   }
+
   100% {
     transform: translateY(-100%);
     opacity: 0;
@@ -2347,6 +2361,7 @@ body:has(#screen-settings.screen--active) {
   transform: translate(-50%, -100%) !important;
   opacity: 0;
 }
+
 /* ============================================
    RESPONSIVE
    ============================================ */
