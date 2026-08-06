@@ -512,14 +512,11 @@ body:has(#screen-settings.screen--active) {
   flex-wrap: nowrap;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   background-color: #f6f6f6;
-  padding-top: 14px;
-  padding-right: 20px;
-  padding-bottom: 14px;
-  padding-left: 0;
+  padding: 14px 24px;
   gap: 16px;
   min-width: 0;
   width: auto;
-  max-width: 546px;
+  max-width: 620px;
   overflow: hidden;
   max-height: 81px;
 }
@@ -543,12 +540,32 @@ body:has(#screen-settings.screen--active) {
   white-space: nowrap;
   background-color: #f6f6f6;
   border-radius: 0;
+  text-align: center;
 }
 
 .settings-actions__tabs span {
   white-space: nowrap;
   flex-shrink: 0;
   max-width: 140px;
+  min-width: 70px;
+  max-width: 150px;
+}
+
+.settings-actions__tabs span:first-child {
+  min-width: 80px;
+  max-width: 150px;
+}
+
+.settings-actions__tabs span:nth-child(3) {
+  /* Player */
+  min-width: 70px;
+  max-width: 120px;
+}
+
+.settings-actions__tabs span:last-child {
+  /* Board size */
+  min-width: 70px;
+  max-width: 120px;
 }
 
 .settings-actions__tabs img {
@@ -571,6 +588,7 @@ body:has(#screen-settings.screen--active) {
   max-width: 126px;
   width: auto;
   min-width: 126px;
+  max-width: 126px;
 }
 
 .btn-start img {
@@ -2684,5 +2702,81 @@ body:has(#screen-settings.screen--active) {
 
   .result-player-icon::before {
     font-size: 40px !important;
+  }
+}
+/* ============================================
+   SETTINGS ACTIONS - RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .settings-actions {
+    max-width: 100%;
+    padding: 12px 16px;
+    gap: 10px;
+    min-height: 70px;
+  }
+
+  .settings-actions__tabs {
+    font-size: 15px;
+    gap: 10px;
+  }
+
+  .settings-actions__tabs span {
+    font-size: 15px;
+    min-width: 50px;
+    max-width: 100px;
+  }
+
+  .settings-actions__tabs span:first-child {
+    min-width: 60px;
+    max-width: 120px;
+  }
+
+  .btn-start {
+    width: 100px;
+    min-width: 80px;
+    min-height: 50px;
+  }
+
+  .settings-actions__tabs img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .settings-actions {
+    padding: 10px 12px;
+    gap: 8px;
+    min-height: 60px;
+    flex-wrap: wrap;               /* Bei sehr kleinen Screens umbrechen */
+  }
+
+  .settings-actions__tabs {
+    font-size: 13px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .settings-actions__tabs span {
+    font-size: 13px;
+    min-width: 40px;
+    max-width: 80px;
+  }
+
+  .settings-actions__tabs span:first-child {
+    min-width: 50px;
+    max-width: 100px;
+  }
+
+  .btn-start {
+    width: 80px;
+    min-width: 60px;
+    min-height: 40px;
+  }
+
+  .settings-actions__tabs img {
+    width: 10px;
+    height: 10px;
   }
 }
