@@ -508,7 +508,6 @@ body:has(#screen-settings.screen--active) {
   margin-top: 46px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: nowrap;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   background-color: #f6f6f6;
@@ -525,31 +524,28 @@ body:has(#screen-settings.screen--active) {
   display: grid;
   grid-template-columns: 162px 16px 66px 16px 72px 1fr 126px;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.75);
   font-family: Almarai;
-  font-size: 17px;
+  font-size: 20px;
   line-height: 1.4;
-  padding: 0 20px;
   background-color: transparent;
   width: 100%;
 }
 
 .settings-actions__tabs span {
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   line-height: 1.4;
   padding: 4px 0;
-  font-size: 17px;
-  text-align: left;
+  font-size: 20px;
+  text-align: center;
 }
 
 .settings-actions__tabs img {
   align-self: center;
-  width: 16px;
-  height: 16px;
+  width: 56px;
+  height: 56px;
   justify-self: center;
 }
 
